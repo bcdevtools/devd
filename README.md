@@ -29,16 +29,16 @@ devd convert address [address] [optional_bech32]
 #### Encode string into ABI or decode ABI into string
 
 ```bash
-dev convert abi_string [string or ABI encoded string]
-# dev c abi_string 000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000045553444300000000000000000000000000000000000000000000000000000000
-# dev c abi_string USDC Token
+devd convert abi_string [string or ABI encoded string]
+# devd c abi_string 000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000045553444300000000000000000000000000000000000000000000000000000000
+# devd c abi_string USDC Token
 ```
 
 #### Convert hexadecimal to decimal and vice versa
 
 ```bash
-dev convert hex_2_dec [hexadecimal or decimal]
-# dev c h2d 0x16a
-# dev c h2d 362
-# dev c h2d 16a
+devd convert hex_2_dec [hexadecimal or decimal]
+# devd c h2d 0x16a
+# devd c h2d 362
+# devd c h2d 16a
 ```
