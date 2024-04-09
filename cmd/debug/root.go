@@ -14,7 +14,6 @@ func Commands() *cobra.Command {
 
 	cmd.AddCommand(
 		GetUserCommand(),
-		GetConvertAddressCmd(),
 	)
 
 	return cmd

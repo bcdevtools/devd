@@ -101,6 +101,8 @@ func decodeResponseToString(bz []byte, desc string) (string, error) {
 
 	resStr := *res
 
+	fmt.Println("Decoding response to string...", resStr)
+
 	bz, err = hex.DecodeString(resStr[2:])
 	if err != nil {
 		libutils.PrintfStdErr("ERR: failed to decode hex response %s: %v\n", desc, err)

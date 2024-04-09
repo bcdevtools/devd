@@ -1,4 +1,4 @@
-package debug
+package convert
 
 import (
 	"encoding/hex"

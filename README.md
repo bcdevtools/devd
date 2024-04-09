@@ -1,107 +1,44 @@
 ## devd
-#### Install
+
+### Install
+
 ```bash
 go install -v github.com/bcdevtools/devd/cmd/devd@latest
 ```
 
-### Sync files between servers:
+### Tools
+
+#### Query ERC20 token information
+
 ```bash
-devd f rsync --help
+devd query erc20 [contract_address] [optional_account_address] [--host ...]
+# devd q erc20 0x12..89
+# devd q erc20 0x12..89 0x34..FF
+# devd q erc20 0x12..89 ethm1...zz
 ```
 
+#### Convert address between different formats
+
 ```bash
-RSYNC_PASSWORD=1234567 devd files rsync /var/log/nginx/access.log backup@192.168.0.2:/mnt/md0/backup/nginx-logs \
-  --local-to-remote
+devd convert address [address] [optional_bech32]
+# devd c a 0x12..89 ethm
+# devd c a ethm1...zz
+# devd c a ethm1...zz xyz
 ```
 
+#### Encode string into ABI or decode ABI into string
+
 ```bash
-devd files rsync /var/log/nginx/access.log backup@192.168.0.2:/mnt/md0/backup/nginx-logs \
-  --local-to-remote --password-file ~/password.txt
+dev convert abi_string [string or ABI encoded string]
+# dev c abi_string 000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000045553444300000000000000000000000000000000000000000000000000000000
+# dev c abi_string USDC Token
 ```
 
-```bash
-SSHPASS=1234567 devd files rsync /var/log/nginx/access.log backup-server:/mnt/md0/backup/nginx-logs \
-  --local-to-remote --passphrase
-```
-
-Notes:
-- This use rsync
-- When either source or destination is remote machine:
-  - Either environment variable RSYNC_PASSWORD or ENV_SSHPASS or flag --password-file is required (priority flag)
-  - Environment variables RSYNC_PASSWORD and ENV_SSHPASS are treated similar thus either needed. If both provided, must be identical
-  - You must connect to that remote server at least one time before to perform host key verification (one time action) because the transfer will be performed via ssh.
-
-### Secure delete files and directory:
-```bash
-devd files rm [file/dir] [--delete]
-```
-
-### Command aliases
-```bash
-devd a --help
-
-# Listing aliases
-devd a
-
-# Invoke alias
-devd a <alias>
-```
-
-_Defined your own aliases by create a TSV `~/.devd_alias`_
-
-### Download file
-```bash
-devd dl --help
-```
+#### Convert hexadecimal to decimal and vice versa
 
 ```bash
-devd dl https://example.com/images/favicon.ico
-```
-
-```bash
-devd download https://example.com/images/favicon.ico \
-  --output-file favicon.ico --working-directory ~/Downloads --concurrent 4 
-```
-
-```bash
-devd dl https://example.com/images/favicon.ico \
-  -o logo.svg -D ~/Downloads -c 4
-```
-
-Notes:
-- Priority download tools: aria2c > wget > curl
-- The flag `--concurrent` (`-c`) is only used when aria2c is used as download tool
-- Default concurrent download is 4 for speed up download process
-
-### Generate SSH key-pair using ssh-keygen and ed25519
-```bash
-devd gen ssh-key file_name email@example.com
-```
-
-### Generate UFW rules
-```bash
-devd gen ufw --help
-```
-
-```bash
-# Allow connect to :port from anywhere
-devd gen ufw-allow [port]
-
-# Allow connection to any port from a specified IP
-devd gen ufw-allow [ip]
-
-# Allow connects to a specified port from a specified IP
-devd gen ufw-allow [ip] [port]
-```
-
-_Pre-defined ports: http=80, https=443, ssh=22, db=5432, grpc=9090, rpc=26657, evm=8545, p2p=26656, rest=1317_
-
-### Checking tools used by Devd
-```bash
-devd verify-tools
-```
-
-### Security check
-```bash
-sudo devd security-check
+dev convert hex_2_dec [hexadecimal or decimal]
+# dev c h2d 0x16a
+# dev c h2d 362
+# dev c h2d 16a
 ```
