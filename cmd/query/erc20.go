@@ -7,7 +7,6 @@ import (
 	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/spf13/cobra"
 	"math/big"
 	"os"
@@ -20,15 +19,7 @@ func GetQueryErc20Command() *cobra.Command {
 		Short: "Get ERC-20 token information. If account address is provided, it will query the balance of the account (bech32 is accepted).",
 		Args:  cobra.RangeArgs(1, 2),
 		Run: func(cmd *cobra.Command, args []string) {
-			var bz []byte
-
-			_, rpc := mustGetEthClient(cmd, true)
-
-			ethClient8545, err := ethclient.Dial(rpc)
-			if err != nil {
-				libutils.PrintlnStdErr("ERR: failed to connect to EVM Json-RPC:", err)
-				os.Exit(1)
-			}
+			ethClient8545, _ := mustGetEthClient(cmd, true)
 
 			evmAddrs, err := getEvmAddressFromAnyFormatAddress(args...)
 			if err != nil {
@@ -45,7 +36,7 @@ func GetQueryErc20Command() *cobra.Command {
 
 			fmt.Println("Getting contract symbol...")
 
-			bz, err = ethClient8545.CallContract(context.Background(), ethereum.CallMsg{
+			bz, err := ethClient8545.CallContract(context.Background(), ethereum.CallMsg{
 				To:   &contractAddr,
 				Data: []byte{0x95, 0xd8, 0x9b, 0x41}, // symbol()
 			}, nil)
