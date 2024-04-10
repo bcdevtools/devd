@@ -28,6 +28,10 @@ func GetIntrinsicCommand() *cobra.Command {
 			if strings.HasPrefix(input, "0x") {
 				input = input[2:]
 			}
+			if len(input)%2 != 0 {
+				libutils.PrintlnStdErr("ERR: invalid EVM transaction input string length", len(input), ", must be an even number of characters")
+				os.Exit(1)
+			}
 
 			bz, err := hex.DecodeString(input)
 			libutils.ExitIfErr(err, "failed to decode input hex data")
