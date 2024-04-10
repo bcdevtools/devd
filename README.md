@@ -42,3 +42,17 @@ devd convert hex_2_dec [hexadecimal or decimal]
 # devd c h2d 362
 # devd c h2d 16a
 ```
+
+#### Get EVM transaction information
+
+```bash
+devd query eth_getTransactionByHash [0xhash] [--rpc http://localhost:8545]
+# devd q tx 0xAA..FF
+```
+
+#### Get EVM transaction receipt
+
+```bash
+devd query eth_getTransactionReceipt [0xhash] [--rpc http://localhost:8545]
+# devd q receipt 0xAA..FF
+```

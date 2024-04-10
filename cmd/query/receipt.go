@@ -15,9 +15,10 @@ import (
 // GetQueryTxReceiptCommand registers a sub-tree of commands
 func GetQueryTxReceiptCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "receipt [0xhash]",
-		Short: "eth_getTransactionReceipt",
-		Args:  cobra.ExactArgs(1),
+		Use:     "eth_getTransactionReceipt [0xhash]",
+		Aliases: []string{"receipt"},
+		Short:   "eth_getTransactionReceipt",
+		Args:    cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			ethClient := mustGetEthClient(cmd)
 

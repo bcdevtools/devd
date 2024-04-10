@@ -15,9 +15,10 @@ import (
 // GetQueryTxCommand registers a sub-tree of commands
 func GetQueryTxCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "tx [0xhash]",
-		Short: "eth_getTransactionByHash",
-		Args:  cobra.ExactArgs(1),
+		Use:     "eth_getTransactionByHash [0xhash]",
+		Aliases: []string{"tx"},
+		Short:   "eth_getTransactionByHash",
+		Args:    cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			ethClient := mustGetEthClient(cmd)
 
