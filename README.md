@@ -101,6 +101,15 @@ devd convert solc_sig [event/method signature]
 # devd c solc_sig 'event Transfer(address indexed from, address indexed to, uint256 value);'
 ```
 
+#### Convert input into upper/lower case
+
+```bash
+devd convert to_lower_case [input]
+# devd c lowercase AA
+devd convert to_upper_case [input]
+# devd c uppercase aa
+```
+
 ### Debug tools
 
 #### Compute EVM transaction intrinsic gas
