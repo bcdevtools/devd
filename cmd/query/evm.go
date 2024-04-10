@@ -19,17 +19,19 @@ import (
 	"time"
 )
 
+const generalQueryTimeout = 3 * time.Second
+
 func doQuery(host string, qb types.JsonRpcQueryBuilder, optionalTimeout time.Duration) ([]byte, error) {
 	var timeout = optionalTimeout
 	if optionalTimeout == 0 {
-		timeout = 5 * time.Second
+		timeout = generalQueryTimeout
 	}
 	if timeout < time.Second {
 		timeout = time.Second
 	}
 
 	httpClient := http.Client{
-		Timeout: timeout * time.Millisecond,
+		Timeout: timeout,
 	}
 
 	fmt.Println("Querying", host, strings.ReplaceAll(strings.ReplaceAll(qb.String(), "\n", " "), " ", ""))

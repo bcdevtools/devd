@@ -10,7 +10,6 @@ import (
 	"math/big"
 	"os"
 	"strings"
-	"time"
 )
 
 // GetQueryErc20Command registers a sub-tree of commands
@@ -20,8 +19,6 @@ func GetQueryErc20Command() *cobra.Command {
 		Short: "Get ERC-20 token information. If account address is provided, it will query the balance of the account (bech32 is accepted).",
 		Args:  cobra.RangeArgs(1, 2),
 		Run: func(cmd *cobra.Command, args []string) {
-			const queryTimeout = 3 * time.Second
-
 			var rpc string
 			if rpc, _ = cmd.Flags().GetString("host"); len(rpc) > 0 {
 				// accepted deprecated flag
@@ -63,7 +60,7 @@ func GetQueryErc20Command() *cobra.Command {
 					),
 					paramLatest,
 				),
-				queryTimeout,
+				0,
 			)
 			if err != nil {
 				libutils.PrintlnStdErr("ERR: failed to query contract symbol:", err)
@@ -90,7 +87,7 @@ func GetQueryErc20Command() *cobra.Command {
 					),
 					paramLatest,
 				),
-				queryTimeout,
+				0,
 			)
 
 			contractDecimals, err := decodeResponseToBigInt(bz, "contract decimals")
@@ -115,7 +112,7 @@ func GetQueryErc20Command() *cobra.Command {
 						),
 						paramLatest,
 					),
-					queryTimeout,
+					0,
 				)
 
 				accountBalance, err = decodeResponseToBigInt(bz, "account balance")
