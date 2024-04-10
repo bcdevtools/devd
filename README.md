@@ -64,3 +64,11 @@ devd query eth_getBlockByNumber [hex or dec block no] [--full] [--rpc http://loc
 # devd q block 0xF
 # devd q block 16 --full
 ```
+
+#### Trace EVM transaction
+
+```bash
+devd query debug_traceTransaction [0xhash] [--rpc http://localhost:8545]
+# devd q trace 0xhash
+# devd q trace 0xhash --tracer callTracer
+```
