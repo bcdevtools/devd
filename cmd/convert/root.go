@@ -16,6 +16,7 @@ func Commands() *cobra.Command {
 		GetConvertAddressCmd(),
 		GetConvertAbiStringCmd(),
 		GetConvertHexadecimalToDecimalCmd(),
+		GetConvertSolcSignatureCmd(),
 	)
 
 	return cmd

@@ -34,7 +34,7 @@ func GetQueryTraceTxCommand() *cobra.Command {
 			params = append(params, paramTransactionHash)
 
 			if tracer := cmd.Flag(flagTracer).Value.String(); tracer != "" {
-				if !regexp.MustCompile(`^[\w\-]+$`).MatchString(tracer) {
+				if !regexp.MustCompile(`^\w+$`).MatchString(tracer) {
 					libutils.PrintlnStdErr("ERR: invalid tracer name:", tracer)
 					os.Exit(1)
 				}
