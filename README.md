@@ -57,7 +57,7 @@ devd query eth_getTransactionReceipt [0xhash] [--rpc http://localhost:8545]
 # devd q receipt 0xAA..FF
 ```
 
-#### Get EVM block by number 
+#### Get EVM block by number
 
 ```bash
 devd query eth_getBlockByNumber [hex or dec block no] [--full] [--rpc http://localhost:8545]
