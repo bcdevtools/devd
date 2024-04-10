@@ -25,6 +25,7 @@ devd convert address [address] [optional_bech32]
 # devd c a ethm1...zz
 # devd c a ethm1...zz xyz
 ```
+***WARN: DO NOT use this command to convert address across chains with different HD-Path! (eg: Ethermint 60 and Cosmos 118)***
 
 #### Encode string into ABI or decode ABI into string
 

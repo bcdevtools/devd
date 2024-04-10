@@ -25,6 +25,10 @@ func GetConvertAddressCmd() *cobra.Command {
 `),
 		Args: cobra.RangeArgs(1, 2),
 		Run: func(cmd *cobra.Command, args []string) {
+			defer func() {
+				fmt.Println("WARN: DO NOT use this command to convert address across chains with different HD-Path! (eg: Ethermint 60 and Cosmos 118)")
+			}()
+
 			if len(args) < 1 {
 				fmt.Println("not enough arguments")
 				os.Exit(1)
