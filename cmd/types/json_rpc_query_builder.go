@@ -190,3 +190,21 @@ func (j jsonRpcRawQueryParam) IsArray() bool {
 func (j jsonRpcRawQueryParam) String() string {
 	return j.value
 }
+
+var _ JsonRpcQueryParam = jsonRpcBoolQueryParam{}
+
+type jsonRpcBoolQueryParam struct {
+	value string
+}
+
+func NewJsonRpcBoolQueryParam(value bool) JsonRpcQueryParam {
+	return jsonRpcBoolQueryParam{fmt.Sprintf("%t", value)}
+}
+
+func (j jsonRpcBoolQueryParam) IsArray() bool {
+	return false
+}
+
+func (j jsonRpcBoolQueryParam) String() string {
+	return j.value
+}

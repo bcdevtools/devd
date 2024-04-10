@@ -5,7 +5,8 @@ import (
 )
 
 const (
-	flagRpc = "rpc"
+	flagRpc  = "rpc"
+	flagFull = "full"
 )
 
 // Commands registers a sub-tree of commands
@@ -20,6 +21,7 @@ func Commands() *cobra.Command {
 		GetQueryErc20Command(),
 		GetQueryTxCommand(),
 		GetQueryTxReceiptCommand(),
+		GetQueryBlockCommand(),
 	)
 
 	return cmd

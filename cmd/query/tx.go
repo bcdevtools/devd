@@ -20,7 +20,7 @@ func GetQueryTxCommand() *cobra.Command {
 		Short:   "eth_getTransactionByHash",
 		Args:    cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			ethClient := mustGetEthClient(cmd)
+			ethClient, _ := mustGetEthClient(cmd)
 
 			input := strings.ToLower(args[0])
 

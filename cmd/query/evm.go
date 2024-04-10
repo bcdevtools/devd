@@ -142,7 +142,7 @@ func decodeResponseToBigInt(bz []byte, desc string) (*big.Int, error) {
 	return new(big.Int).SetBytes(bz), nil
 }
 
-func mustGetEthClient(cmd *cobra.Command) *ethclient.Client {
+func mustGetEthClient(cmd *cobra.Command) (*ethclient.Client, string) {
 	var rpc string
 	if rpc, _ = cmd.Flags().GetString(flagRpc); len(rpc) == 0 {
 		libutils.PrintlnStdErr("ERR: missing RPC to query")
@@ -155,5 +155,5 @@ func mustGetEthClient(cmd *cobra.Command) *ethclient.Client {
 		os.Exit(1)
 	}
 
-	return ethClient8545
+	return ethClient8545, rpc
 }
