@@ -9,7 +9,9 @@ import (
 	"github.com/bcdevtools/devd/cmd/utils"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/pkg/errors"
+	"github.com/spf13/cobra"
 	"io"
 	"math/big"
 	"net/http"
@@ -138,4 +140,20 @@ func decodeResponseToBigInt(bz []byte, desc string) (*big.Int, error) {
 	}
 
 	return new(big.Int).SetBytes(bz), nil
+}
+
+func mustGetEthClient(cmd *cobra.Command) *ethclient.Client {
+	var rpc string
+	if rpc, _ = cmd.Flags().GetString(flagRpc); len(rpc) == 0 {
+		libutils.PrintlnStdErr("ERR: missing RPC to query")
+		os.Exit(1)
+	}
+
+	ethClient8545, err := ethclient.Dial(rpc)
+	if err != nil {
+		libutils.PrintlnStdErr("ERR: failed to connect to EVM Json-RPC:", err)
+		os.Exit(1)
+	}
+
+	return ethClient8545
 }

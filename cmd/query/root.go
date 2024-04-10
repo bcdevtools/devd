@@ -18,6 +18,8 @@ func Commands() *cobra.Command {
 
 	cmd.AddCommand(
 		GetQueryErc20Command(),
+		GetQueryTxCommand(),
+		GetQueryTxReceiptCommand(),
 	)
 
 	return cmd
