@@ -9,14 +9,6 @@ func AbiEncodeString(str string) ([]byte, error) {
 	return abiArgsSingleString.Pack(str)
 }
 
-func MustAbiEncodeString(str string) []byte {
-	bz, err := AbiEncodeString(str)
-	if err != nil {
-		panic(err)
-	}
-	return bz
-}
-
 func AbiDecodeString(bz []byte) (string, error) {
 	res, err := abiArgsSingleString.Unpack(bz)
 	if err != nil {
@@ -29,14 +21,6 @@ func AbiDecodeString(bz []byte) (string, error) {
 		return str, nil
 	}
 	return "", fmt.Errorf("is not string")
-}
-
-func MustAbiDecodeString(bz []byte) string {
-	str, err := AbiDecodeString(bz)
-	if err != nil {
-		panic(err)
-	}
-	return str
 }
 
 var abiTypeString abi.Type

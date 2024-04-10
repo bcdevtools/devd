@@ -13,7 +13,6 @@ import (
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"io"
-	"math/big"
 	"net/http"
 	"os"
 	"regexp"
@@ -92,54 +91,6 @@ func getEvmAddressFromAnyFormatAddress(addrs ...string) (evmAddrs []common.Addre
 	}
 
 	return
-}
-
-func decodeResponseToString(bz []byte, desc string) (string, error) {
-	var resAny any
-	resAny, err := types.ParseJsonRpcResponse[string](bz)
-	if err != nil {
-		return "", err
-	}
-
-	res := resAny.(*string)
-
-	resStr := *res
-
-	fmt.Println("Decoding response to string...", resStr)
-
-	bz, err = hex.DecodeString(resStr[2:])
-	if err != nil {
-		libutils.PrintfStdErr("ERR: failed to decode hex response %s: %v\n", desc, err)
-		os.Exit(1)
-	}
-
-	result, err := utils.AbiDecodeString(bz)
-	if err != nil {
-		libutils.PrintfStdErr("ERR: failed to decode ABI response %s: %v\n", desc, err)
-		os.Exit(1)
-	}
-
-	return result, nil
-}
-
-func decodeResponseToBigInt(bz []byte, desc string) (*big.Int, error) {
-	var resAny any
-	resAny, err := types.ParseJsonRpcResponse[string](bz)
-	if err != nil {
-		return nil, err
-	}
-
-	res := resAny.(*string)
-
-	resStr := *res
-
-	bz, err = hex.DecodeString(resStr[2:])
-	if err != nil {
-		libutils.PrintfStdErr("ERR: failed to decode hex response %s: %v\n", desc, err)
-		os.Exit(1)
-	}
-
-	return new(big.Int).SetBytes(bz), nil
 }
 
 func mustGetEthClient(cmd *cobra.Command) (*ethclient.Client, string) {

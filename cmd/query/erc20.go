@@ -1,15 +1,16 @@
 package query
 
 import (
-	"encoding/hex"
+	"context"
 	"fmt"
 	libutils "github.com/EscanBE/go-lib/utils"
-	"github.com/bcdevtools/devd/cmd/types"
+	"github.com/bcdevtools/devd/cmd/utils"
+	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/spf13/cobra"
 	"math/big"
 	"os"
-	"strings"
 )
 
 // GetQueryErc20Command registers a sub-tree of commands
@@ -20,6 +21,8 @@ func GetQueryErc20Command() *cobra.Command {
 		Args:  cobra.RangeArgs(1, 2),
 		Run: func(cmd *cobra.Command, args []string) {
 			var rpc string
+			var bz []byte
+
 			if rpc, _ = cmd.Flags().GetString("host"); len(rpc) > 0 {
 				// accepted deprecated flag
 				libutils.PrintfStdErr("WARN: flag '--host' is deprecated, use '--%s' instead\n", flagRpc)
@@ -27,6 +30,12 @@ func GetQueryErc20Command() *cobra.Command {
 				// accepted new flag
 			} else {
 				libutils.PrintlnStdErr("ERR: missing RPC to query")
+				os.Exit(1)
+			}
+
+			ethClient8545, err := ethclient.Dial(rpc)
+			if err != nil {
+				libutils.PrintlnStdErr("ERR: failed to connect to EVM Json-RPC:", err)
 				os.Exit(1)
 			}
 
@@ -39,35 +48,22 @@ func GetQueryErc20Command() *cobra.Command {
 			var contractAddr, accountAddr common.Address
 
 			contractAddr = evmAddrs[0]
-
 			if len(evmAddrs) > 1 {
 				accountAddr = evmAddrs[1]
 			}
 
-			paramLatest, err := types.NewJsonRpcStringQueryParam("latest")
-			libutils.ExitIfErr(err, "failed to create json rpc query param")
-
 			fmt.Println("Getting contract symbol...")
-			bz, err := doQuery(
-				rpc,
-				types.NewJsonRpcQueryBuilder(
-					"eth_call",
-					types.NewJsonRpcRawQueryParam(
-						fmt.Sprintf(
-							`{"from":null,"to":"%s","data":"0x95d89b41"}`,
-							strings.ToLower(contractAddr.String()),
-						),
-					),
-					paramLatest,
-				),
-				0,
-			)
+
+			bz, err = ethClient8545.CallContract(context.Background(), ethereum.CallMsg{
+				To:   &contractAddr,
+				Data: []byte{0x95, 0xd8, 0x9b, 0x41}, // symbol()
+			}, nil)
 			if err != nil {
-				libutils.PrintlnStdErr("ERR: failed to query contract symbol:", err)
+				libutils.PrintlnStdErr("ERR: failed to get contract symbol:", err)
 				os.Exit(1)
 			}
 
-			contractSymbol, err := decodeResponseToString(bz, "contract symbol")
+			contractSymbol, err := utils.AbiDecodeString(bz)
 			if err != nil {
 				libutils.PrintlnStdErr("ERR: failed to decode contract symbol:", err)
 				os.Exit(1)
@@ -75,51 +71,31 @@ func GetQueryErc20Command() *cobra.Command {
 
 			fmt.Println("Getting contract decimals...")
 
-			bz, err = doQuery(
-				rpc,
-				types.NewJsonRpcQueryBuilder(
-					"eth_call",
-					types.NewJsonRpcRawQueryParam(
-						fmt.Sprintf(
-							`{"from":null,"to":"%s","data":"0x313ce567"}`,
-							strings.ToLower(contractAddr.String()),
-						),
-					),
-					paramLatest,
-				),
-				0,
-			)
-
-			contractDecimals, err := decodeResponseToBigInt(bz, "contract decimals")
+			bz, err = ethClient8545.CallContract(context.Background(), ethereum.CallMsg{
+				To:   &contractAddr,
+				Data: []byte{0x31, 0x3c, 0xe5, 0x67}, // decimals()
+			}, nil)
 			if err != nil {
-				libutils.PrintlnStdErr("ERR: failed to decode contract decimals:", err)
+				libutils.PrintlnStdErr("ERR: failed to get contract decimals:", err)
 				os.Exit(1)
 			}
+
+			contractDecimals := new(big.Int).SetBytes(bz)
 
 			var accountBalance *big.Int
 			if accountAddr != (common.Address{}) {
 				fmt.Println("Getting account balance...")
 
-				bz, err = doQuery(
-					rpc,
-					types.NewJsonRpcQueryBuilder(
-						"eth_call",
-						types.NewJsonRpcRawQueryParam(
-							fmt.Sprintf(`{"from":null,"to":"%s","data":"0x70a08231000000000000000000000000%s"}`,
-								strings.ToLower(contractAddr.String()),
-								strings.ToLower(hex.EncodeToString(accountAddr.Bytes())),
-							),
-						),
-						paramLatest,
-					),
-					0,
-				)
-
-				accountBalance, err = decodeResponseToBigInt(bz, "account balance")
+				bz, err = ethClient8545.CallContract(context.Background(), ethereum.CallMsg{
+					To:   &contractAddr,
+					Data: append([]byte{0x70, 0xa0, 0x82, 0x31}, common.BytesToHash(accountAddr.Bytes()).Bytes()...), // balanceOf(address)
+				}, nil)
 				if err != nil {
-					libutils.PrintlnStdErr("ERR: failed to decode account balance:", err)
+					libutils.PrintlnStdErr("ERR: failed to get account token balance:", err)
 					os.Exit(1)
 				}
+
+				accountBalance = new(big.Int).SetBytes(bz)
 			}
 
 			fmt.Println("Contract Symbol:", contractSymbol)
