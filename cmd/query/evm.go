@@ -157,3 +157,13 @@ func mustGetEthClient(cmd *cobra.Command) (*ethclient.Client, string) {
 
 	return ethClient8545, rpc
 }
+
+func tryPrintBeautyJson(bz []byte) {
+	beautifyBz, err := utils.BeautifyJson(bz)
+	if err != nil {
+		libutils.PrintlnStdErr("failed to beautify json:", err)
+		fmt.Println(string(bz))
+	} else {
+		fmt.Println(string(beautifyBz))
+	}
+}

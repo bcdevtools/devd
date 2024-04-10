@@ -23,6 +23,7 @@ func Commands() *cobra.Command {
 		GetQueryTxCommand(),
 		GetQueryTxReceiptCommand(),
 		GetQueryBlockCommand(),
+		GetQueryTraceTxCommand(),
 	)
 
 	return cmd

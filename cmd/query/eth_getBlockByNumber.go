@@ -1,10 +1,8 @@
 package query
 
 import (
-	"fmt"
 	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/types"
-	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/spf13/cobra"
 	"math/big"
 	"os"
@@ -70,13 +68,7 @@ func GetQueryBlockCommand() *cobra.Command {
 			)
 			libutils.ExitIfErr(err, "failed to get block by number")
 
-			beautifyBz, err := utils.BeautifyJson(bz)
-			if err != nil {
-				libutils.PrintlnStdErr("failed to beautify json:", err)
-				fmt.Println(string(bz))
-			} else {
-				fmt.Println(string(beautifyBz))
-			}
+			tryPrintBeautyJson(bz)
 		},
 	}
 

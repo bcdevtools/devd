@@ -2,9 +2,7 @@ package query
 
 import (
 	"context"
-	"fmt"
 	libutils "github.com/EscanBE/go-lib/utils"
-	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/spf13/cobra"
 	"os"
@@ -35,13 +33,7 @@ func GetQueryTxReceiptCommand() *cobra.Command {
 			bz, err := receipt.MarshalJSON()
 			libutils.ExitIfErr(err, "failed to marshal receipt to json")
 
-			beautifyBz, err := utils.BeautifyJson(bz)
-			if err != nil {
-				libutils.PrintlnStdErr("failed to beautify json:", err)
-				fmt.Println(string(bz))
-			} else {
-				fmt.Println(string(beautifyBz))
-			}
+			tryPrintBeautyJson(bz)
 		},
 	}
 
