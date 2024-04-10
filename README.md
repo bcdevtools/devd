@@ -11,7 +11,7 @@ go install -v github.com/bcdevtools/devd/cmd/devd@latest
 #### Query ERC20 token information
 
 ```bash
-devd query erc20 [contract_address] [optional_account_address] [--host ...]
+devd query erc20 [contract_address] [optional_account_address] [--rpc http://localhost:8545]
 # devd q erc20 0x12..89
 # devd q erc20 0x12..89 0x34..FF
 # devd q erc20 0x12..89 ethm1...zz

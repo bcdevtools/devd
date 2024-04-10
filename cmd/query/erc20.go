@@ -22,10 +22,15 @@ func GetQueryErc20Command() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			const queryTimeout = 3 * time.Second
 
-			host, _ := cmd.Flags().GetString(flagHost)
-			if len(host) == 0 {
-				libutils.PrintlnStdErr("ERR: missing host")
-				return
+			var rpc string
+			if rpc, _ = cmd.Flags().GetString("host"); len(rpc) > 0 {
+				// accepted deprecated flag
+				libutils.PrintfStdErr("WARN: flag '--host' is deprecated, use '--%s' instead\n", flagRpc)
+			} else if rpc, _ = cmd.Flags().GetString(flagRpc); len(rpc) > 0 {
+				// accepted new flag
+			} else {
+				libutils.PrintlnStdErr("ERR: missing RPC to query")
+				os.Exit(1)
 			}
 
 			evmAddrs, err := getEvmAddressFromAnyFormatAddress(args...)
@@ -47,7 +52,7 @@ func GetQueryErc20Command() *cobra.Command {
 
 			fmt.Println("Getting contract symbol...")
 			bz, err := doQuery(
-				host,
+				rpc,
 				types.NewJsonRpcQueryBuilder(
 					"eth_call",
 					types.NewJsonRpcRawQueryParam(
@@ -74,7 +79,7 @@ func GetQueryErc20Command() *cobra.Command {
 			fmt.Println("Getting contract decimals...")
 
 			bz, err = doQuery(
-				host,
+				rpc,
 				types.NewJsonRpcQueryBuilder(
 					"eth_call",
 					types.NewJsonRpcRawQueryParam(
@@ -99,7 +104,7 @@ func GetQueryErc20Command() *cobra.Command {
 				fmt.Println("Getting account balance...")
 
 				bz, err = doQuery(
-					host,
+					rpc,
 					types.NewJsonRpcQueryBuilder(
 						"eth_call",
 						types.NewJsonRpcRawQueryParam(
@@ -138,7 +143,8 @@ func GetQueryErc20Command() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagHost, "http://localhost:8545", "EVM RPC host")
+	cmd.Flags().StringP(flagRpc, "p", "http://localhost:8545", "EVM Json-RPC url")
+	cmd.Flags().String("host", "", fmt.Sprintf("deprecated flag, use '--%s' instead", flagRpc))
 
 	return cmd
 }

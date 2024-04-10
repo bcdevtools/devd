@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	flagHost = "host"
+	flagRpc = "rpc"
 )
 
 // Commands registers a sub-tree of commands
