@@ -6,6 +6,7 @@ import (
 	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/convert"
 	"github.com/bcdevtools/devd/cmd/debug"
+	"github.com/bcdevtools/devd/cmd/hash"
 	"github.com/bcdevtools/devd/cmd/query"
 	"github.com/bcdevtools/devd/cmd/types"
 	"github.com/bcdevtools/devd/cmd/utils"
@@ -60,6 +61,7 @@ func init() {
 	rootCmd.AddCommand(convert.Commands())
 	rootCmd.AddCommand(debug.Commands())
 	rootCmd.AddCommand(query.Commands())
+	rootCmd.AddCommand(hash.Commands())
 
 	rootCmd.PersistentFlags().String(constants.FLAG_USE_WORKING_USERNAME, "", "Use the specified username as working context username, must be either effective user or real user, if not specified, will use default selected working user")
 	rootCmd.PersistentFlags().String(constants.FLAG_REQUIRE_WORKING_USERNAME, "", "Ensure working user is the specified user: if working user selected by application has username different with the specified username, application will exit with error")

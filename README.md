@@ -110,6 +110,13 @@ devd convert to_upper_case [input]
 # devd c uppercase aa
 ```
 
+### Hashing tools
+
+```bash
+devd hash md5 [input]
+devd hash keccak256 [input]
+```
+
 ### Debug tools
 
 #### Compute EVM transaction intrinsic gas
