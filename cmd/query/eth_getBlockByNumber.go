@@ -10,7 +10,6 @@ import (
 	"strings"
 )
 
-// GetQueryBlockCommand registers a sub-tree of commands
 func GetQueryBlockCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "eth_getBlockByNumber [height dec or 0xHex]",

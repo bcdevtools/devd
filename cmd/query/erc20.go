@@ -12,7 +12,6 @@ import (
 	"os"
 )
 
-// GetQueryErc20Command registers a sub-tree of commands
 func GetQueryErc20Command() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "erc20 [contract_address] [?account_address]",

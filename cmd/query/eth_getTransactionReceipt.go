@@ -10,7 +10,6 @@ import (
 	"strings"
 )
 
-// GetQueryTxReceiptCommand registers a sub-tree of commands
 func GetQueryTxReceiptCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "eth_getTransactionReceipt [0xhash]",

@@ -13,7 +13,6 @@ import (
 	"strings"
 )
 
-// GetIntrinsicCommand registers a sub-tree of commands
 func GetIntrinsicCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "intrinsic_gas [0xdata]",

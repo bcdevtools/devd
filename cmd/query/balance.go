@@ -12,7 +12,6 @@ import (
 	"os"
 )
 
-// GetQueryBalanceCommand registers a sub-tree of commands
 func GetQueryBalanceCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "balance [account_address] [?optional_erc20_contracts...]",

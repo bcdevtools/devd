@@ -10,7 +10,6 @@ import (
 	"strings"
 )
 
-// GetQueryTraceTxCommand registers a sub-tree of commands
 func GetQueryTraceTxCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "debug_traceTransaction [0xhash]",

@@ -10,7 +10,6 @@ import (
 	"strings"
 )
 
-// GetQueryTxCommand registers a sub-tree of commands
 func GetQueryTxCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "eth_getTransactionByHash [0xhash]",

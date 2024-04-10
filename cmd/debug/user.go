@@ -6,7 +6,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// GetUserCommand registers a sub-tree of commands
 func GetUserCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "user",
