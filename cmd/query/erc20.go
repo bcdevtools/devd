@@ -41,7 +41,7 @@ func GetQueryErc20Command() *cobra.Command {
 
 			evmAddrs, err := getEvmAddressFromAnyFormatAddress(args...)
 			if err != nil {
-				libutils.PrintlnStdErr(err)
+				libutils.PrintlnStdErr("ERR:", err)
 				return
 			}
 
@@ -103,9 +103,9 @@ func GetQueryErc20Command() *cobra.Command {
 			if accountBalance != nil {
 				decimals := contractDecimals.Uint64()
 				if decimals == 0 {
-					fmt.Println("Account Balance:", accountBalance, contractSymbol)
+					fmt.Println("Account token balance:", accountBalance, contractSymbol)
 				} else {
-					fmt.Println("Account Balance:")
+					fmt.Println("Account token balance:")
 					fmt.Println(" - Raw:", accountBalance)
 					fmt.Println(" - Display:")
 					pow := new(big.Int).Exp(big.NewInt(10), big.NewInt(int64(decimals)), nil)
