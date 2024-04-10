@@ -14,6 +14,7 @@ func Commands() *cobra.Command {
 
 	cmd.AddCommand(
 		GetUserCommand(),
+		GetIntrinsicCommand(),
 	)
 
 	return cmd

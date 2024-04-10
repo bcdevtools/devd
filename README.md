@@ -44,6 +44,15 @@ devd convert hex_2_dec [hexadecimal or decimal]
 # devd c h2d 16a
 ```
 
+#### Convert Solidity event/method signature into hashed signature
+
+```bash
+devd convert solc_sig [event/method signature]
+# devd c solc_sig 'transfer(address,uint256)'
+# devd c solc_sig 'function transfer(address recipient, uint256 amount) external returns (bool);'
+# devd c solc_sig 'event Transfer(address indexed from, address indexed to, uint256 value);'
+```
+
 #### Get EVM transaction information
 
 ```bash
@@ -74,11 +83,9 @@ devd query debug_traceTransaction [0xhash] [--tracer callTracer] [--rpc http://l
 # devd q trace 0xhash --tracer callTracer
 ```
 
-#### Convert Solidity event/method signature into hashed signature
+#### Compute EVM transaction intrinsic gas
 
 ```bash
-devd convert solc_sig [event/method signature]
-# devd c solc_sig 'transfer(address,uint256)'
-# devd c solc_sig 'function transfer(address recipient, uint256 amount) external returns (bool);'
-# devd c solc_sig 'event Transfer(address indexed from, address indexed to, uint256 value);'
+devd debug intrinsic_gas [0xdata]
+# devd d intrinsic_gas 0xdata
 ```
