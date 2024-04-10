@@ -35,7 +35,7 @@ func Test_normalizeEvmEventOrMethodInterface(t *testing.T) {
 		{
 			name:       "drop after ')'",
 			_interface: "function burnFrom(address account, uint256 amount) public virtual",
-			want:       "function burnFrom(address account,uint256 amount)",
+			want:       "burnFrom(address account,uint256 amount)",
 		},
 		{
 			name:       "drop after ')'",
@@ -209,7 +209,7 @@ func Test_getSignatureFromInterface(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt._interface, func(t *testing.T) {
-			gotSignature, gotHash, err := getSignatureFromInterface(tt._interface)
+			gotSignature, gotHash, _, err := getSignatureFromInterface(tt._interface)
 			if tt.wantErr {
 				require.Error(t, err)
 				return
