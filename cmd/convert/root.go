@@ -19,6 +19,8 @@ func Commands() *cobra.Command {
 		GetConvertSolcSignatureCmd(),
 		GetConvertToLowerCaseCmd(),
 		GetConvertToUpperCaseCmd(),
+		GetDecodeBase64CaseCmd(),
+		GetEncodeBase64CaseCmd(),
 	)
 
 	return cmd

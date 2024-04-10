@@ -110,6 +110,15 @@ devd convert to_upper_case [input]
 # devd c uppercase aa
 ```
 
+#### Encode/Decode base64
+
+```bash
+devd convert encode_base64 [input]
+# devd c base64 123
+devd convert decode_base64 [base64]
+# devd c decode_base64 TVRJeg==
+```
+
 ### Hashing tools
 
 ```bash
