@@ -45,7 +45,7 @@ func GetQueryTxReceiptCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringP(flagRpc, "p", "http://localhost:8545", "EVM Json-RPC url")
+	cmd.Flags().String(flagRpc, "http://localhost:8545", "EVM Json-RPC url")
 
 	return cmd
 }

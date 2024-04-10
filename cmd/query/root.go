@@ -5,8 +5,9 @@ import (
 )
 
 const (
-	flagRpc  = "rpc"
-	flagFull = "full"
+	flagRpc    = "rpc"
+	flagFull   = "full"
+	flagTracer = "tracer"
 )
 
 // Commands registers a sub-tree of commands

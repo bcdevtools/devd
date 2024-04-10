@@ -140,7 +140,7 @@ func GetQueryErc20Command() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringP(flagRpc, "p", "http://localhost:8545", "EVM Json-RPC url")
+	cmd.Flags().String(flagRpc, "http://localhost:8545", "EVM Json-RPC url")
 	cmd.Flags().String("host", "", fmt.Sprintf("deprecated flag, use '--%s' instead", flagRpc))
 
 	return cmd
