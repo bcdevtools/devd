@@ -14,6 +14,7 @@ func Commands() *cobra.Command {
 	cmd.AddCommand(
 		GetMd5Command(),
 		GetKeccak256Command(),
+		GetKeccak512Command(),
 	)
 
 	return cmd

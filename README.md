@@ -124,6 +124,7 @@ devd convert decode_base64 [base64]
 ```bash
 devd hash md5 [input]
 devd hash keccak256 [input]
+devd hash keccak512 [input]
 ```
 
 ### Debug tools

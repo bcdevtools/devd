@@ -8,14 +8,14 @@ import (
 	"strings"
 )
 
-func GetKeccak256Command() *cobra.Command {
+func GetKeccak512Command() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "keccak256 [input]",
-		Short: "keccak256 hashing input",
+		Use:   "keccak512 [input]",
+		Short: "keccak512 hashing input",
 		Args:  cobra.ExactArgs(1),
 		Run: func(_ *cobra.Command, args []string) {
 			input := strings.Join(args, " ")
-			hash := crypto.Keccak256([]byte(input))
+			hash := crypto.Keccak512([]byte(input))
 			fmt.Println(hex.EncodeToString(hash))
 		},
 	}
