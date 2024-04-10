@@ -39,7 +39,7 @@ func GetConvertHexadecimalToDecimalCmd() *cobra.Command {
 				if !ok {
 					panic("failed to convert string to decimal")
 				}
-				fmt.Println(fmt.Sprintf("0x%x", bi))
+				fmt.Printf("0x%x\n", bi)
 			} else {
 				// is hex without 0x
 				fmt.Println("# Hex to Dec:")

@@ -100,10 +100,10 @@ func normalizeEvmEventOrMethodInterface(_interface string) string {
 	// trim either prefix 'function ', 'event '
 	if strings.HasPrefix(_interface, "function ") {
 		_interface = strings.TrimPrefix(_interface, "function ")
-	} else if strings.HasPrefix(_interface, "event ") {
+	} else {
 		_interface = strings.TrimPrefix(_interface, "event ")
 	}
-	strings.TrimSpace(_interface)
+	_interface = strings.TrimSpace(_interface)
 
 	// ...
 
@@ -184,7 +184,7 @@ func prepareInterfaceToHash(_interface string) (res string, err error) {
 
 func removeExtraSpaces(str string) string {
 	var passOne bool
-	for true {
+	for {
 		var replacedAny bool
 		if strings.Contains(str, "  ") {
 			passOne = false
