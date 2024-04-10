@@ -8,6 +8,12 @@ go install -v github.com/bcdevtools/devd/cmd/devd@latest
 
 ### Query tools
 
+Lazy RPC setting
+```bash
+export DEVD_EVM_RPC='https://api.securerpc.com/v1'
+```
+_By setting this environment variable, you don't need to pass --rpc flag everytime for non-localhost EVM Json-RPC_
+
 #### Query account balance
 
 ```bash

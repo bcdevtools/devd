@@ -20,18 +20,9 @@ func GetQueryErc20Command() *cobra.Command {
 		Short: "Get ERC-20 token information. If account address is provided, it will query the balance of the account (bech32 is accepted).",
 		Args:  cobra.RangeArgs(1, 2),
 		Run: func(cmd *cobra.Command, args []string) {
-			var rpc string
 			var bz []byte
 
-			if rpc, _ = cmd.Flags().GetString("host"); len(rpc) > 0 {
-				// accepted deprecated flag
-				libutils.PrintfStdErr("WARN: flag '--host' is deprecated, use '--%s' instead\n", flagRpc)
-			} else if rpc, _ = cmd.Flags().GetString(flagRpc); len(rpc) > 0 {
-				// accepted new flag
-			} else {
-				libutils.PrintlnStdErr("ERR: missing RPC to query")
-				os.Exit(1)
-			}
+			_, rpc := mustGetEthClient(cmd, true)
 
 			ethClient8545, err := ethclient.Dial(rpc)
 			if err != nil {
@@ -116,7 +107,7 @@ func GetQueryErc20Command() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "http://localhost:8545", "EVM Json-RPC url")
+	cmd.Flags().String(flagRpc, "", "EVM Json-RPC url")
 	cmd.Flags().String("host", "", fmt.Sprintf("deprecated flag, use '--%s' instead", flagRpc))
 
 	return cmd

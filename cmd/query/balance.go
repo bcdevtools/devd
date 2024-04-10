@@ -20,7 +20,7 @@ func GetQueryBalanceCommand() *cobra.Command {
 		Short:   "Get ERC-20 token information. If account address is provided, it will query the balance of the account (bech32 is accepted).",
 		Args:    cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			ethClient8545, _ := mustGetEthClient(cmd)
+			ethClient8545, _ := mustGetEthClient(cmd, false)
 			var bz []byte
 
 			evmAddrs, err := getEvmAddressFromAnyFormatAddress(args...)
@@ -107,7 +107,7 @@ func GetQueryBalanceCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "http://localhost:8545", "EVM Json-RPC url")
+	cmd.Flags().String(flagRpc, "", "EVM Json-RPC url")
 
 	return cmd
 }

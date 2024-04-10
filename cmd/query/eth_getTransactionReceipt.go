@@ -18,7 +18,7 @@ func GetQueryTxReceiptCommand() *cobra.Command {
 		Short:   "eth_getTransactionReceipt",
 		Args:    cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			ethClient, _ := mustGetEthClient(cmd)
+			ethClient, _ := mustGetEthClient(cmd, false)
 
 			input := strings.ToLower(args[0])
 
@@ -37,7 +37,7 @@ func GetQueryTxReceiptCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "http://localhost:8545", "EVM Json-RPC url")
+	cmd.Flags().String(flagRpc, "", "EVM Json-RPC url")
 
 	return cmd
 }

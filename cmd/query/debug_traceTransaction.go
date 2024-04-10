@@ -18,7 +18,7 @@ func GetQueryTraceTxCommand() *cobra.Command {
 		Short:   "debug_traceTransaction",
 		Args:    cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			_, rpc := mustGetEthClient(cmd)
+			_, rpc := mustGetEthClient(cmd, false)
 
 			input := strings.ToLower(args[0])
 
@@ -55,7 +55,7 @@ func GetQueryTraceTxCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "http://localhost:8545", "EVM Json-RPC url")
+	cmd.Flags().String(flagRpc, "", "EVM Json-RPC url")
 	cmd.Flags().String(flagTracer, "callTracer", "EVM tracer")
 
 	return cmd

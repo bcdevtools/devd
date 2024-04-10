@@ -13,3 +13,10 @@ const (
 
 	FLAG_USE_WORKING_USERNAME = "iam"
 )
+
+//goland:noinspection GoSnakeCaseUsage
+const (
+	ENV_EVM_RPC = "DEVD_EVM_RPC"
+
+	DEFAULT_EVM_RPC = "http://localhost:8545"
+)

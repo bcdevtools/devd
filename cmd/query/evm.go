@@ -7,6 +7,7 @@ import (
 	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/types"
 	"github.com/bcdevtools/devd/cmd/utils"
+	"github.com/bcdevtools/devd/constants"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
@@ -93,12 +94,25 @@ func getEvmAddressFromAnyFormatAddress(addrs ...string) (evmAddrs []common.Addre
 	return
 }
 
-func mustGetEthClient(cmd *cobra.Command) (*ethclient.Client, string) {
-	var rpc string
-	if rpc, _ = cmd.Flags().GetString(flagRpc); len(rpc) == 0 {
-		libutils.PrintlnStdErr("ERR: missing RPC to query")
-		os.Exit(1)
+func mustGetEthClient(cmd *cobra.Command, fallbackDeprecatedFlagHost bool) (*ethclient.Client, string) {
+	var rpc, inputSource string
+
+	if rpcFromFlagRpc, _ := cmd.Flags().GetString(flagRpc); len(rpcFromFlagRpc) > 0 {
+		rpc = rpcFromFlagRpc
+		inputSource = "flag"
+	} else if rpcFromEnv := os.Getenv(constants.ENV_EVM_RPC); len(rpcFromEnv) > 0 {
+		rpc = rpcFromEnv
+		inputSource = "environment variable"
+	} else if rpcFromFlagHost, _ := cmd.Flags().GetString("host"); fallbackDeprecatedFlagHost && len(rpcFromFlagHost) > 0 {
+		libutils.PrintfStdErr("WARN: flag '--host' is deprecated, use '--%s' instead\n", flagRpc)
+		rpc = rpcFromFlagHost
+		inputSource = "flag"
+	} else {
+		rpc = constants.DEFAULT_EVM_RPC
+		inputSource = "default"
 	}
+
+	fmt.Println("Connecting to", rpc, fmt.Sprintf("(from %s)", inputSource))
 
 	ethClient8545, err := ethclient.Dial(rpc)
 	if err != nil {
