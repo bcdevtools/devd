@@ -12,7 +12,8 @@ func GetConvertToLowerCaseCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "to_lower_case [text]",
 		Aliases: []string{"lowercase"},
-		Short: `Convert input into lower case.
+		Short:   "Convert input text into lower case.",
+		Long: `Convert input text into lower case.
 Support pipe.`,
 		Run: func(cmd *cobra.Command, args []string) {
 			var err error

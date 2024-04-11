@@ -12,7 +12,8 @@ func GetConvertToUpperCaseCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "to_upper_case [text]",
 		Aliases: []string{"uppercase"},
-		Short: `Convert input into upper case.
+		Short:   "Convert input text into upper case.",
+		Long: `Convert input text into upper case.
 Support pipe.`,
 		Run: func(cmd *cobra.Command, args []string) {
 			var err error

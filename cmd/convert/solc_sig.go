@@ -14,8 +14,15 @@ import (
 func GetConvertSolcSignatureCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "solc_sig [method_or_event]",
-		Short: "Convert Solidity method/event signature into hashed signature and 4 bytes",
-		Args:  cobra.MinimumNArgs(1),
+		Short: "Convert Solidity method/event signature into hashed signature and 4 bytes signature.",
+		Long: `Convert Solidity method/event signature into hashed signature and 4 bytes signature.
+Output will be 4 lines:
+1. Type: Method/Event
+2. Method/Event interface used for apply keccak256 on
+3. Hashed signature
+4. Type based: Event will show hashed signature, Method will show 4 bytes signature
+`,
+		Args: cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			_interface := strings.Join(args, " ")
 

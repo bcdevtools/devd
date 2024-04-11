@@ -14,7 +14,8 @@ func GetConvertHexadecimalToDecimalCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "hex_2_dec [hex]",
 		Aliases: []string{"h2d"},
-		Short: `Convert hexadecimal to decimal.
+		Short:   "Convert hexadecimal to decimal.",
+		Long: `Convert hexadecimal to decimal.
 Support pipe.`,
 		Run: func(cmd *cobra.Command, args []string) {
 			args, err := utils.ProvidedArgsOrFromPipe(args)

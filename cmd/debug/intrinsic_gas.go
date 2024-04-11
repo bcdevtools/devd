@@ -16,8 +16,14 @@ import (
 func GetIntrinsicCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "intrinsic_gas [0xdata]",
-		Short: "Get intrinsic gas used by the given EVM transaction input data",
-		Args:  cobra.ExactArgs(1),
+		Short: `Get intrinsic gas used by the given EVM transaction input data.`,
+		Long: fmt.Sprintf(`Get intrinsic gas used by the given EVM transaction input data.
+This operation assumes:
+- No access list
+- Homestead
+- EIP-2028 (Istanbul)
+- The transaction is not a contract creation transaction, if it is, need to plus %d into the output to have the correct number`, params.TxGasContractCreation-params.TxGas),
+		Args: cobra.ExactArgs(1),
 		Run: func(_ *cobra.Command, args []string) {
 			input := strings.ToLower(args[0])
 			if !regexp.MustCompile(`^(0x)?[a-f\d]+$`).MatchString(input) {

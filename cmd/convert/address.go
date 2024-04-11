@@ -17,7 +17,7 @@ func GetConvertAddressCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "address [address] [bech32_hrp]",
 		Aliases: []string{"a"},
-		Short:   "Convert account bech32 address into hex address or vice versa",
+		Short:   "Convert account bech32 address into hex address or vice versa.",
 		Long: `Convert account bech32 address into hex address or vice versa.
 - Case 1: if the input address is an EVM address, bech32 HRP as the second argument is required.
 - Case 2: if the input address is a bech32 address, bech32 HRP as the second argument is present, convert.

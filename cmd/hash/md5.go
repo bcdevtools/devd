@@ -11,8 +11,9 @@ import (
 
 func GetMd5Command() *cobra.Command {
 	cmd := &cobra.Command{
-		Use: "md5 [input]",
-		Short: `md5 hashing input.
+		Use:   "md5 [input]",
+		Short: "md5 hashing input.",
+		Long: `md5 hashing input.
 Support pipe.`,
 		Run: func(cmd *cobra.Command, args []string) {
 			args, err := utils.ProvidedArgsOrFromPipe(args)

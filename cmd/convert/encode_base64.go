@@ -13,7 +13,8 @@ func GetEncodeBase64CaseCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "encode_base64 [text]",
 		Aliases: []string{"base64"},
-		Short: `Encode input into base64.
+		Short:   "Encode input text into base64.",
+		Long: `Encode input text into base64.
 Support pipe.`,
 		Run: func(cmd *cobra.Command, args []string) {
 			args, err := utils.ProvidedArgsOrFromPipe(args)

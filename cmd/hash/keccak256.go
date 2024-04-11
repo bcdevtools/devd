@@ -11,8 +11,9 @@ import (
 
 func GetKeccak256Command() *cobra.Command {
 	cmd := &cobra.Command{
-		Use: "keccak256 [input]",
-		Short: `keccak256 hashing input.
+		Use:   "keccak256 [input]",
+		Short: "keccak256 hashing input.",
+		Long: `keccak256 hashing input.
 Support pipe.`,
 		Run: func(cmd *cobra.Command, args []string) {
 			args, err := utils.ProvidedArgsOrFromPipe(args)
