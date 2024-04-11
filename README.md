@@ -170,3 +170,10 @@ devd hash keccak512 [input]
 devd debug intrinsic_gas [0xdata]
 # devd d intrinsic_gas 0xdata
 ```
+
+### Notes:
+
+- Output messages are printed via stdout, while messages with prefixes `WARN:` and `ERR:` are printed via stderr. So for integration with other tools, to omit stderr, forward stdout only.
+  > Eg: `devd c a cosmos1... 1> /tmp/output.txt`
+- When passing arguments into command via both argument and pipe, the argument will be used.
+  > Eg: `echo 123 | devd c d2h 456` will convert `456` to hexadecimal, not `123`.
