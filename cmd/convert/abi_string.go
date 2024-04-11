@@ -43,6 +43,10 @@ Support pipe.`,
 					if nonEmpty, err := abiToString(args[0]); err == nil && nonEmpty {
 						return
 					}
+				} else if regexp.MustCompile(`^0x08c379a0[a-f\d]+$`).MatchString(args[0]) && (len(args[0])-10 /*exclude sig of error*/)%64 == 0 {
+					if nonEmpty, err := abiToString(args[0][10:]); err == nil && nonEmpty {
+						return
+					}
 				}
 			}
 
