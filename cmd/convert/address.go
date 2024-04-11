@@ -1,9 +1,9 @@
 package convert
 
 import (
-	"encoding/hex"
 	"fmt"
 	libutils "github.com/EscanBE/go-lib/utils"
+	"github.com/bcdevtools/devd/cmd/utils"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/bech32"
 	"github.com/ethereum/go-ethereum/common"
@@ -20,20 +20,15 @@ func GetConvertAddressCmd() *cobra.Command {
 		Aliases: []string{"a"},
 		Short:   "Convert account bech32 address into hex address or vice versa",
 		Long: `Convert account bech32 address into hex address or vice versa.
-- If the input address is an EVM address, bech32 HRP as the second argument is required.
-- If the input address is a bech32 address, will show the EVM address.
-- If the input address is a bech32 address, bech32 HRP as the second argument is present, convert.
+- Case 1: if the input address is an EVM address, bech32 HRP as the second argument is required.
+- Case 2: if the input address is a bech32 address, bech32 HRP as the second argument is present, convert.
+- Case 3: if the input address is a bech32 address, will show the EVM address.
 `,
 		Args: cobra.RangeArgs(1, 2),
 		Run: func(cmd *cobra.Command, args []string) {
 			defer func() {
-				fmt.Println("WARN: DO NOT use this command to convert address across chains with different HD-Path! (eg: Ethermint 60 and Cosmos 118)")
+				libutils.PrintlnStdErr("WARN: DO NOT use this command to convert address across chains with different HD-Path! (eg: Ethermint 60 and Cosmos 118)")
 			}()
-
-			if len(args) < 1 {
-				fmt.Println("not enough arguments")
-				os.Exit(1)
-			}
 
 			normalizedInputAddress := strings.TrimSpace(strings.ToLower(args[0]))
 			var nextConvertToBech32Hrp string
@@ -44,8 +39,8 @@ func GetConvertAddressCmd() *cobra.Command {
 
 			// conditional processing
 
-			if regexp.MustCompile(`^(0x)?[a-f\d]{40}$`).MatchString(normalizedInputAddress) { // case 1
-				// is EVM address
+			if regexp.MustCompile(`^(0x)?[a-f\d]{40}$`).MatchString(normalizedInputAddress) {
+				// case 1, is EVM address
 
 				if len(nextConvertToBech32Hrp) < 1 {
 					libutils.PrintlnStdErr("ERR: missing Bech32 HRP as the second argument")
@@ -54,13 +49,15 @@ func GetConvertAddressCmd() *cobra.Command {
 
 				evmAddress := common.HexToAddress(normalizedInputAddress)
 				bech32Addr, err := bech32.ConvertAndEncode(nextConvertToBech32Hrp, evmAddress.Bytes())
-				if err != nil {
-					libutils.PrintlnStdErr("ERR: failed to convert EVM address to bech32 address:", err)
-					os.Exit(1)
-				}
-				fmt.Printf("Bech32 (%s): %s\n", nextConvertToBech32Hrp, bech32Addr)
-			} else if regexp.MustCompile(`^(0x)?[a-f\d]{64}$`).MatchString(normalizedInputAddress) { // case 1, but bytes addr (eg: interchain account)
-				// is bytes address
+				utils.ExitOnErr(err, "failed to convert EVM address to bech32 address")
+
+				fmt.Println(bech32Addr)
+
+				return
+			}
+
+			if regexp.MustCompile(`^(0x)?[a-f\d]{64}$`).MatchString(normalizedInputAddress) {
+				// case 1, but bytes addr (eg: interchain account)
 
 				if len(nextConvertToBech32Hrp) < 1 {
 					libutils.PrintlnStdErr("ERR: missing Bech32 HRP as the second argument")
@@ -69,35 +66,42 @@ func GetConvertAddressCmd() *cobra.Command {
 
 				bytesAddress := common.HexToHash(normalizedInputAddress)
 				bech32Addr, err := bech32.ConvertAndEncode(nextConvertToBech32Hrp, bytesAddress.Bytes())
-				if err != nil {
-					libutils.PrintlnStdErr("ERR: failed to convert bytes address to bech32 address:", err)
-					os.Exit(1)
-				}
-				fmt.Printf("Bech32 (%s): %s\n", nextConvertToBech32Hrp, bech32Addr)
-			} else { // case 2 + 3
-				spl := strings.Split(normalizedInputAddress, "1")
-				if len(spl) != 2 || len(spl[0]) < 1 || len(spl[1]) < 1 {
-					libutils.PrintlnStdErr("ERR: invalid bech32 address")
-					os.Exit(1)
-				}
+				utils.ExitOnErr(err, "failed to convert bytes address to bech32 address")
 
-				bz, err := sdk.GetFromBech32(normalizedInputAddress, spl[0])
-				if err != nil {
-					libutils.PrintlnStdErr("ERR: failed to decode bech32 address:", err)
-					os.Exit(1)
-				}
+				fmt.Println(bech32Addr)
 
-				fmt.Printf("EVM address: 0x%s\n", hex.EncodeToString(bz))
-
-				if len(nextConvertToBech32Hrp) > 0 {
-					bech32Addr, err := bech32.ConvertAndEncode(nextConvertToBech32Hrp, bz)
-					if err != nil {
-						libutils.PrintlnStdErr("ERR: failed to convert EVM address to bech32 address:", err)
-						os.Exit(1)
-					}
-					fmt.Printf("Bech32 (%s): %s\n", nextConvertToBech32Hrp, bech32Addr)
-				}
+				return
 			}
+
+			// case 2 + 3
+			spl := strings.Split(normalizedInputAddress, "1")
+			if len(spl) != 2 || len(spl[0]) < 1 || len(spl[1]) < 1 {
+				libutils.PrintlnStdErr("ERR: invalid bech32 address")
+				os.Exit(1)
+			}
+
+			bz, err := sdk.GetFromBech32(normalizedInputAddress, spl[0])
+			utils.ExitOnErr(err, "failed to decode bech32 address")
+
+			if len(nextConvertToBech32Hrp) > 0 {
+				// case 2
+				bech32Addr, err := bech32.ConvertAndEncode(nextConvertToBech32Hrp, bz)
+				utils.ExitOnErr(
+					err,
+					fmt.Sprintf(
+						"failed to convert bech32 address %s into bech32 address with HRP %s",
+						normalizedInputAddress,
+						nextConvertToBech32Hrp,
+					),
+				)
+
+				fmt.Println(bech32Addr)
+				return
+			}
+
+			// case 3
+			evmAddress := common.BytesToAddress(bz)
+			fmt.Println(evmAddress.Hex())
 		},
 	}
 
