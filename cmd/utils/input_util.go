@@ -3,9 +3,7 @@ package utils
 import (
 	"fmt"
 	libutils "github.com/EscanBE/go-lib/utils"
-	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
-	"io"
 	"os"
 	"strings"
 )
@@ -56,23 +54,24 @@ func tryReadPipe() (dataFromPipe string, err error) {
 
 	if (fi.Mode() & os.ModeCharDevice) == 0 {
 		// data from pipe
-		var input string
+
+		sb := strings.Builder{}
+		buffer := make([]byte, 1024)
+
 		for {
-			n, errScan := fmt.Scan(&input)
-			if errScan != nil {
-				if errScan == io.EOF {
-					break
-				}
-				if strings.Contains(errScan.Error(), "unexpected newline") {
-					break
-				}
-				err = errors.Wrap(errScan, "failed to read input")
-				return
-			}
-			if n < 1 {
+			n, _ := os.Stdin.Read(buffer)
+			if n == 0 {
 				break
 			}
-			dataFromPipe += input
+
+			sb.Write(buffer[:n])
+		}
+
+		if sb.Len() > 0 {
+			dataFromPipe = sb.String()
+			if dataFromPipe[len(dataFromPipe)-1] == '\n' {
+				dataFromPipe = dataFromPipe[:len(dataFromPipe)-1]
+			}
 		}
 	}
 
