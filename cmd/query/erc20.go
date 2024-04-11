@@ -9,7 +9,6 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/spf13/cobra"
 	"math/big"
-	"os"
 )
 
 func GetQueryErc20Command() *cobra.Command {
@@ -39,16 +38,10 @@ func GetQueryErc20Command() *cobra.Command {
 				To:   &contractAddr,
 				Data: []byte{0x95, 0xd8, 0x9b, 0x41}, // symbol()
 			}, nil)
-			if err != nil {
-				libutils.PrintlnStdErr("ERR: failed to get contract symbol:", err)
-				os.Exit(1)
-			}
+			utils.ExitOnErr(err, "failed to get contract symbol")
 
 			contractSymbol, err := utils.AbiDecodeString(bz)
-			if err != nil {
-				libutils.PrintlnStdErr("ERR: failed to decode contract symbol:", err)
-				os.Exit(1)
-			}
+			utils.ExitOnErr(err, "failed to decode contract symbol")
 
 			fmt.Println("Getting contract decimals...")
 
@@ -56,10 +49,7 @@ func GetQueryErc20Command() *cobra.Command {
 				To:   &contractAddr,
 				Data: []byte{0x31, 0x3c, 0xe5, 0x67}, // decimals()
 			}, nil)
-			if err != nil {
-				libutils.PrintlnStdErr("ERR: failed to get contract decimals:", err)
-				os.Exit(1)
-			}
+			utils.ExitOnErr(err, "failed to get contract decimals")
 
 			contractDecimals := new(big.Int).SetBytes(bz)
 
@@ -71,10 +61,7 @@ func GetQueryErc20Command() *cobra.Command {
 					To:   &contractAddr,
 					Data: append([]byte{0x70, 0xa0, 0x82, 0x31}, common.BytesToHash(accountAddr.Bytes()).Bytes()...), // balanceOf(address)
 				}, nil)
-				if err != nil {
-					libutils.PrintlnStdErr("ERR: failed to get account token balance:", err)
-					os.Exit(1)
-				}
+				utils.ExitOnErr(err, "failed to get account token balance")
 
 				accountBalance = new(big.Int).SetBytes(bz)
 			}

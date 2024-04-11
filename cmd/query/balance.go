@@ -9,7 +9,6 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/spf13/cobra"
 	"math/big"
-	"os"
 )
 
 func GetQueryBalanceCommand() *cobra.Command {
@@ -33,10 +32,7 @@ func GetQueryBalanceCommand() *cobra.Command {
 
 			if len(evmAddrs) == 1 {
 				nativeBalance, err := ethClient8545.BalanceAt(context.Background(), accountAddr, nil)
-				if err != nil {
-					libutils.PrintlnStdErr("ERR: failed to get account balance:", err)
-					os.Exit(1)
-				}
+				utils.ExitOnErr(err, "failed to get account balance")
 
 				if nativeBalance.Sign() == 0 {
 					fmt.Println("> Native balance:", nativeBalance)

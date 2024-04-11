@@ -30,13 +30,10 @@ func Execute() {
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true}) // hide the 'help' subcommand
 
 	operationUserInfo, err := utils.GetOperationUserInfo()
-	if err != nil {
-		libutils.PrintlnStdErr("ERR: failed to get operation user info:", err)
-		os.Exit(1)
-	}
+	utils.ExitOnErr(err, "failed to get operation user info")
 
 	if operationUserInfo.OperatingAsSuperUser {
-		fmt.Println("WARN: Running as super user")
+		libutils.PrintlnStdErr("WARN: Running as super user")
 	}
 
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {

@@ -2,11 +2,10 @@ package convert
 
 import (
 	"fmt"
-	libutils "github.com/EscanBE/go-lib/utils"
+	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/spf13/cobra"
-	"os"
 	"regexp"
 	"strings"
 )
@@ -21,10 +20,7 @@ func GetConvertSolcSignatureCmd() *cobra.Command {
 			_interface := strings.Join(args, " ")
 
 			sig, hash, finalInterface, err := getSignatureFromInterface(_interface)
-			if err != nil {
-				libutils.PrintlnStdErr("ERR:", err)
-				os.Exit(1)
-			}
+			utils.ExitOnErr(err, "failed to get signature from interface")
 
 			fmt.Println("___")
 			if strings.ToUpper(string(finalInterface[0])) == string(finalInterface[0]) { // event

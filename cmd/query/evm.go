@@ -6,6 +6,7 @@ import (
 	"fmt"
 	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/types"
+	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/bcdevtools/devd/constants"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common"
@@ -114,10 +115,7 @@ func mustGetEthClient(cmd *cobra.Command, fallbackDeprecatedFlagHost bool) (*eth
 	fmt.Println("Connecting to", rpc, fmt.Sprintf("(from %s)", inputSource))
 
 	ethClient8545, err := ethclient.Dial(rpc)
-	if err != nil {
-		libutils.PrintlnStdErr("ERR: failed to connect to EVM Json-RPC:", err)
-		os.Exit(1)
-	}
+	utils.ExitOnErr(err, "failed to connect to EVM Json-RPC")
 
 	return ethClient8545, rpc
 }
