@@ -82,6 +82,7 @@ devd convert address [address] [optional_bech32]
 devd convert abi_string [string or ABI encoded string]
 # devd c abi_string 000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000045553444300000000000000000000000000000000000000000000000000000000
 # devd c abi_string USDC Token
+# echo 'USDC Token' | devd c abi_string
 ```
 
 #### Convert hexadecimal to decimal and vice versa
@@ -92,6 +93,7 @@ devd convert hex_2_dec [hexadecimal or decimal]
 # devd c h2d 0x16a
 # devd c h2d 362
 # devd c h2d 16a
+# echo 362 | devd c h2d
 ```
 
 #### Convert Solidity event/method signature into hashed signature
@@ -109,8 +111,10 @@ devd convert solc_sig [event/method signature]
 ```bash
 devd convert to_lower_case [input]
 # devd c lowercase AA
+# echo AA | devd c lowercase
 devd convert to_upper_case [input]
 # devd c uppercase aa
+# echo aa | devd c uppercase
 ```
 
 #### Encode/Decode base64
@@ -119,8 +123,10 @@ devd convert to_upper_case [input]
 ```bash
 devd convert encode_base64 [input]
 # devd c base64 123
+# echo 123 | devd c base64
 devd convert decode_base64 [base64]
 # devd c decode_base64 TVRJeg==
+# echo TVRJeg== | devd c decode_base64
 ```
 
 ### Hashing tools
@@ -128,8 +134,14 @@ devd convert decode_base64 [base64]
 ***Support pipe***
 ```bash
 devd hash md5 [input]
+# devd hash md5 123
+# cat file.txt | devd hash md5
 devd hash keccak256 [input]
+# devd hash keccak256 123
+# cat file.txt | devd hash keccak256
 devd hash keccak512 [input]
+# devd hash keccak512 123
+# cat file.txt | devd hash keccak512
 ```
 
 ### Debug tools
