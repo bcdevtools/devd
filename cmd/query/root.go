@@ -6,10 +6,11 @@ import (
 )
 
 const (
-	flagRpc    = "rpc"
-	flagFull   = "full"
-	flagTracer = "tracer"
-	flagHeight = "height"
+	flagRpc         = "rpc"
+	flagFull        = "full"
+	flagTracer      = "tracer"
+	flagHeight      = "height"
+	flagNoTranslate = "no-translate"
 )
 
 const (

@@ -1,10 +1,12 @@
 package query
 
 import (
+	"encoding/hex"
 	"fmt"
 	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/types"
 	"github.com/bcdevtools/devd/cmd/utils"
+	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/spf13/cobra"
 	"os"
 	"regexp"
@@ -52,11 +54,40 @@ func GetQueryTraceTxCommand() *cobra.Command {
 			utils.ExitOnErr(err, "failed to trace transaction")
 
 			utils.TryPrintBeautyJson(bz)
+
+			if !cmd.Flag(flagNoTranslate).Changed {
+				// try to decode error message if any
+
+				type structOfError struct {
+					Error  string `json:"error"`
+					Output string `json:"output"`
+				}
+
+				res, err := types.ParseJsonRpcResponse[structOfError](bz)
+				if err == nil {
+					if resStruct, ok := res.(*structOfError); ok {
+						if resStruct.Error != "" && resStruct.Output != "" && resStruct.Error == vm.ErrExecutionReverted.Error() {
+							if regexp.MustCompile(`^0x08c379a0[a-f\d]{192,}$`).MatchString(resStruct.Output) && (len(resStruct.Output)-10 /*exclude sig of error*/)%64 == 0 {
+								bz, err := hex.DecodeString(resStruct.Output[10:])
+								errMsg, err := utils.AbiDecodeString(bz)
+								if err == nil && errMsg != "" {
+									libutils.PrintfStdErr(
+										"ERR: EVM execution reverted with message [%s], this translation can be omitted by providing flag '--%s'\n",
+										errMsg,
+										flagNoTranslate,
+									)
+								}
+							}
+						}
+					}
+				}
+			}
 		},
 	}
 
 	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
 	cmd.Flags().String(flagTracer, "callTracer", "EVM tracer")
+	cmd.Flags().Bool(flagNoTranslate, false, "do not translate and print EVM revert error message")
 
 	return cmd
 }
