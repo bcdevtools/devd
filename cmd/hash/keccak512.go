@@ -3,7 +3,7 @@ package hash
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/bcdevtools/devd/cmd/utils"
+	"github.com/bcdevtools/devd/v2/cmd/utils"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/spf13/cobra"
 	"strings"

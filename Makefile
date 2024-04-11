@@ -6,7 +6,7 @@ GO_BIN := $(shell echo $(shell which go || echo "/usr/local/go/bin/go" ))
 ###                                Build flags                              ###
 ###############################################################################
 
-LD_FLAGS = -X github.com/bcdevtools/devd/constants.VERSION=$(VERSION)
+LD_FLAGS = -X github.com/bcdevtools/devd/v2/constants.VERSION=$(VERSION)
 
 BUILD_FLAGS := -ldflags '$(LD_FLAGS)'
 

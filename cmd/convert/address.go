@@ -2,7 +2,7 @@ package convert
 
 import (
 	"fmt"
-	"github.com/bcdevtools/devd/cmd/utils"
+	"github.com/bcdevtools/devd/v2/cmd/utils"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/bech32"
 	"github.com/ethereum/go-ethereum/common"

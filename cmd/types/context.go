@@ -2,7 +2,7 @@ package types
 
 import (
 	"context"
-	"github.com/bcdevtools/devd/constants"
+	"github.com/bcdevtools/devd/v2/constants"
 	"time"
 )
 

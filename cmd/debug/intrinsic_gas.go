@@ -3,7 +3,7 @@ package debug
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/bcdevtools/devd/cmd/utils"
+	"github.com/bcdevtools/devd/v2/cmd/utils"
 	"github.com/ethereum/go-ethereum/core"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/params"

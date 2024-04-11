@@ -2,12 +2,12 @@ package cmd
 
 //goland:noinspection GoSnakeCaseUsage
 import (
-	"github.com/bcdevtools/devd/cmd/convert"
-	"github.com/bcdevtools/devd/cmd/debug"
-	"github.com/bcdevtools/devd/cmd/hash"
-	"github.com/bcdevtools/devd/cmd/query"
-	"github.com/bcdevtools/devd/cmd/types"
-	"github.com/bcdevtools/devd/constants"
+	"github.com/bcdevtools/devd/v2/cmd/convert"
+	"github.com/bcdevtools/devd/v2/cmd/debug"
+	"github.com/bcdevtools/devd/v2/cmd/hash"
+	"github.com/bcdevtools/devd/v2/cmd/query"
+	"github.com/bcdevtools/devd/v2/cmd/types"
+	"github.com/bcdevtools/devd/v2/constants"
 	"github.com/spf13/cobra"
 	"os"
 )

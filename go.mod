@@ -1,4 +1,4 @@
-module github.com/bcdevtools/devd
+module github.com/bcdevtools/devd/v2
 
 go 1.18
 
@@ -97,3 +97,5 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
+
+retract v2.0.0 // invalid go module

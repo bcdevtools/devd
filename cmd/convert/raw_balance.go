@@ -2,7 +2,7 @@ package convert
 
 import (
 	"fmt"
-	"github.com/bcdevtools/devd/cmd/utils"
+	"github.com/bcdevtools/devd/v2/cmd/utils"
 	"github.com/spf13/cobra"
 	"os"
 	"strconv"

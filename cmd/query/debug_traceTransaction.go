@@ -3,8 +3,8 @@ package query
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/bcdevtools/devd/cmd/types"
-	"github.com/bcdevtools/devd/cmd/utils"
+	"github.com/bcdevtools/devd/v2/cmd/types"
+	"github.com/bcdevtools/devd/v2/cmd/utils"
 	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/spf13/cobra"
 	"os"

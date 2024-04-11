@@ -3,7 +3,7 @@
 ### Install
 
 ```bash
-go install -v github.com/bcdevtools/devd/cmd/devd@latest
+go install -v github.com/bcdevtools/devd/v2/cmd/devd@latest
 ```
 
 ### Query tools
