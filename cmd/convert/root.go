@@ -22,6 +22,8 @@ func Commands() *cobra.Command {
 		GetConvertToUpperCaseCmd(),
 		GetDecodeBase64CaseCmd(),
 		GetEncodeBase64CaseCmd(),
+		GetDisplayBalanceCmd(),
+		GetRawBalanceCmd(),
 	)
 
 	return cmd

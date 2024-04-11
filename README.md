@@ -131,6 +131,22 @@ devd convert decode_base64 [base64]
 # echo TVRJeg== | devd c decode_base64
 ```
 
+#### Convert raw balance into display balance and vice versa
+
+```bash
+devd convert display_balance [raw balance] [exponent]
+# devd c dbal 10011100 6
+# > 10.0111
+```
+
+```bash
+devd convert raw_balance [display balance] [exponent] [--decimals-point , or .]
+# devd c rbal 10.0111 6
+# > 10011100
+# devd c rbal 10,0111 6 -d ,
+# > 10011100
+```
+
 ### Hashing tools
 
 ***Support pipe***
