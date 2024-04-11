@@ -1,81 +1,25 @@
 package types
 
 import (
+	"github.com/stretchr/testify/require"
 	"testing"
 )
 
 func TestNewContext(t *testing.T) {
-	appCtx := NewContext(nil)
-	if appCtx.operationUserInfo != nil {
-		t.Errorf("NewContext() = want operationUserInfo == nil")
-		return
-	}
-	if appCtx.workingUserInfo != nil {
-		t.Errorf("NewContext() = want workingUserInfo == nil")
-		return
-	}
-
-	appCtx = NewContext(&OperationUserInfo{
-		EffectiveUserInfo: &UserInfo{},
-		RealUserInfo:      &UserInfo{},
-	})
-	if appCtx.operationUserInfo == nil {
-		t.Errorf("NewContext() = want operationUserInfo != nil")
-		return
-	}
-	if appCtx.workingUserInfo == nil {
-		t.Errorf("NewContext() = want workingUserInfo != nil")
-		return
-	}
+	_ = NewContext()
 }
 
 func TestWrapAppContext(t *testing.T) {
-	appCtx := NewContext(nil)
+	appCtx := NewContext()
 	ctx := WrapAppContext(appCtx)
-	if ctx == nil {
-		t.Errorf("WrapAppContext() = nil, want not nil")
-		return
-	}
-	if ctx != appCtx {
-		t.Errorf("WrapAppContext() = want the same context as original")
-		return
-	}
+	require.NotNil(t, ctx)
+	require.Equal(t, appCtx, ctx, "want the same context as original")
 }
 
 func TestUnwrapAppContext(t *testing.T) {
-	appCtx := NewContext(nil)
-	if appCtx.operationUserInfo != nil {
-		panic("appCtx.operationUserInfo != nil")
-	}
+	appCtx := NewContext()
 	ctx := WrapAppContext(appCtx)
 	appCtx2 := UnwrapAppContext(ctx)
-	if appCtx != appCtx2 {
-		t.Errorf("UnwrapAppContext() = want the same app context as original")
-		return
-	}
-	if appCtx.baseCtx != appCtx2.baseCtx {
-		t.Errorf("UnwrapAppContext() = want the same base context as original")
-		return
-	}
-	if appCtx.operationUserInfo != appCtx2.operationUserInfo {
-		t.Errorf("UnwrapAppContext() = want the same operationUserInfo as original")
-		return
-	}
-	if appCtx.operationUserInfo != appCtx2.operationUserInfo {
-		t.Errorf("UnwrapAppContext() = want the same operationUserInfo as original")
-		return
-	}
-
-	//
-
-	appCtx = NewContext(&OperationUserInfo{})
-	if appCtx.operationUserInfo == nil {
-		panic("appCtx.operationUserInfo == nil")
-	}
-	ctx = WrapAppContext(appCtx)
-	appCtx2 = UnwrapAppContext(ctx)
-	if appCtx.operationUserInfo != appCtx2.operationUserInfo {
-		t.Errorf("UnwrapAppContext() = want the same operationUserInfo as original")
-		return
-	}
+	require.Equal(t, appCtx, appCtx2, "want the same app context as original")
+	require.Equal(t, appCtx.baseCtx, appCtx2.baseCtx, "want the same base context as original")
 }

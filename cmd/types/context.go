@@ -7,9 +7,7 @@ import (
 )
 
 type Context struct {
-	baseCtx           context.Context
-	operationUserInfo *OperationUserInfo
-	workingUserInfo   *UserInfo
+	baseCtx context.Context
 }
 
 func (c Context) Deadline() (deadline time.Time, ok bool) {
@@ -32,33 +30,14 @@ func (c Context) Value(key any) any {
 	return c.baseCtx.Value(key)
 }
 
-func NewContext(operationUserInfo *OperationUserInfo) Context {
-	var workingUser *UserInfo
-	if operationUserInfo != nil {
-		workingUser = operationUserInfo.GetDefaultWorkingUser()
-	}
+func NewContext() Context {
 	return Context{
-		baseCtx:           context.Background(),
-		operationUserInfo: operationUserInfo,
-		workingUserInfo:   workingUser,
+		baseCtx: context.Background(),
 	}
-}
-
-func (c Context) GetOperationUserInfo() *OperationUserInfo {
-	return c.operationUserInfo
-}
-
-func (c Context) GetWorkingUserInfo() *UserInfo {
-	return c.workingUserInfo
 }
 
 func (c Context) WithContext(ctx context.Context) Context {
 	c.baseCtx = ctx
-	return c
-}
-
-func (c Context) WithWorkingUserInfo(workingUserInfo *UserInfo) Context {
-	c.workingUserInfo = workingUserInfo
 	return c
 }
 

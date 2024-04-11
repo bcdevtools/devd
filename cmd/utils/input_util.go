@@ -27,7 +27,7 @@ func ProvidedArgsOrFromPipe(providedArgs []string) (outputArgs []string, err err
 // RequireArgs will exit program if no arg provided.
 func RequireArgs(args []string, cmd *cobra.Command) {
 	if len(args) == 0 {
-		utils.PrintlnStdErr("ERR: require arg(s)\n")
+		PrintlnStdErr("ERR: require arg(s)\n")
 		_ = cmd.Help()
 		os.Exit(1)
 	}
@@ -37,11 +37,11 @@ func RequireArgs(args []string, cmd *cobra.Command) {
 func RequireExactArgsCount(args []string, want int, cmd *cobra.Command) {
 	if len(args) != want {
 		if want == 0 {
-			utils.PrintlnStdErr("ERR: require no arg\n")
+			PrintlnStdErr("ERR: require no arg\n")
 		} else if len(args) == 0 {
-			utils.PrintlnStdErr(fmt.Sprintf("ERR: require %d arg(s)\n", want))
+			PrintlnStdErr(fmt.Sprintf("ERR: require %d arg(s)\n", want))
 		} else {
-			utils.PrintlnStdErr(fmt.Sprintf("ERR: require %d arg(s), got %d\n", want, len(args)))
+			PrintlnStdErr(fmt.Sprintf("ERR: require %d arg(s), got %d\n", want, len(args)))
 		}
 		_ = cmd.Help()
 		os.Exit(1)
