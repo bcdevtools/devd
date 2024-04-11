@@ -99,8 +99,7 @@ func GetConvertAddressCmd() *cobra.Command {
 			}
 
 			// case 3
-			evmAddress := common.BytesToAddress(bz)
-			fmt.Println(evmAddress.Hex())
+			fmt.Printf("0x%x\n", bz)
 		},
 	}
 
