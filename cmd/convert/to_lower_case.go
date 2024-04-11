@@ -2,7 +2,6 @@ package convert
 
 import (
 	"fmt"
-	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/spf13/cobra"
 	"strings"
@@ -18,7 +17,7 @@ Support pipe.`,
 		Run: func(cmd *cobra.Command, args []string) {
 			var err error
 			args, err = utils.ProvidedArgsOrFromPipe(args)
-			libutils.ExitIfErr(err, "failed to get args from pipe")
+			utils.ExitOnErr(err, "failed to get args from pipe")
 			utils.RequireArgs(args, cmd)
 
 			fmt.Println(strings.ToLower(strings.Join(args, " ")))

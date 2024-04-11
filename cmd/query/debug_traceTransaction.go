@@ -30,7 +30,7 @@ func GetQueryTraceTxCommand() *cobra.Command {
 			var params []types.JsonRpcQueryParam
 
 			paramTransactionHash, err := types.NewJsonRpcStringQueryParam(input)
-			libutils.ExitIfErr(err, "failed to create json rpc query param")
+			utils.ExitOnErr(err, "failed to create json rpc query param")
 			params = append(params, paramTransactionHash)
 
 			if tracer := cmd.Flag(flagTracer).Value.String(); tracer != "" {
@@ -49,7 +49,7 @@ func GetQueryTraceTxCommand() *cobra.Command {
 				),
 				0,
 			)
-			libutils.ExitIfErr(err, "failed to trace transaction")
+			utils.ExitOnErr(err, "failed to trace transaction")
 
 			utils.TryPrintBeautyJson(bz)
 		},

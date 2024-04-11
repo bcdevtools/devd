@@ -52,7 +52,7 @@ func GetQueryBlockCommand() *cobra.Command {
 
 			if blockNumber == nil || blockNumber.Sign() == 0 {
 				paramBlockNumber, err = types.NewJsonRpcStringQueryParam("latest")
-				libutils.ExitIfErr(err, "failed to create json rpc query param")
+				utils.ExitOnErr(err, "failed to create json rpc query param")
 			} else {
 				paramBlockNumber = types.NewJsonRpcInt64QueryParam(blockNumber.Int64())
 			}
@@ -66,7 +66,7 @@ func GetQueryBlockCommand() *cobra.Command {
 				),
 				0,
 			)
-			libutils.ExitIfErr(err, "failed to get block by number")
+			utils.ExitOnErr(err, "failed to get block by number")
 
 			utils.TryPrintBeautyJson(bz)
 		},

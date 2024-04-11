@@ -3,7 +3,6 @@ package convert
 import (
 	"encoding/base64"
 	"fmt"
-	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/spf13/cobra"
 	"strings"
@@ -18,7 +17,7 @@ func GetEncodeBase64CaseCmd() *cobra.Command {
 Support pipe.`,
 		Run: func(cmd *cobra.Command, args []string) {
 			args, err := utils.ProvidedArgsOrFromPipe(args)
-			libutils.ExitIfErr(err, "failed to get args from pipe")
+			utils.ExitOnErr(err, "failed to get args from pipe")
 			utils.RequireArgs(args, cmd)
 
 			fmt.Println(base64.StdEncoding.EncodeToString([]byte(strings.Join(args, " "))))

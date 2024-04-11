@@ -28,10 +28,10 @@ func GetQueryTxReceiptCommand() *cobra.Command {
 			}
 
 			receipt, err := ethClient.TransactionReceipt(context.Background(), common.HexToHash(input))
-			libutils.ExitIfErr(err, "failed to get transaction by hash")
+			utils.ExitOnErr(err, "failed to get transaction by hash")
 
 			bz, err := receipt.MarshalJSON()
-			libutils.ExitIfErr(err, "failed to marshal receipt to json")
+			utils.ExitOnErr(err, "failed to marshal receipt to json")
 
 			utils.TryPrintBeautyJson(bz)
 		},

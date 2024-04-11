@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	libutils "github.com/EscanBE/go-lib/utils"
+	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/ethereum/go-ethereum/core"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/params"
@@ -32,7 +33,7 @@ func GetIntrinsicCommand() *cobra.Command {
 			}
 
 			bz, err := hex.DecodeString(input)
-			libutils.ExitIfErr(err, "failed to decode input hex data")
+			utils.ExitOnErr(err, "failed to decode input hex data")
 
 			var zeroByteCount, nonZeroByteCount int
 			for _, b := range bz {
@@ -60,6 +61,6 @@ func GetIntrinsicCommand() *cobra.Command {
 
 func getIntrinsicGasFromInputData(bz []byte) uint64 {
 	intrinsicGas, err := core.IntrinsicGas(bz, ethtypes.AccessList{}, false, true, true)
-	libutils.ExitIfErr(err, "failed to get intrinsic gas")
+	utils.ExitOnErr(err, "failed to get intrinsic gas")
 	return intrinsicGas
 }

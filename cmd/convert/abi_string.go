@@ -3,7 +3,6 @@ package convert
 import (
 	"encoding/hex"
 	"fmt"
-	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/spf13/cobra"
 	"regexp"
@@ -17,15 +16,15 @@ func GetConvertAbiStringCmd() *cobra.Command {
 Support pipe.`,
 		Run: func(cmd *cobra.Command, args []string) {
 			args, err := utils.ProvidedArgsOrFromPipe(args)
-			libutils.ExitIfErr(err, "failed to get args from pipe")
+			utils.ExitOnErr(err, "failed to get args from pipe")
 			utils.RequireArgs(args, cmd)
 
 			if len(args) == 1 && len(args[0]) >= 192 {
 				abiToString := func(input string) {
-					bz, err := hex.DecodeString(input)
-					libutils.ExitIfErr(err, "failed to decode hex string: "+input)
-					str, err := utils.AbiDecodeString(bz)
-					libutils.ExitIfErr(err, "failed to decode ABI string: "+input)
+					bz, decodeErr := hex.DecodeString(input)
+					utils.ExitOnErr(decodeErr, "failed to decode hex string: "+input)
+					str, decodeErr := utils.AbiDecodeString(bz)
+					utils.ExitOnErr(decodeErr, "failed to decode ABI string: "+input)
 					fmt.Println("\n# ABI encoded hex string to string:")
 					fmt.Println(str)
 				}
@@ -38,7 +37,7 @@ Support pipe.`,
 
 			fmt.Println("\n# String to ABI encoded hex:")
 			bz, err := utils.AbiEncodeString(strings.Join(args, " "))
-			libutils.ExitIfErr(err, "failed to encode string to ABI hex")
+			utils.ExitOnErr(err, "failed to encode string to ABI hex")
 			fmt.Println("0x" + hex.EncodeToString(bz))
 		},
 	}
