@@ -2,7 +2,6 @@ package query
 
 import (
 	"context"
-	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/spf13/cobra"
@@ -23,7 +22,7 @@ func GetQueryTxReceiptCommand() *cobra.Command {
 			input := strings.ToLower(args[0])
 
 			if !regexp.MustCompile(`^0x[a-f\d]{64}$`).MatchString(input) {
-				libutils.PrintlnStdErr("ERR: invalid EVM transaction hash format")
+				utils.PrintlnStdErr("ERR: invalid EVM transaction hash format")
 				os.Exit(1)
 			}
 

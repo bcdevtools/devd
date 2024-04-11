@@ -2,8 +2,6 @@ package utils
 
 import (
 	"fmt"
-	"github.com/EscanBE/go-ienumerable/goe"
-	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/types"
 	"github.com/pkg/errors"
 	"os"
@@ -48,18 +46,15 @@ func IsSuperUser(username string) (isSuperUser bool, err error) {
 		var groups []string
 		groups, err = GetGroupsOfUser(username)
 		if err == nil {
-			isSuperUser = goe.NewIEnumerable(groups...).AnyBy(func(s string) bool {
-				switch s {
-				case "sudo":
-					return true
-				case "admin":
-					return true
-				case "google-sudoers":
-					return true
-				default:
-					return false
+			for _, group := range groups {
+				switch group {
+				case "sudo", "admin", "google-sudoers":
+					isSuperUser = true
 				}
-			})
+				if isSuperUser {
+					break
+				}
+			}
 		}
 	}
 
@@ -73,7 +68,7 @@ func GetGroupsOfUser(username string) ([]string, error) {
 		return nil, errors.Wrap(err, fmt.Sprintf("failed to get groups of user %s", username))
 	}
 
-	return goe.NewIEnumerable(strings.Split(strings.TrimSpace(string(bz)), " ")...).ToArray(), nil
+	return strings.Split(strings.TrimSpace(string(bz)), " "), nil
 }
 
 func getEffectiveUserInfo() (*types.UserInfo, error) {
@@ -101,7 +96,7 @@ func getEffectiveUserInfo() (*types.UserInfo, error) {
 
 func getRealUsername() (realUsername string, err error) {
 	sudoUser := os.Getenv("SUDO_USER")
-	if !libutils.IsBlank(sudoUser) {
+	if strings.TrimSpace(sudoUser) != "" {
 		realUsername = sudoUser
 		return
 	}

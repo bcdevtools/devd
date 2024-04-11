@@ -2,7 +2,6 @@ package convert
 
 import (
 	"fmt"
-	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/utils"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/bech32"
@@ -27,7 +26,7 @@ func GetConvertAddressCmd() *cobra.Command {
 		Args: cobra.RangeArgs(1, 2),
 		Run: func(cmd *cobra.Command, args []string) {
 			defer func() {
-				libutils.PrintlnStdErr("WARN: DO NOT use this command to convert address across chains with different HD-Path! (eg: Ethermint 60 and Cosmos 118)")
+				utils.PrintlnStdErr("WARN: DO NOT use this command to convert address across chains with different HD-Path! (eg: Ethermint 60 and Cosmos 118)")
 			}()
 
 			normalizedInputAddress := strings.TrimSpace(strings.ToLower(args[0]))
@@ -43,7 +42,7 @@ func GetConvertAddressCmd() *cobra.Command {
 				// case 1, is EVM address
 
 				if len(nextConvertToBech32Hrp) < 1 {
-					libutils.PrintlnStdErr("ERR: missing Bech32 HRP as the second argument")
+					utils.PrintlnStdErr("ERR: missing Bech32 HRP as the second argument")
 					os.Exit(1)
 				}
 
@@ -60,7 +59,7 @@ func GetConvertAddressCmd() *cobra.Command {
 				// case 1, but bytes addr (eg: interchain account)
 
 				if len(nextConvertToBech32Hrp) < 1 {
-					libutils.PrintlnStdErr("ERR: missing Bech32 HRP as the second argument")
+					utils.PrintlnStdErr("ERR: missing Bech32 HRP as the second argument")
 					os.Exit(1)
 				}
 
@@ -76,7 +75,7 @@ func GetConvertAddressCmd() *cobra.Command {
 			// case 2 + 3
 			spl := strings.Split(normalizedInputAddress, "1")
 			if len(spl) != 2 || len(spl[0]) < 1 || len(spl[1]) < 1 {
-				libutils.PrintlnStdErr("ERR: invalid bech32 address")
+				utils.PrintlnStdErr("ERR: invalid bech32 address")
 				os.Exit(1)
 			}
 

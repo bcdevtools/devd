@@ -3,7 +3,6 @@ package query
 import (
 	"encoding/hex"
 	"fmt"
-	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/types"
 	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/ethereum/go-ethereum/core/vm"
@@ -25,7 +24,7 @@ func GetQueryTraceTxCommand() *cobra.Command {
 			input := strings.ToLower(args[0])
 
 			if !regexp.MustCompile(`^0x[a-f\d]{64}$`).MatchString(input) {
-				libutils.PrintlnStdErr("ERR: invalid EVM transaction hash format")
+				utils.PrintlnStdErr("ERR: invalid EVM transaction hash format")
 				os.Exit(1)
 			}
 
@@ -37,7 +36,7 @@ func GetQueryTraceTxCommand() *cobra.Command {
 
 			if tracer := cmd.Flag(flagTracer).Value.String(); tracer != "" {
 				if !regexp.MustCompile(`^\w+$`).MatchString(tracer) {
-					libutils.PrintlnStdErr("ERR: invalid tracer name:", tracer)
+					utils.PrintlnStdErr("ERR: invalid tracer name:", tracer)
 					os.Exit(1)
 				}
 				params = append(params, types.NewJsonRpcRawQueryParam(fmt.Sprintf(`{"tracer":"%s"}`, tracer)))
@@ -71,7 +70,7 @@ func GetQueryTraceTxCommand() *cobra.Command {
 								bz, err := hex.DecodeString(resStruct.Output[10:])
 								errMsg, err := utils.AbiDecodeString(bz)
 								if err == nil && errMsg != "" {
-									libutils.PrintfStdErr(
+									utils.PrintfStdErr(
 										"ERR: EVM execution reverted with message [%s], this translation can be omitted by providing flag '--%s'\n",
 										errMsg,
 										flagNoTranslate,

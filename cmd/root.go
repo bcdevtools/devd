@@ -3,7 +3,6 @@ package cmd
 //goland:noinspection GoSnakeCaseUsage
 import (
 	"fmt"
-	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/convert"
 	"github.com/bcdevtools/devd/cmd/debug"
 	"github.com/bcdevtools/devd/cmd/hash"
@@ -33,7 +32,7 @@ func Execute() {
 	utils.ExitOnErr(err, "failed to get operation user info")
 
 	if operationUserInfo.OperatingAsSuperUser {
-		libutils.PrintlnStdErr("WARN: Running as super user")
+		utils.PrintlnStdErr("WARN: Running as super user")
 	}
 
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
@@ -67,7 +66,7 @@ func init() {
 
 func changeWorkingUser(cmd *cobra.Command) {
 	selectedWorkingUsername, err := cmd.Flags().GetString(constants.FLAG_USE_WORKING_USERNAME)
-	libutils.PanicIfErr(err, "failed to read flag")
+	utils.ExitOnErr(err, "failed to read flag")
 
 	selectedWorkingUsername = strings.TrimSpace(selectedWorkingUsername)
 
@@ -89,7 +88,7 @@ func changeWorkingUser(cmd *cobra.Command) {
 	} else if operationUserInfo.RealUserInfo.Username == selectedWorkingUsername {
 		newWorkingUser = operationUserInfo.RealUserInfo
 	} else {
-		libutils.PrintfStdErr("ERR: selected working user %s is not either effective user %s or real user %s\n", selectedWorkingUsername, operationUserInfo.EffectiveUserInfo.Username, operationUserInfo.RealUserInfo.Username)
+		utils.PrintfStdErr("ERR: selected working user %s is not either effective user %s or real user %s\n", selectedWorkingUsername, operationUserInfo.EffectiveUserInfo.Username, operationUserInfo.RealUserInfo.Username)
 		os.Exit(1)
 	}
 
@@ -102,7 +101,7 @@ func changeWorkingUser(cmd *cobra.Command) {
 
 func ensureRequireWorkingUsername(cmd *cobra.Command) {
 	requireWorkingUsername, err := cmd.Flags().GetString(constants.FLAG_REQUIRE_WORKING_USERNAME)
-	libutils.PanicIfErr(err, "failed to read flag")
+	utils.ExitOnErr(err, "failed to read flag")
 
 	requireWorkingUsername = strings.TrimSpace(requireWorkingUsername)
 
@@ -112,7 +111,7 @@ func ensureRequireWorkingUsername(cmd *cobra.Command) {
 
 	workingUser := types.UnwrapAppContext(cmd.Context()).GetWorkingUserInfo()
 	if workingUser.Username != requireWorkingUsername {
-		libutils.PrintfStdErr("ERR: working user is %s, but required user is %s\n", workingUser.Username, requireWorkingUsername)
+		utils.PrintfStdErr("ERR: working user is %s, but required user is %s\n", workingUser.Username, requireWorkingUsername)
 		os.Exit(1)
 	}
 }

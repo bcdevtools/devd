@@ -49,10 +49,6 @@ github.com/99designs/keyring v1.2.1 h1:tYLp1ULvO7i3fI5vE21ReQuj99QFSs7lGm0xWyJo8
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/ChainSafe/go-schnorrkel v1.0.0 h1:3aDA67lAykLaG1y3AOjs88dMxC88PgUuHRrLeDnvGIM=
-github.com/EscanBE/go-ienumerable v0.2.1 h1:CiHYsRpTEdUH4tVkP20Dx9Xn+PZjfTFj7k6iwLQuSuc=
-github.com/EscanBE/go-ienumerable v0.2.1/go.mod h1:aH/aKgSmSPRNyZPgtQyw7cmDve+OKBKFQltMmffhHX0=
-github.com/EscanBE/go-lib v1.1.0 h1:msqf6XNpsaUyjCA2ZR4w1qd41zKKrzkZ4B3Ey0vNAcE=
-github.com/EscanBE/go-lib v1.1.0/go.mod h1:eOjN6NnDLtG4cM++IWgVyESMg4zQVIiKSb7T32KJBsk=
 github.com/OneOfOne/xxhash v1.2.2 h1:KMrpdQIwFcEqXDklaen+P1axHaj9BSKzvpUUfnHldSE=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/StackExchange/wmi v0.0.0-20180116203802-5d049714c4a6 h1:fLjPD/aNc3UIOA6tDi6QXUemppXK3P9BI7mr2hd6gx8=

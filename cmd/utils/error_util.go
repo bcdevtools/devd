@@ -1,7 +1,6 @@
 package utils
 
 import (
-	libutils "github.com/EscanBE/go-lib/utils"
 	"os"
 )
 
@@ -10,6 +9,15 @@ func ExitOnErr(err error, msg string) {
 	if err == nil {
 		return
 	}
-	libutils.PrintfStdErr("ERR: %s: %v\n", msg, err)
+	PrintfStdErr("ERR: %s: %v\n", msg, err)
 	os.Exit(1)
+}
+
+// PanicIfErr raises a panic. If the `err` is nil, this method does nothing
+func PanicIfErr(err error, msg string) {
+	if err == nil {
+		return
+	}
+	PrintlnStdErr("Exit with error:", msg)
+	panic(err)
 }

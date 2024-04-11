@@ -1,7 +1,6 @@
 package query
 
 import (
-	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/types"
 	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/spf13/cobra"
@@ -23,7 +22,7 @@ func GetQueryBlockCommand() *cobra.Command {
 			input := strings.ToLower(args[0])
 
 			if regexp.MustCompile(`[a-f]`).MatchString(input) && !strings.HasPrefix(input, "0x") {
-				libutils.PrintlnStdErr("Hexadecimal block number must have 0x prefix.")
+				utils.PrintlnStdErr("Hexadecimal block number must have 0x prefix.")
 				os.Exit(1)
 			}
 
@@ -32,13 +31,13 @@ func GetQueryBlockCommand() *cobra.Command {
 			if strings.HasPrefix(input, "0x") {
 				blockNumber, ok = new(big.Int).SetString(input[2:], 16)
 				if !ok {
-					libutils.PrintlnStdErr("ERR: invalid EVM hexadecimal block number")
+					utils.PrintlnStdErr("ERR: invalid EVM hexadecimal block number")
 					os.Exit(1)
 				}
 			} else {
 				blockNumber, ok = new(big.Int).SetString(input, 10)
 				if !ok {
-					libutils.PrintlnStdErr("ERR: invalid EVM decimal block number")
+					utils.PrintlnStdErr("ERR: invalid EVM decimal block number")
 					os.Exit(1)
 				}
 			}

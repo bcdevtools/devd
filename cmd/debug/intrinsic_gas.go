@@ -3,7 +3,6 @@ package debug
 import (
 	"encoding/hex"
 	"fmt"
-	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/ethereum/go-ethereum/core"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
@@ -22,13 +21,13 @@ func GetIntrinsicCommand() *cobra.Command {
 		Run: func(_ *cobra.Command, args []string) {
 			input := strings.ToLower(args[0])
 			if !regexp.MustCompile(`^(0x)?[a-f\d]+$`).MatchString(input) {
-				libutils.PrintlnStdErr("ERR: invalid EVM transaction input data format")
+				utils.PrintlnStdErr("ERR: invalid EVM transaction input data format")
 				os.Exit(1)
 			}
 
 			input = strings.TrimPrefix(input, "0x")
 			if len(input)%2 != 0 {
-				libutils.PrintlnStdErr("ERR: invalid EVM transaction input string length", len(input), ", must be an even number of characters")
+				utils.PrintlnStdErr("ERR: invalid EVM transaction input string length", len(input), ", must be an even number of characters")
 				os.Exit(1)
 			}
 

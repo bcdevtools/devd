@@ -3,7 +3,6 @@ package query
 import (
 	"context"
 	"fmt"
-	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
@@ -23,7 +22,7 @@ func GetQueryBalanceCommand() *cobra.Command {
 
 			evmAddrs, err := getEvmAddressFromAnyFormatAddress(args...)
 			if err != nil {
-				libutils.PrintlnStdErr("ERR:", err)
+				utils.PrintlnStdErr("ERR:", err)
 				return
 			}
 
@@ -54,13 +53,13 @@ func GetQueryBalanceCommand() *cobra.Command {
 					Data: []byte{0x95, 0xd8, 0x9b, 0x41}, // symbol()
 				}, contextHeight)
 				if err != nil {
-					libutils.PrintlnStdErr("ERR: failed to get symbol for contract", contractAddr, ":", err)
+					utils.PrintlnStdErr("ERR: failed to get symbol for contract", contractAddr, ":", err)
 					continue
 				}
 
 				contractSymbol, err := utils.AbiDecodeString(bz)
 				if err != nil {
-					libutils.PrintlnStdErr("ERR: failed to decode symbol for contract", contractAddr, ":", err)
+					utils.PrintlnStdErr("ERR: failed to decode symbol for contract", contractAddr, ":", err)
 					continue
 				}
 
@@ -69,7 +68,7 @@ func GetQueryBalanceCommand() *cobra.Command {
 					Data: []byte{0x31, 0x3c, 0xe5, 0x67}, // decimals()
 				}, contextHeight)
 				if err != nil {
-					libutils.PrintlnStdErr("ERR: failed to get decimals for contract", contractAddr, ":", err)
+					utils.PrintlnStdErr("ERR: failed to get decimals for contract", contractAddr, ":", err)
 					continue
 				}
 
@@ -81,7 +80,7 @@ func GetQueryBalanceCommand() *cobra.Command {
 					Data: append([]byte{0x70, 0xa0, 0x82, 0x31}, common.BytesToHash(accountAddr.Bytes()).Bytes()...), // balanceOf(address)
 				}, contextHeight)
 				if err != nil {
-					libutils.PrintlnStdErr("ERR: failed to get contract token", contractAddr, "balance for", accountAddr, ":", err)
+					utils.PrintlnStdErr("ERR: failed to get contract token", contractAddr, "balance for", accountAddr, ":", err)
 					continue
 				}
 

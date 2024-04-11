@@ -2,7 +2,6 @@ package convert
 
 import (
 	"fmt"
-	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/spf13/cobra"
 	"math/big"
@@ -24,7 +23,7 @@ Sample: 10011100 + 6 = 10.0111`,
 
 			balance, ok := new(big.Int).SetString(rawBalanceStr, 10)
 			if !ok {
-				libutils.PrintlnStdErr("ERR: failed to read, raw balance is not a number")
+				utils.PrintlnStdErr("ERR: failed to read, raw balance is not a number")
 				os.Exit(1)
 			}
 

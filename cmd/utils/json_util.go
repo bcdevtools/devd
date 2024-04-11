@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	libutils "github.com/EscanBE/go-lib/utils"
 )
 
 // BeautifyJson beautifies the given json.
@@ -22,7 +21,7 @@ func BeautifyJson(bzJson []byte) ([]byte, error) {
 func TryPrintBeautyJson(bz []byte) {
 	beautifyBz, err := BeautifyJson(bz)
 	if err != nil {
-		libutils.PrintlnStdErr("failed to beautify json:", err)
+		PrintlnStdErr("ERR: Failed to beautify json:", err)
 		fmt.Println(string(bz))
 	} else {
 		fmt.Println(string(beautifyBz))

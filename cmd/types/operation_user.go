@@ -1,7 +1,7 @@
 package types
 
 import (
-	libutils "github.com/EscanBE/go-lib/utils"
+	"github.com/bcdevtools/devd/cmd/utils"
 	"os"
 )
 
@@ -33,22 +33,22 @@ func (o *OperationUserInfo) GetDefaultWorkingUser() *UserInfo {
 
 func (o *OperationUserInfo) RequireSuperUser() {
 	if !o.IsSuperUser {
-		libutils.PrintlnStdErr("ERR: operation user must be a super user")
+		utils.PrintlnStdErr("ERR: operation user must be a super user")
 		os.Exit(1)
 	}
 }
 
 func (o *OperationUserInfo) RequireOperatingAsSuperUser() {
 	if !o.OperatingAsSuperUser {
-		libutils.PrintlnStdErr("ERR: must be ran as super user")
-		libutils.PrintlnStdErr("*** Hint: Try again with 'sudo' ***")
+		utils.PrintlnStdErr("ERR: must be ran as super user")
+		utils.PrintlnStdErr("*** Hint: Try again with 'sudo' ***")
 		os.Exit(1)
 	}
 }
 
 func (o *OperationUserInfo) RequireOperatingAsNonSuperUser() {
 	if o.OperatingAsSuperUser {
-		libutils.PrintlnStdErr("ERR: can not be run as super user or with 'sudo'")
+		utils.PrintlnStdErr("ERR: can not be run as super user or with 'sudo'")
 		os.Exit(1)
 	}
 }

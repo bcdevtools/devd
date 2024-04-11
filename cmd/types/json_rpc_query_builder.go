@@ -2,7 +2,7 @@ package types
 
 import (
 	"fmt"
-	libutils "github.com/EscanBE/go-lib/utils"
+	"github.com/bcdevtools/devd/cmd/utils"
 	"strings"
 	"sync"
 )
@@ -148,7 +148,7 @@ func (j jsonRpcStringArrayQueryParam) String() string {
 	sb := strings.Builder{}
 	var err error
 	assertErr := func() {
-		libutils.PanicIfErr(err, "failed to build query params")
+		utils.PanicIfErr(err, "failed to build query params")
 	}
 
 	_, err = sb.WriteRune('[')

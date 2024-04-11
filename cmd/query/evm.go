@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/hex"
 	"fmt"
-	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/types"
 	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/bcdevtools/devd/constants"
@@ -105,7 +104,7 @@ func mustGetEthClient(cmd *cobra.Command, fallbackDeprecatedFlagHost bool) (*eth
 		rpc = rpcFromEnv
 		inputSource = "environment variable"
 	} else if rpcFromFlagHost, _ := cmd.Flags().GetString("host"); fallbackDeprecatedFlagHost && len(rpcFromFlagHost) > 0 {
-		libutils.PrintfStdErr("WARN: flag '--host' is deprecated, use '--%s' instead\n", flagRpc)
+		utils.PrintfStdErr("WARN: flag '--host' is deprecated, use '--%s' instead\n", flagRpc)
 		rpc = rpcFromFlagHost
 		inputSource = "flag"
 	} else {

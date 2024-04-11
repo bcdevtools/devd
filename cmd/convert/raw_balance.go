@@ -2,7 +2,6 @@ package convert
 
 import (
 	"fmt"
-	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/spf13/cobra"
 	"os"
@@ -33,7 +32,7 @@ Sample: 10.0111 + 6 = 10011100`,
 			if len(decimalsPoint) == 0 {
 				decimalsPoint = "."
 			} else if decimalsPoint != "." && decimalsPoint != "," {
-				libutils.PrintlnStdErr("ERR: decimals point must be either '.' or ','")
+				utils.PrintlnStdErr("ERR: decimals point must be either '.' or ','")
 				os.Exit(1)
 			}
 

@@ -2,7 +2,6 @@ package convert
 
 import (
 	"fmt"
-	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/spf13/cobra"
 	"math/big"
@@ -29,7 +28,7 @@ Support pipe.`,
 
 				bi, ok := new(big.Int).SetString(input[2:], 16)
 				if !ok {
-					libutils.PrintlnStdErr("ERR: failed to convert hexadecimal to decimal")
+					utils.PrintlnStdErr("ERR: failed to convert hexadecimal to decimal")
 					os.Exit(1)
 				}
 
@@ -42,7 +41,7 @@ Support pipe.`,
 
 				bi, ok := new(big.Int).SetString(input, 16)
 				if !ok {
-					libutils.PrintlnStdErr("ERR: failed to convert hexadecimal to decimal")
+					utils.PrintlnStdErr("ERR: failed to convert hexadecimal to decimal")
 					os.Exit(1)
 				}
 
@@ -50,7 +49,7 @@ Support pipe.`,
 				return
 			}
 
-			libutils.PrintlnStdErr("ERR: unrecognized hexadecimal")
+			utils.PrintlnStdErr("ERR: unrecognized hexadecimal")
 			os.Exit(1)
 		},
 	}

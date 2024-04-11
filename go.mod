@@ -3,8 +3,6 @@ module github.com/bcdevtools/devd
 go 1.18
 
 require (
-	github.com/EscanBE/go-ienumerable v0.2.1
-	github.com/EscanBE/go-lib v1.1.0
 	github.com/cosmos/cosmos-sdk v0.47.10
 	github.com/ethereum/go-ethereum v1.10.26
 	github.com/pkg/errors v0.9.1

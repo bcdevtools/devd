@@ -2,7 +2,6 @@ package convert
 
 import (
 	"fmt"
-	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/spf13/cobra"
 	"math/big"
@@ -25,7 +24,7 @@ Support pipe.`,
 
 			bi, ok := new(big.Int).SetString(input, 10)
 			if !ok {
-				libutils.PrintlnStdErr("ERR: failed to convert decimal to hexadecimal")
+				utils.PrintlnStdErr("ERR: failed to convert decimal to hexadecimal")
 				os.Exit(1)
 			}
 			fmt.Printf("0x%x\n", bi)
