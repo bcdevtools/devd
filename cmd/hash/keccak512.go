@@ -3,6 +3,8 @@ package hash
 import (
 	"encoding/hex"
 	"fmt"
+	libutils "github.com/EscanBE/go-lib/utils"
+	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/spf13/cobra"
 	"strings"
@@ -10,10 +12,14 @@ import (
 
 func GetKeccak512Command() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "keccak512 [input]",
-		Short: "keccak512 hashing input",
-		Args:  cobra.ExactArgs(1),
-		Run: func(_ *cobra.Command, args []string) {
+		Use: "keccak512 [input]",
+		Short: `keccak512 hashing input.
+Support pipe.`,
+		Run: func(cmd *cobra.Command, args []string) {
+			args, err := utils.ProvidedArgsOrFromPipe(args)
+			libutils.ExitIfErr(err, "failed to get args from pipe")
+			utils.RequireArgs(args, cmd)
+
 			input := strings.Join(args, " ")
 			hash := crypto.Keccak512([]byte(input))
 			fmt.Println(hex.EncodeToString(hash))

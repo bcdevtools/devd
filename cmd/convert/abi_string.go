@@ -12,10 +12,14 @@ import (
 
 func GetConvertAbiStringCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "abi_string [hex_or_text]",
-		Short: `Convert ABI encoded hex to string or vice versa.`,
-		Args:  cobra.MinimumNArgs(1),
+		Use: "abi_string [hex_or_text]",
+		Short: `Convert ABI encoded hex to string or vice versa.
+Support pipe.`,
 		Run: func(cmd *cobra.Command, args []string) {
+			args, err := utils.ProvidedArgsOrFromPipe(args)
+			libutils.ExitIfErr(err, "failed to get args from pipe")
+			utils.RequireArgs(args, cmd)
+
 			if len(args) == 1 && len(args[0]) >= 192 {
 				abiToString := func(input string) {
 					bz, err := hex.DecodeString(input)

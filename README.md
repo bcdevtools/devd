@@ -77,6 +77,7 @@ devd convert address [address] [optional_bech32]
 
 #### Encode string into ABI or decode ABI into string
 
+***Support pipe***
 ```bash
 devd convert abi_string [string or ABI encoded string]
 # devd c abi_string 000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000045553444300000000000000000000000000000000000000000000000000000000
@@ -85,6 +86,7 @@ devd convert abi_string [string or ABI encoded string]
 
 #### Convert hexadecimal to decimal and vice versa
 
+***Support pipe***
 ```bash
 devd convert hex_2_dec [hexadecimal or decimal]
 # devd c h2d 0x16a
@@ -103,6 +105,7 @@ devd convert solc_sig [event/method signature]
 
 #### Convert input into upper/lower case
 
+***Support pipe***
 ```bash
 devd convert to_lower_case [input]
 # devd c lowercase AA
@@ -112,6 +115,7 @@ devd convert to_upper_case [input]
 
 #### Encode/Decode base64
 
+***Support pipe***
 ```bash
 devd convert encode_base64 [input]
 # devd c base64 123
@@ -121,6 +125,7 @@ devd convert decode_base64 [base64]
 
 ### Hashing tools
 
+***Support pipe***
 ```bash
 devd hash md5 [input]
 devd hash keccak256 [input]

@@ -2,6 +2,8 @@ package convert
 
 import (
 	"fmt"
+	libutils "github.com/EscanBE/go-lib/utils"
+	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/spf13/cobra"
 	"math/big"
 	"regexp"
@@ -12,9 +14,13 @@ func GetConvertHexadecimalToDecimalCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "hex_2_dec [hex or dec]",
 		Aliases: []string{"h2d"},
-		Short:   `Convert hex to dec or vice versa.`,
-		Args:    cobra.ExactArgs(1),
+		Short: `Convert hex to dec or vice versa.
+Support pipe.`,
 		Run: func(cmd *cobra.Command, args []string) {
+			args, err := utils.ProvidedArgsOrFromPipe(args)
+			libutils.ExitIfErr(err, "failed to get args from pipe")
+			utils.RequireExactArgsCount(args, 1, cmd)
+
 			input := strings.ToLower(args[0])
 			if regexp.MustCompile(`^0x[a-f\d]+$`).MatchString(input) {
 				fmt.Println("# Hex to Dec:")
