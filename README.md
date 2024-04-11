@@ -89,11 +89,13 @@ devd convert abi_string [string or ABI encoded string]
 
 ***Support pipe***
 ```bash
-devd convert hex_2_dec [hexadecimal or decimal]
+devd convert hex_2_dec [hexadecimal]
 # devd c h2d 0x16a
-# devd c h2d 362
 # devd c h2d 16a
-# echo 362 | devd c h2d
+# echo 16a | devd c h2d
+devd convert dec_2_hex [decimal]
+# devd c d2h 170
+# echo 170 | devd c d2h
 ```
 
 #### Convert Solidity event/method signature into hashed signature
