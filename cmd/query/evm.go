@@ -2,6 +2,7 @@ package query
 
 import (
 	"bytes"
+	"context"
 	"encoding/hex"
 	"fmt"
 	"github.com/bcdevtools/devd/v2/cmd/types"
@@ -116,6 +117,14 @@ func mustGetEthClient(cmd *cobra.Command, fallbackDeprecatedFlagHost bool) (*eth
 
 	ethClient8545, err := ethclient.Dial(rpc)
 	utils.ExitOnErr(err, "failed to connect to EVM Json-RPC")
+
+	// pre-flight check to ensure the connection is working
+	_, err = ethClient8545.BlockNumber(context.Background())
+	if err != nil && strings.Contains(err.Error(), "connection refused") {
+		utils.PrintlnStdErr("ERR: failed to connect to EVM Json-RPC, please check the connection and try again.")
+		utils.PrintfStdErr("ERR: if you are using a custom EVM Json-RPC, please provide it via flag '--%s <your_custom>' or setting environment variable 'export %s=<your_custom>'.\n", flagRpc, constants.ENV_EVM_RPC)
+		os.Exit(1)
+	}
 
 	return ethClient8545, rpc
 }
