@@ -15,7 +15,13 @@ func ProvidedArgsOrFromPipe(providedArgs []string) (outputArgs []string, err err
 	if len(providedArgs) > 0 {
 		outputArgs = providedArgs
 	} else {
-		outputArgs, err = tryReadPipe()
+		var inputFromPipe string
+		inputFromPipe, err = tryReadPipe()
+		if err != nil {
+			return
+		}
+
+		outputArgs = []string{inputFromPipe}
 	}
 
 	return
@@ -45,7 +51,7 @@ func RequireExactArgsCount(args []string, want int, cmd *cobra.Command) {
 	}
 }
 
-func tryReadPipe() (args []string, err error) {
+func tryReadPipe() (dataFromPipe string, err error) {
 	fi, _ := os.Stdin.Stat()
 
 	if (fi.Mode() & os.ModeCharDevice) == 0 {
@@ -66,7 +72,7 @@ func tryReadPipe() (args []string, err error) {
 			if n < 1 {
 				break
 			}
-			args = append(args, input)
+			dataFromPipe += input
 		}
 	}
 
