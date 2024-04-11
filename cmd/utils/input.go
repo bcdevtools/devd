@@ -52,7 +52,7 @@ func tryReadPipe() (args []string, err error) {
 		// data from pipe
 		var input string
 		for {
-			n, errScan := fmt.Scanln(&input)
+			n, errScan := fmt.Scan(&input)
 			if errScan != nil {
 				if errScan == io.EOF {
 					break
