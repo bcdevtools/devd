@@ -21,7 +21,7 @@ devd query balance [account_address] [optional_erc20_contract_addresses...] [--r
 # devd q b 0xAccount
 # devd q b ethm1account
 # devd q b 0xAccount 0xErc20Contract
-# devd q b ethm1account 0xErc20Contract 0xErc20Contract
+# devd q b ethm1account 0xErc20Contract1 0xErc20Contract2
 ```
 
 #### Query ERC20 token information

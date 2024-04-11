@@ -3,6 +3,7 @@ package query
 import (
 	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/types"
+	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/spf13/cobra"
 	"math/big"
 	"os"
@@ -67,11 +68,11 @@ func GetQueryBlockCommand() *cobra.Command {
 			)
 			libutils.ExitIfErr(err, "failed to get block by number")
 
-			tryPrintBeautyJson(bz)
+			utils.TryPrintBeautyJson(bz)
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "", flagRpcDesc)
+	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
 	cmd.Flags().Bool(flagFull, false, "should returns the full transaction objects when this value is true otherwise, it returns only the hashes of the transactions")
 
 	return cmd

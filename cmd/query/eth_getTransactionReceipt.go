@@ -3,6 +3,7 @@ package query
 import (
 	"context"
 	libutils "github.com/EscanBE/go-lib/utils"
+	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/spf13/cobra"
 	"os"
@@ -32,11 +33,11 @@ func GetQueryTxReceiptCommand() *cobra.Command {
 			bz, err := receipt.MarshalJSON()
 			libutils.ExitIfErr(err, "failed to marshal receipt to json")
 
-			tryPrintBeautyJson(bz)
+			utils.TryPrintBeautyJson(bz)
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "", flagRpcDesc)
+	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
 
 	return cmd
 }

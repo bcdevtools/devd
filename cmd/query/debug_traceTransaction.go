@@ -4,6 +4,7 @@ import (
 	"fmt"
 	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/types"
+	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/spf13/cobra"
 	"os"
 	"regexp"
@@ -50,11 +51,11 @@ func GetQueryTraceTxCommand() *cobra.Command {
 			)
 			libutils.ExitIfErr(err, "failed to trace transaction")
 
-			tryPrintBeautyJson(bz)
+			utils.TryPrintBeautyJson(bz)
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "", flagRpcDesc)
+	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
 	cmd.Flags().String(flagTracer, "callTracer", "EVM tracer")
 
 	return cmd

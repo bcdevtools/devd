@@ -97,7 +97,7 @@ func GetQueryErc20Command() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "", flagRpcDesc)
+	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
 	cmd.Flags().String("host", "", fmt.Sprintf("deprecated flag, use '--%s' instead", flagRpc))
 
 	return cmd

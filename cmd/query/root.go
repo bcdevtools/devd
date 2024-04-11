@@ -12,7 +12,7 @@ const (
 )
 
 const (
-	flagRpcDesc = "EVM Json-RPC endpoint, default is " + constants.DEFAULT_EVM_RPC + ", can be set by environment variable " + constants.ENV_EVM_RPC
+	flagEvmRpcDesc = "EVM Json-RPC endpoint, default is " + constants.DEFAULT_EVM_RPC + ", can be set by environment variable " + constants.ENV_EVM_RPC
 )
 
 // Commands registers a sub-tree of commands

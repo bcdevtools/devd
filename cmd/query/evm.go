@@ -6,7 +6,6 @@ import (
 	"fmt"
 	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/types"
-	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/bcdevtools/devd/constants"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common"
@@ -121,14 +120,4 @@ func mustGetEthClient(cmd *cobra.Command, fallbackDeprecatedFlagHost bool) (*eth
 	}
 
 	return ethClient8545, rpc
-}
-
-func tryPrintBeautyJson(bz []byte) {
-	beautifyBz, err := utils.BeautifyJson(bz)
-	if err != nil {
-		libutils.PrintlnStdErr("failed to beautify json:", err)
-		fmt.Println(string(bz))
-	} else {
-		fmt.Println(string(beautifyBz))
-	}
 }

@@ -106,7 +106,7 @@ func GetQueryBalanceCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "", flagRpcDesc)
+	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
 
 	return cmd
 }
