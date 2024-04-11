@@ -19,30 +19,32 @@ func GetConvertSolcSignatureCmd() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			_interface := strings.Join(args, " ")
 
-			sig, hash, finalInterface, err := getSignatureFromInterface(_interface)
+			_4BytesSig, hash, finalInterface, err := getSignatureFromInterface(_interface)
 			utils.ExitOnErr(err, "failed to get signature from interface")
 
-			fmt.Println("___")
+			var _type, solcSig string
 			if strings.ToUpper(string(finalInterface[0])) == string(finalInterface[0]) { // event
-				fmt.Printf("%-16s %s\n", "Interface:", finalInterface)
-				fmt.Printf("%-16s Event\n", "Type:")
-				fmt.Printf("%-16s %s\n", "Event signature:", hash.Hex())
+				_type = "Event"
+				solcSig = hash.Hex()
 			} else {
-				fmt.Printf("%-17s %s\n", "Interface:", finalInterface)
-				fmt.Printf("%-17s method\n", "Type:")
-				fmt.Printf("%-17s %s\n", "Hash:", hash.Hex())
-				fmt.Printf("%-17s %s\n", "Method signature:", sig)
+				_type = "Method"
+				solcSig = _4BytesSig
 			}
+
+			fmt.Println(_type)
+			fmt.Println(finalInterface)
+			fmt.Println(hash.Hex())
+			fmt.Println(solcSig)
 		},
 	}
 
 	return cmd
 }
 
-func getSignatureFromInterface(_interface string) (signature string, hash common.Hash, finalInterface string, err error) {
+func getSignatureFromInterface(_interface string) (_4BytesSig string, hash common.Hash, finalInterface string, err error) {
 	_interface = normalizeEvmEventOrMethodInterface(_interface)
 
-	fmt.Println("Normalized EVM method/event interface:", _interface)
+	fmt.Println(_interface)
 
 	if !regexp.MustCompile(`^\w+\s*\(.+\)$`).MatchString(_interface) {
 		err = fmt.Errorf("invalid EVM method/event interface, require format: `methodName(...)`")
@@ -54,11 +56,9 @@ func getSignatureFromInterface(_interface string) (signature string, hash common
 		return
 	}
 
-	fmt.Println("EVM method/event interface used for hashing:", finalInterface)
-
 	hash = common.BytesToHash(crypto.Keccak256([]byte(finalInterface)))
 
-	signature = fmt.Sprintf("0x%x", hash[:4])
+	_4BytesSig = fmt.Sprintf("0x%x", hash[:4])
 	return
 }
 
