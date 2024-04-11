@@ -4,5 +4,5 @@ package constants
 
 //goland:noinspection GoSnakeCaseUsage
 var (
-	VERSION = "1.3.0"
+	VERSION = "1.3.1"
 )

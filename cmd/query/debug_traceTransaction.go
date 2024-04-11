@@ -54,7 +54,7 @@ func GetQueryTraceTxCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "", "EVM Json-RPC url")
+	cmd.Flags().String(flagRpc, "", flagRpcDesc)
 	cmd.Flags().String(flagTracer, "callTracer", "EVM tracer")
 
 	return cmd

@@ -71,7 +71,7 @@ func GetQueryBlockCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "", "EVM Json-RPC url")
+	cmd.Flags().String(flagRpc, "", flagRpcDesc)
 	cmd.Flags().Bool(flagFull, false, "should returns the full transaction objects when this value is true otherwise, it returns only the hashes of the transactions")
 
 	return cmd

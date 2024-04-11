@@ -106,7 +106,7 @@ func GetQueryBalanceCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "", "EVM Json-RPC url")
+	cmd.Flags().String(flagRpc, "", flagRpcDesc)
 
 	return cmd
 }

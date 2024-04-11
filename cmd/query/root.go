@@ -1,6 +1,7 @@
 package query
 
 import (
+	"github.com/bcdevtools/devd/constants"
 	"github.com/spf13/cobra"
 )
 
@@ -8,6 +9,10 @@ const (
 	flagRpc    = "rpc"
 	flagFull   = "full"
 	flagTracer = "tracer"
+)
+
+const (
+	flagRpcDesc = "EVM Json-RPC endpoint, default is " + constants.DEFAULT_EVM_RPC + ", can be set by environment variable " + constants.ENV_EVM_RPC
 )
 
 // Commands registers a sub-tree of commands
