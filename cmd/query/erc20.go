@@ -65,12 +65,13 @@ func GetQueryErc20Command() *cobra.Command {
 				if decimals == 0 {
 					fmt.Println("Account token balance:", accountBalance, contractSymbol)
 				} else {
+					display, high, low, err := utils.ConvertNumberIntoDisplayWithExponent(accountBalance, int(decimals))
+					utils.ExitOnErr(err, "failed to convert number into display with exponent")
 					fmt.Println("Account token balance:")
 					fmt.Println(" - Raw:", accountBalance)
-					fmt.Println(" - Display:")
-					pow := new(big.Int).Exp(big.NewInt(10), big.NewInt(int64(decimals)), nil)
-					fmt.Println("  + High:", new(big.Int).Div(accountBalance, pow), contractSymbol)
-					fmt.Println("  + Low:", new(big.Int).Mod(accountBalance, pow))
+					fmt.Println(" - Display:", display, contractSymbol)
+					fmt.Println("  + High:", high)
+					fmt.Println("  + Low:", low)
 				}
 			}
 		},

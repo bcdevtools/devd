@@ -36,17 +36,14 @@ func GetQueryBalanceCommand() *cobra.Command {
 				nativeBalance, err := ethClient8545.BalanceAt(context.Background(), accountAddr, contextHeight)
 				utils.ExitOnErr(err, "failed to get account balance")
 
-				if nativeBalance.Sign() == 0 {
-					fmt.Println("> Native balance:", nativeBalance)
-				} else {
-					fmt.Println("> Native balance:")
-					fmt.Println(" - Decimal:", 18)
-					fmt.Println(" - Raw:", nativeBalance)
-					fmt.Println(" - Display:")
-					pow := new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)
-					fmt.Println("  + High:", new(big.Int).Div(nativeBalance, pow))
-					fmt.Println("  + Low:", new(big.Int).Mod(nativeBalance, pow))
-				}
+				display, high, low, err := utils.ConvertNumberIntoDisplayWithExponent(nativeBalance, 18)
+				utils.ExitOnErr(err, "failed to convert number into display with exponent")
+				fmt.Println("> Native balance:")
+				fmt.Println(" - Decimal:", 18)
+				fmt.Println(" - Raw:", nativeBalance)
+				fmt.Println(" - Display:", display)
+				fmt.Println("  + High:", high)
+				fmt.Println("  + Low:", low)
 			}
 
 			for i := 1; i < len(evmAddrs); i++ {
@@ -90,16 +87,16 @@ func GetQueryBalanceCommand() *cobra.Command {
 
 				tokenBalance = new(big.Int).SetBytes(bz)
 
+				display, high, low, err := utils.ConvertNumberIntoDisplayWithExponent(tokenBalance, int(contractDecimals.Int64()))
+				utils.ExitOnErr(err, "failed to convert number into display with exponent")
+
 				fmt.Printf("> ERC-20 %s\n", contractAddr)
 				fmt.Println(" - Symbol:", contractSymbol)
 				fmt.Println(" - Decimals:", contractDecimals.Uint64())
 				fmt.Println(" - Raw:", tokenBalance)
-				if tokenBalance.Sign() != 0 && contractDecimals.Uint64() != 0 {
-					fmt.Println(" - Display:")
-					pow := new(big.Int).Exp(big.NewInt(10), big.NewInt(contractDecimals.Int64()), nil)
-					fmt.Println("  + High:", new(big.Int).Div(tokenBalance, pow), contractSymbol)
-					fmt.Println("  + Low:", new(big.Int).Mod(tokenBalance, pow))
-				}
+				fmt.Println(" - Display:", display, contractSymbol)
+				fmt.Println("  + High:", high)
+				fmt.Println("  + Low:", low)
 			}
 		},
 	}
