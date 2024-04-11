@@ -27,11 +27,13 @@ func GetQueryBalanceCommand() *cobra.Command {
 				return
 			}
 
+			contextHeight := readContextHeightFromFlag(cmd)
+
 			accountAddr := evmAddrs[0]
 			fmt.Println("Account", accountAddr)
 
 			if len(evmAddrs) == 1 {
-				nativeBalance, err := ethClient8545.BalanceAt(context.Background(), accountAddr, nil)
+				nativeBalance, err := ethClient8545.BalanceAt(context.Background(), accountAddr, contextHeight)
 				utils.ExitOnErr(err, "failed to get account balance")
 
 				if nativeBalance.Sign() == 0 {
@@ -53,7 +55,7 @@ func GetQueryBalanceCommand() *cobra.Command {
 				bz, err = ethClient8545.CallContract(context.Background(), ethereum.CallMsg{
 					To:   &contractAddr,
 					Data: []byte{0x95, 0xd8, 0x9b, 0x41}, // symbol()
-				}, nil)
+				}, contextHeight)
 				if err != nil {
 					libutils.PrintlnStdErr("ERR: failed to get symbol for contract", contractAddr, ":", err)
 					continue
@@ -68,7 +70,7 @@ func GetQueryBalanceCommand() *cobra.Command {
 				bz, err = ethClient8545.CallContract(context.Background(), ethereum.CallMsg{
 					To:   &contractAddr,
 					Data: []byte{0x31, 0x3c, 0xe5, 0x67}, // decimals()
-				}, nil)
+				}, contextHeight)
 				if err != nil {
 					libutils.PrintlnStdErr("ERR: failed to get decimals for contract", contractAddr, ":", err)
 					continue
@@ -80,7 +82,7 @@ func GetQueryBalanceCommand() *cobra.Command {
 				bz, err = ethClient8545.CallContract(context.Background(), ethereum.CallMsg{
 					To:   &contractAddr,
 					Data: append([]byte{0x70, 0xa0, 0x82, 0x31}, common.BytesToHash(accountAddr.Bytes()).Bytes()...), // balanceOf(address)
-				}, nil)
+				}, contextHeight)
 				if err != nil {
 					libutils.PrintlnStdErr("ERR: failed to get contract token", contractAddr, "balance for", accountAddr, ":", err)
 					continue
@@ -103,6 +105,7 @@ func GetQueryBalanceCommand() *cobra.Command {
 	}
 
 	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
+	cmd.Flags().Int64(flagHeight, 0, "query balance at specific height")
 
 	return cmd
 }

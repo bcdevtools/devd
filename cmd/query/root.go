@@ -9,6 +9,7 @@ const (
 	flagRpc    = "rpc"
 	flagFull   = "full"
 	flagTracer = "tracer"
+	flagHeight = "height"
 )
 
 const (

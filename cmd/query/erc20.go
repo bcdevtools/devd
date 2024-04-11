@@ -3,7 +3,6 @@ package query
 import (
 	"context"
 	"fmt"
-	libutils "github.com/EscanBE/go-lib/utils"
 	"github.com/bcdevtools/devd/cmd/utils"
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
@@ -20,10 +19,9 @@ func GetQueryErc20Command() *cobra.Command {
 			ethClient8545, _ := mustGetEthClient(cmd, true)
 
 			evmAddrs, err := getEvmAddressFromAnyFormatAddress(args...)
-			if err != nil {
-				libutils.PrintlnStdErr("ERR:", err)
-				return
-			}
+			utils.ExitOnErr(err, "failed to get evm address from input")
+
+			contextHeight := readContextHeightFromFlag(cmd)
 
 			var contractAddr, accountAddr common.Address
 
@@ -32,35 +30,29 @@ func GetQueryErc20Command() *cobra.Command {
 				accountAddr = evmAddrs[1]
 			}
 
-			fmt.Println("Getting contract symbol...")
-
 			bz, err := ethClient8545.CallContract(context.Background(), ethereum.CallMsg{
 				To:   &contractAddr,
 				Data: []byte{0x95, 0xd8, 0x9b, 0x41}, // symbol()
-			}, nil)
+			}, contextHeight)
 			utils.ExitOnErr(err, "failed to get contract symbol")
 
 			contractSymbol, err := utils.AbiDecodeString(bz)
 			utils.ExitOnErr(err, "failed to decode contract symbol")
 
-			fmt.Println("Getting contract decimals...")
-
 			bz, err = ethClient8545.CallContract(context.Background(), ethereum.CallMsg{
 				To:   &contractAddr,
 				Data: []byte{0x31, 0x3c, 0xe5, 0x67}, // decimals()
-			}, nil)
+			}, contextHeight)
 			utils.ExitOnErr(err, "failed to get contract decimals")
 
 			contractDecimals := new(big.Int).SetBytes(bz)
 
 			var accountBalance *big.Int
 			if accountAddr != (common.Address{}) {
-				fmt.Println("Getting account balance...")
-
 				bz, err = ethClient8545.CallContract(context.Background(), ethereum.CallMsg{
 					To:   &contractAddr,
 					Data: append([]byte{0x70, 0xa0, 0x82, 0x31}, common.BytesToHash(accountAddr.Bytes()).Bytes()...), // balanceOf(address)
-				}, nil)
+				}, contextHeight)
 				utils.ExitOnErr(err, "failed to get account token balance")
 
 				accountBalance = new(big.Int).SetBytes(bz)
@@ -86,6 +78,7 @@ func GetQueryErc20Command() *cobra.Command {
 
 	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
 	cmd.Flags().String("host", "", fmt.Sprintf("deprecated flag, use '--%s' instead", flagRpc))
+	cmd.Flags().Int64(flagHeight, 0, "query balance at specific height")
 
 	return cmd
 }

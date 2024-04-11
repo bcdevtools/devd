@@ -14,6 +14,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"io"
+	"math/big"
 	"net/http"
 	"os"
 	"regexp"
@@ -118,4 +119,13 @@ func mustGetEthClient(cmd *cobra.Command, fallbackDeprecatedFlagHost bool) (*eth
 	utils.ExitOnErr(err, "failed to connect to EVM Json-RPC")
 
 	return ethClient8545, rpc
+}
+
+func readContextHeightFromFlag(cmd *cobra.Command) *big.Int {
+	height, _ := cmd.Flags().GetInt64(flagHeight)
+	if height > 0 {
+		return big.NewInt(height)
+	}
+
+	return nil
 }
