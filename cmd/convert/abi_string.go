@@ -11,7 +11,7 @@ import (
 
 func GetConvertAbiStringCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "abi_string [hex_or_text]",
+		Use:   "abi_string [hex or text]",
 		Short: `Convert ABI encoded hex to string or vice versa.`,
 		Long: `Convert ABI encoded hex to string or vice versa.
 Support pipe.`,

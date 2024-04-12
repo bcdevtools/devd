@@ -16,7 +16,7 @@ const (
 // GetRawBalanceCmd creates a helper command that convert display balance into raw balance
 func GetRawBalanceCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "raw_balance [display_balance] [decimals]",
+		Use:     "raw_balance [display balance] [decimals]",
 		Aliases: []string{"rbal"},
 		Short:   "Convert display balance into raw balance.",
 		Long: `Convert display balance into raw balance.

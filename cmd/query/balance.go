@@ -12,7 +12,7 @@ import (
 
 func GetQueryBalanceCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "balance [account_address] [?optional_erc20_contracts...]",
+		Use:     "balance [account] [?optional ERC-20 addrs..]",
 		Aliases: []string{"b"},
 		Short:   "Get ERC-20 token information. If account address is provided, it will query the balance of the account (bech32 is accepted).",
 		Args:    cobra.MinimumNArgs(1),

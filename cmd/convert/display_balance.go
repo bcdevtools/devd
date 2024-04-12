@@ -12,7 +12,7 @@ import (
 // GetDisplayBalanceCmd creates a helper command that convert raw balance into display balance
 func GetDisplayBalanceCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "display_balance [raw_balance] [decimals]",
+		Use:     "display_balance [raw balance] [decimals]",
 		Aliases: []string{"dbal"},
 		Short:   "Convert raw balance into display balance.",
 		Long: `Convert raw balance into display balance.

@@ -17,7 +17,7 @@ _By setting this environment variable, you don't need to pass --rpc flag everyti
 #### Query account balance
 
 ```bash
-devd query balance [account_address] [optional_erc20_contract_addresses...] [--rpc http://localhost:8545]
+devd query balance [account addr] [optional ERC20 addr..] [--rpc http://localhost:8545]
 # devd q b 0xAccount
 # devd q b ethm1account
 # devd q b 0xAccount 0xErc20Contract
@@ -27,7 +27,7 @@ devd query balance [account_address] [optional_erc20_contract_addresses...] [--r
 #### Query ERC20 token information
 
 ```bash
-devd query erc20 [erc20_contract_address] [optional_account_address] [--rpc http://localhost:8545]
+devd query erc20 [ERC20 addr] [optional account] [--rpc http://localhost:8545]
 # devd q erc20 0xErc20Contract
 # devd q erc20 0xErc20Contract 0xAccount
 # devd q erc20 0xErc20Contract ethm1account
@@ -68,7 +68,7 @@ devd query debug_traceTransaction [0xHash] [--tracer callTracer] [--rpc http://l
 #### Convert address between different formats
 
 ```bash
-devd convert address [address] [optional_bech32]
+devd convert address [address] [optional bech32 hrp]
 # devd c a 0xAccount ethm
 # devd c a ethm1account
 # devd c a ethm1account xyz
@@ -167,9 +167,10 @@ devd hash keccak512 [input]
 #### Compute EVM transaction intrinsic gas
 
 ```bash
-devd debug intrinsic_gas [0xdata]
-# devd d intrinsic_gas 0xdata
+devd debug intrinsic_gas [0xCallData]
+# devd d intrinsic_gas 0xCallData
 ```
+_Assumption: no access list, not contract creation, Homestead, EIP-2028 (Istanbul). If contract creation, plus 32,000 into the output._
 
 ### Notes:
 

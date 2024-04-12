@@ -15,7 +15,7 @@ import (
 // GetConvertAddressCmd creates a helper command that convert account bech32 address into hex address or vice versa
 func GetConvertAddressCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "address [address] [bech32_hrp]",
+		Use:     "address [account] [bech32 hrp]",
 		Aliases: []string{"a"},
 		Short:   "Convert account bech32 address into hex address or vice versa.",
 		Long: `Convert account bech32 address into hex address or vice versa.
