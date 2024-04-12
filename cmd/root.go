@@ -2,6 +2,7 @@ package cmd
 
 //goland:noinspection GoSnakeCaseUsage
 import (
+	"github.com/bcdevtools/devd/v2/cmd/check"
 	"github.com/bcdevtools/devd/v2/cmd/convert"
 	"github.com/bcdevtools/devd/v2/cmd/debug"
 	"github.com/bcdevtools/devd/v2/cmd/hash"
@@ -37,6 +38,7 @@ func init() {
 	rootCmd.AddCommand(debug.Commands())
 	rootCmd.AddCommand(query.Commands())
 	rootCmd.AddCommand(hash.Commands())
+	rootCmd.AddCommand(check.Commands())
 
 	rootCmd.PersistentFlags().Bool("help", false, "show help")
 }

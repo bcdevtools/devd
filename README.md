@@ -162,6 +162,18 @@ devd hash keccak512 [input]
 # cat file.txt | devd hash keccak512
 ```
 
+### Check tools
+
+#### Listing ports in use and check port holding by process
+
+```bash
+# listing
+devd check port
+
+# check specific port
+devd check port [port]
+```
+
 ### Debug tools
 
 #### Compute EVM transaction intrinsic gas
