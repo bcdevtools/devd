@@ -12,7 +12,13 @@ Lazy RPC setting
 ```bash
 export DEVD_EVM_RPC='https://api.securerpc.com/v1'
 ```
-_By setting this environment variable, you don't need to pass --rpc flag everytime for non-localhost EVM Json-RPC_
+_By setting this environment variable, you don't need to pass `--rpc` flag everytime for non-localhost EVM Json-RPC_
+___
+Lazy Rest API setting
+```bash
+export DEVD_COSMOS_REST='https://cosmos.example.com:1317'
+```
+_By setting this environment variable, you don't need to pass `--rest` flag everytime for non-localhost Rest API
 
 #### Query account balance
 

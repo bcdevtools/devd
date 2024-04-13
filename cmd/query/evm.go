@@ -95,8 +95,9 @@ func getEvmAddressFromAnyFormatAddress(addrs ...string) (evmAddrs []common.Addre
 	return
 }
 
-func mustGetEthClient(cmd *cobra.Command, fallbackDeprecatedFlagHost bool) (*ethclient.Client, string) {
-	var rpc, inputSource string
+func mustGetEthClient(cmd *cobra.Command, fallbackDeprecatedFlagHost bool) (ethClient8545 *ethclient.Client, rpc string) {
+	var inputSource string
+	var err error
 
 	if rpcFromFlagRpc, _ := cmd.Flags().GetString(flagRpc); len(rpcFromFlagRpc) > 0 {
 		rpc = rpcFromFlagRpc
@@ -115,7 +116,7 @@ func mustGetEthClient(cmd *cobra.Command, fallbackDeprecatedFlagHost bool) (*eth
 
 	fmt.Println("Connecting to", rpc, fmt.Sprintf("(from %s)", inputSource))
 
-	ethClient8545, err := ethclient.Dial(rpc)
+	ethClient8545, err = ethclient.Dial(rpc)
 	utils.ExitOnErr(err, "failed to connect to EVM Json-RPC")
 
 	// pre-flight check to ensure the connection is working
@@ -126,7 +127,7 @@ func mustGetEthClient(cmd *cobra.Command, fallbackDeprecatedFlagHost bool) (*eth
 		os.Exit(1)
 	}
 
-	return ethClient8545, rpc
+	return
 }
 
 func readContextHeightFromFlag(cmd *cobra.Command) *big.Int {

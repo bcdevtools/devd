@@ -7,6 +7,7 @@ import (
 
 const (
 	flagRpc         = "rpc"
+	flagRest        = "rest"
 	flagFull        = "full"
 	flagTracer      = "tracer"
 	flagHeight      = "height"
@@ -15,7 +16,8 @@ const (
 )
 
 const (
-	flagEvmRpcDesc = "EVM Json-RPC endpoint, default is " + constants.DEFAULT_EVM_RPC + ", can be set by environment variable " + constants.ENV_EVM_RPC
+	flagEvmRpcDesc     = "EVM Json-RPC endpoint, default is " + constants.DEFAULT_EVM_RPC + ", can be set by environment variable " + constants.ENV_EVM_RPC
+	flagCosmosRestDesc = "Cosmos Rest API endpoint, default is " + constants.DEFAULT_COSMOS_REST + ", can be set by environment variable " + constants.ENV_COSMOS_REST
 )
 
 // Commands registers a sub-tree of commands

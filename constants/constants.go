@@ -9,7 +9,9 @@ const (
 
 //goland:noinspection GoSnakeCaseUsage
 const (
-	ENV_EVM_RPC = "DEVD_EVM_RPC"
+	ENV_EVM_RPC     = "DEVD_EVM_RPC"
+	ENV_COSMOS_REST = "DEVD_COSMOS_REST"
 
-	DEFAULT_EVM_RPC = "http://localhost:8545"
+	DEFAULT_EVM_RPC     = "http://localhost:8545"
+	DEFAULT_COSMOS_REST = "http://localhost:1317"
 )
