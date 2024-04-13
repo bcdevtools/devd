@@ -10,27 +10,27 @@ go install -v github.com/bcdevtools/devd/v2/cmd/devd@latest
 
 Lazy RPC setting
 ```bash
-export DEVD_EVM_RPC='https://api.securerpc.com/v1'
+export DEVD_EVM_RPC='https://evm.example.com:8545'
 ```
 _By setting this environment variable, you don't need to pass `--rpc` flag everytime for non-localhost EVM Json-RPC_
 ___
 Lazy Rest API setting
 ```bash
-export DEVD_COSMOS_REST='https://cosmos.example.com:1317'
+export DEVD_COSMOS_REST='https://ethermint-rest.example.com:1317'
 ```
 _By setting this environment variable, you don't need to pass `--rest` flag everytime for non-localhost Rest API_
 
 #### Query account balance
 
 ```bash
-devd query balance [account addr] [optional ERC20 addr..] [--erc20 --rest http://localhost:1317] [--rpc http://localhost:8545]
+devd query balance [account addr] [optional ERC20 addr..] [--erc20] [--rpc http://localhost:8545]
 # devd q b 0xAccount
 # devd q b ethm1account
 # devd q b 0xAccount 0xErc20Contract
 # devd q b ethm1account 0xErc20Contract1 0xErc20Contract2
-# devd q b 0xAccount --erc20
+# devd q b 0xAccount --erc20 [--rest http://localhost:1317]
 ```
-_`--erc20` flag, if provided, will attempt to fetch user balance of contracts on `x/erc20` module and virtual frontier bank contracts. This request additional rest endpoint provided, or use default 1317._
+_`--erc20` flag, if provided, will attempt to fetch user balance of contracts on `x/erc20` module and virtual frontier bank contracts. This request additional Rest-API endpoint provided, or use default 1317._
 
 #### Query ERC20 token information
 
