@@ -114,7 +114,7 @@ func mustGetEthClient(cmd *cobra.Command, fallbackDeprecatedFlagHost bool) (ethC
 		inputSource = "default"
 	}
 
-	fmt.Println("Connecting to", rpc, fmt.Sprintf("(from %s)", inputSource))
+	utils.PrintlnStdErr("INF: Connecting to EVM Json-RPC", rpc, fmt.Sprintf("(from %s)", inputSource))
 
 	ethClient8545, err = ethclient.Dial(rpc)
 	utils.ExitOnErr(err, "failed to connect to EVM Json-RPC")

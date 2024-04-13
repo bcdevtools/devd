@@ -49,7 +49,7 @@ func GetQueryBalanceCommand() *cobra.Command {
 			display, high, low, err := utils.ConvertNumberIntoDisplayWithExponent(nativeBalance, 18)
 			utils.ExitOnErr(err, "failed to convert number into display with exponent")
 
-			printRow("Native", "-", "(native)", display, nativeBalance.String(), "18", high.String(), low.String(), "")
+			printRow("native", "-", "(native)", display, nativeBalance.String(), "18", high.String(), low.String(), "")
 
 			for i := 1; i < len(evmAddrs); i++ {
 				contractAddr := evmAddrs[i]
@@ -63,9 +63,13 @@ func GetQueryBalanceCommand() *cobra.Command {
 			}
 
 			if fetchErc20ModuleAndVfbc && restApiEndpoint != "" {
-				erc20TokenPairs, err := fetchErc20ModuleTokenPairsFromRest(restApiEndpoint)
+				erc20TokenPairs, statusCode, err := fetchErc20ModuleTokenPairsFromRest(restApiEndpoint)
 				if err != nil {
-					utils.PrintlnStdErr("ERR:", err)
+					if statusCode == 501 {
+						utils.PrintlnStdErr("WARN: `x/erc20` module is not available on the chain")
+					} else {
+						utils.PrintlnStdErr("ERR:", err)
+					}
 				} else {
 					for _, erc20TokenPair := range erc20TokenPairs {
 						if !erc20TokenPair.Enabled {
@@ -87,9 +91,13 @@ func GetQueryBalanceCommand() *cobra.Command {
 					}
 				}
 
-				vfcbPairs, err := fetchVirtualFrontierBankContractPairsFromRest(restApiEndpoint)
+				vfcbPairs, statusCode, err := fetchVirtualFrontierBankContractPairsFromRest(restApiEndpoint)
 				if err != nil {
-					utils.PrintlnStdErr("ERR:", err)
+					if statusCode == 501 {
+						utils.PrintlnStdErr("WARN: virtual frontier contract feature is not available on the chain")
+					} else {
+						utils.PrintlnStdErr("ERR:", err)
+					}
 				} else {
 					for _, vfbcPair := range vfcbPairs {
 						if !vfbcPair.Enabled {

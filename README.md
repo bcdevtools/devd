@@ -18,7 +18,7 @@ Lazy Rest API setting
 ```bash
 export DEVD_COSMOS_REST='https://cosmos.example.com:1317'
 ```
-_By setting this environment variable, you don't need to pass `--rest` flag everytime for non-localhost Rest API
+_By setting this environment variable, you don't need to pass `--rest` flag everytime for non-localhost Rest API_
 
 #### Query account balance
 
@@ -194,7 +194,7 @@ _Assumption: no access list, not contract creation, Homestead, EIP-2028 (Istanbu
 
 ### Notes:
 
-- Output messages are printed via stdout, while messages with prefixes `WARN:` and `ERR:` are printed via stderr. So for integration with other tools, to omit stderr, forward stdout only.
+- Output messages are printed via stdout, while messages with prefixes `INF:` `WARN:` and `ERR:` are printed via stderr. So for integration with other tools, to omit stderr, forward stdout only.
   > Eg: `devd c a cosmos1... 1> /tmp/output.txt`
 - When passing arguments into command via both argument and pipe, the argument will be used.
   > Eg: `echo 123 | devd c d2h 456` will convert `456` to hexadecimal, not `123`.

@@ -29,7 +29,7 @@ func mustGetRest(cmd *cobra.Command) (rest string) {
 
 	rest = strings.TrimSuffix(rest, "/")
 
-	fmt.Println("Connecting to", rest, fmt.Sprintf("(from %s)", inputSource))
+	utils.PrintlnStdErr("INF: Connecting to Cosmos Rest-API", rest, fmt.Sprintf("(from %s)", inputSource))
 
 	// pre-flight check to ensure the connection is working
 	_, err := http.Get(rest)
@@ -42,7 +42,7 @@ func mustGetRest(cmd *cobra.Command) (rest string) {
 	return
 }
 
-func fetchErc20ModuleTokenPairsFromRest(rest string) (erc20ModuleTokenPairs []Erc20ModuleTokenPair, err error) {
+func fetchErc20ModuleTokenPairsFromRest(rest string) (erc20ModuleTokenPairs []Erc20ModuleTokenPair, statusCode int, err error) {
 	var resp *http.Response
 	resp, err = http.Get(rest + "/evmos/erc20/v1/token_pairs")
 	if err != nil {
@@ -50,8 +50,11 @@ func fetchErc20ModuleTokenPairsFromRest(rest string) (erc20ModuleTokenPairs []Er
 		return
 	}
 
+	statusCode = resp.StatusCode
+
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("failed to fetch ERC-20 module token pairs! Status code: %d", resp.StatusCode)
+		err = fmt.Errorf("failed to fetch ERC-20 module token pairs! Status code: %d", resp.StatusCode)
+		return
 	}
 
 	type responseStruct struct {
@@ -64,13 +67,15 @@ func fetchErc20ModuleTokenPairsFromRest(rest string) (erc20ModuleTokenPairs []Er
 
 	bz, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to read response body of ERC-20 module token pairs")
+		err = errors.Wrap(err, "failed to read response body of ERC-20 module token pairs")
+		return
 	}
 
 	var response responseStruct
 	err = json.Unmarshal(bz, &response)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to unmarshal response body of ERC-20 module token pairs")
+		err = errors.Wrap(err, "failed to unmarshal response body of ERC-20 module token pairs")
+		return
 	}
 
 	erc20ModuleTokenPairs = response.TokenPairs
@@ -83,7 +88,7 @@ type Erc20ModuleTokenPair struct {
 	Enabled      bool   `json:"enabled"`
 }
 
-func fetchVirtualFrontierBankContractPairsFromRest(rest string) (vfbcPairs []VfbcTokenPair, err error) {
+func fetchVirtualFrontierBankContractPairsFromRest(rest string) (vfbcPairs []VfbcTokenPair, statusCode int, err error) {
 	var resp *http.Response
 	resp, err = http.Get(rest + "/ethermint/evm/v1/virtual_frontier_bank_contracts")
 	if err != nil {
@@ -91,8 +96,11 @@ func fetchVirtualFrontierBankContractPairsFromRest(rest string) (vfbcPairs []Vfb
 		return
 	}
 
+	statusCode = resp.StatusCode
+
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("failed to fetch VFBC pairs! Status code: %d", resp.StatusCode)
+		err = fmt.Errorf("failed to fetch VFBC pairs! Status code: %d", resp.StatusCode)
+		return
 	}
 
 	type responseStruct struct {
@@ -105,13 +113,15 @@ func fetchVirtualFrontierBankContractPairsFromRest(rest string) (vfbcPairs []Vfb
 
 	bz, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to read response body of VFBC pairs")
+		err = errors.Wrap(err, "failed to read response body of VFBC pairs")
+		return
 	}
 
 	var response responseStruct
 	err = json.Unmarshal(bz, &response)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to unmarshal response body of VFBC pairs")
+		err = errors.Wrap(err, "failed to unmarshal response body of VFBC pairs")
+		return
 	}
 
 	vfbcPairs = response.Pairs
