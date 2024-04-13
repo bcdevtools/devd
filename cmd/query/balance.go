@@ -66,12 +66,15 @@ func GetQueryBalanceCommand() *cobra.Command {
 				erc20TokenPairs, err := fetchErc20ModuleTokenPairsFromRest(restApiEndpoint)
 				if err != nil {
 					utils.PrintlnStdErr("ERR:", err)
-					return
 				} else {
 					for _, erc20TokenPair := range erc20TokenPairs {
+						if !erc20TokenPair.Enabled {
+							continue
+						}
+
 						contractAddr := common.HexToAddress(erc20TokenPair.Erc20Address)
 
-						tokenBalance, tokenBalanceDisplay, contractSymbol, contractDecimals, balancePartHigh, balancePartLow, err := fetchBalanceForErc20Contract(contractAddr, contextHeight, ethClient8545, accountAddr, "contract")
+						tokenBalance, tokenBalanceDisplay, contractSymbol, contractDecimals, balancePartHigh, balancePartLow, err := fetchBalanceForErc20Contract(contractAddr, contextHeight, ethClient8545, accountAddr, "x/erc20 contract")
 						if err != nil {
 							continue
 						}
@@ -81,6 +84,30 @@ func GetQueryBalanceCommand() *cobra.Command {
 						}
 
 						printRow("x/erc20", contractAddr.String(), contractSymbol, tokenBalanceDisplay, tokenBalance.String(), contractDecimals.String(), balancePartHigh.String(), balancePartLow.String(), erc20TokenPair.Denom)
+					}
+				}
+
+				vfcbPairs, err := fetchVirtualFrontierBankContractPairsFromRest(restApiEndpoint)
+				if err != nil {
+					utils.PrintlnStdErr("ERR:", err)
+				} else {
+					for _, vfbcPair := range vfcbPairs {
+						if !vfbcPair.Enabled {
+							continue
+						}
+
+						contractAddr := common.HexToAddress(vfbcPair.ContractAddress)
+
+						tokenBalance, tokenBalanceDisplay, contractSymbol, contractDecimals, balancePartHigh, balancePartLow, err := fetchBalanceForErc20Contract(contractAddr, contextHeight, ethClient8545, accountAddr, "VFBC")
+						if err != nil {
+							continue
+						}
+
+						if tokenBalance.Sign() == 0 {
+							continue
+						}
+
+						printRow("vfbc", contractAddr.String(), contractSymbol, tokenBalanceDisplay, tokenBalance.String(), contractDecimals.String(), balancePartHigh.String(), balancePartLow.String(), vfbcPair.MinDenom)
 					}
 				}
 			}
