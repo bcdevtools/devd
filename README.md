@@ -17,11 +17,12 @@ _By setting this environment variable, you don't need to pass --rpc flag everyti
 #### Query account balance
 
 ```bash
-devd query balance [account addr] [optional ERC20 addr..] [--rpc http://localhost:8545]
+devd query balance [account addr] [optional ERC20 addr..] [--erc20] [--rpc http://localhost:8545]
 # devd q b 0xAccount
 # devd q b ethm1account
 # devd q b 0xAccount 0xErc20Contract
 # devd q b ethm1account 0xErc20Contract1 0xErc20Contract2
+# devd q b 0xAccount --erc20
 ```
 
 #### Query ERC20 token information

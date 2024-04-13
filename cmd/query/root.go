@@ -11,6 +11,7 @@ const (
 	flagTracer      = "tracer"
 	flagHeight      = "height"
 	flagNoTranslate = "no-translate"
+	flagErc20       = "erc20"
 )
 
 const (

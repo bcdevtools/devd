@@ -17,33 +17,35 @@ func GetQueryBalanceCommand() *cobra.Command {
 		Short:   "Get ERC-20 token information. If account address is provided, it will query the balance of the account (bech32 is accepted).",
 		Args:    cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			ethClient8545, _ := mustGetEthClient(cmd, false)
-			var bz []byte
-
 			evmAddrs, err := getEvmAddressFromAnyFormatAddress(args...)
 			if err != nil {
 				utils.PrintlnStdErr("ERR:", err)
 				return
 			}
 
+			//fetchErc20ModuleAndVfbc := cmd.Flags().Changed(flagErc20)
+
+			ethClient8545, _ := mustGetEthClient(cmd, false)
+			var bz []byte
+
 			contextHeight := readContextHeightFromFlag(cmd)
 
 			accountAddr := evmAddrs[0]
 			fmt.Println("Account", accountAddr)
 
-			if len(evmAddrs) == 1 {
-				nativeBalance, err := ethClient8545.BalanceAt(context.Background(), accountAddr, contextHeight)
-				utils.ExitOnErr(err, "failed to get account balance")
-
-				display, high, low, err := utils.ConvertNumberIntoDisplayWithExponent(nativeBalance, 18)
-				utils.ExitOnErr(err, "failed to convert number into display with exponent")
-				fmt.Println("> Native balance:")
-				fmt.Println(" - Decimal:", 18)
-				fmt.Println(" - Raw:", nativeBalance)
-				fmt.Println(" - Display:", display)
-				fmt.Println("  + High:", high)
-				fmt.Println("  + Low:", low)
+			printRow := func(colType, colContract, colSymbol, colBalance, colRaw, colDecimals, colHigh, colLow, extra string) {
+				fmt.Printf("%-6s | %42s | %10s | %28s | %27s | %8s | %9s | %18s | %-1s\n", colType, colContract, colSymbol, colBalance, colRaw, colDecimals, colHigh, colLow, extra)
 			}
+
+			printRow("Type", "Contract", "Symbol", "Balance", "Raw", "Decimals", "High", "Low", "Extra")
+
+			nativeBalance, err := ethClient8545.BalanceAt(context.Background(), accountAddr, contextHeight)
+			utils.ExitOnErr(err, "failed to get account balance")
+
+			display, high, low, err := utils.ConvertNumberIntoDisplayWithExponent(nativeBalance, 18)
+			utils.ExitOnErr(err, "failed to convert number into display with exponent")
+
+			printRow("Native", "-", "(native)", display, nativeBalance.String(), "18", high.String(), low.String(), "")
 
 			for i := 1; i < len(evmAddrs); i++ {
 				contractAddr := evmAddrs[i]
@@ -89,19 +91,14 @@ func GetQueryBalanceCommand() *cobra.Command {
 				display, high, low, err := utils.ConvertNumberIntoDisplayWithExponent(tokenBalance, int(contractDecimals.Int64()))
 				utils.ExitOnErr(err, "failed to convert number into display with exponent")
 
-				fmt.Printf("> ERC-20 %s\n", contractAddr)
-				fmt.Println(" - Symbol:", contractSymbol)
-				fmt.Println(" - Decimals:", contractDecimals.Uint64())
-				fmt.Println(" - Raw:", tokenBalance)
-				fmt.Println(" - Display:", display, contractSymbol)
-				fmt.Println("  + High:", high)
-				fmt.Println("  + Low:", low)
+				printRow("Input", contractAddr.String(), contractSymbol, display, tokenBalance.String(), contractDecimals.String(), high.String(), low.String(), "")
 			}
 		},
 	}
 
 	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
 	cmd.Flags().Int64(flagHeight, 0, "query balance at specific height")
+	cmd.Flags().String(flagErc20, "", "query balance of ERC-20 contracts of `x/erc20` module and virtual frontier bank contracts")
 
 	return cmd
 }
