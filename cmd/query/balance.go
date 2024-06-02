@@ -18,7 +18,7 @@ func GetQueryBalanceCommand() *cobra.Command {
 		Short:   "Get ERC-20 token information. If account address is provided, it will query the balance of the account (bech32 is accepted).",
 		Args:    cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			evmAddrs, err := getEvmAddressFromAnyFormatAddress(args...)
+			evmAddrs, err := utils.GetEvmAddressFromAnyFormatAddress(args...)
 			if err != nil {
 				utils.PrintlnStdErr("ERR:", err)
 				return

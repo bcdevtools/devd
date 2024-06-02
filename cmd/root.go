@@ -7,6 +7,7 @@ import (
 	"github.com/bcdevtools/devd/v2/cmd/debug"
 	"github.com/bcdevtools/devd/v2/cmd/hash"
 	"github.com/bcdevtools/devd/v2/cmd/query"
+	"github.com/bcdevtools/devd/v2/cmd/tx"
 	"github.com/bcdevtools/devd/v2/cmd/types"
 	"github.com/bcdevtools/devd/v2/constants"
 	"github.com/spf13/cobra"
@@ -39,6 +40,7 @@ func init() {
 	rootCmd.AddCommand(query.Commands())
 	rootCmd.AddCommand(hash.Commands())
 	rootCmd.AddCommand(check.Commands())
+	rootCmd.AddCommand(tx.Commands())
 
 	rootCmd.PersistentFlags().Bool("help", false, "show help")
 }
