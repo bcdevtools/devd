@@ -14,4 +14,6 @@ const (
 
 	DEFAULT_EVM_RPC     = "http://localhost:8545"
 	DEFAULT_COSMOS_REST = "http://localhost:1317"
+
+	ENV_SECRET_KEY = "DEVD_SECRET_KEY"
 )

@@ -42,7 +42,7 @@ func GetQueryTraceTxCommand() *cobra.Command {
 				params = append(params, types.NewJsonRpcRawQueryParam(fmt.Sprintf(`{"tracer":"%s"}`, tracer)))
 			}
 
-			bz, err := doQuery(
+			bz, err := types.DoEvmQuery(
 				rpc,
 				types.NewJsonRpcQueryBuilder(
 					"debug_traceTransaction",

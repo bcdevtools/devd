@@ -18,7 +18,7 @@ func GetQueryErc20Command() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			ethClient8545, _ := mustGetEthClient(cmd, true)
 
-			evmAddrs, err := getEvmAddressFromAnyFormatAddress(args...)
+			evmAddrs, err := utils.GetEvmAddressFromAnyFormatAddress(args...)
 			utils.ExitOnErr(err, "failed to get evm address from input")
 
 			contextHeight := readContextHeightFromFlag(cmd)

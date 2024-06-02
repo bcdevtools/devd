@@ -71,6 +71,14 @@ devd query debug_traceTransaction [0xHash] [--tracer callTracer] [--rpc http://l
 # devd q trace 0xHash --tracer callTracer
 ```
 
+### Tx tools
+
+#### Send EVM transaction
+
+```bash
+devd tx send [to] [amount] [--rpc http://localhost:8545]
+```
+
 ### Convert tools
 
 #### Convert address between different formats

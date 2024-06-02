@@ -1,10 +1,15 @@
 package types
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/bcdevtools/devd/v2/cmd/utils"
+	"github.com/pkg/errors"
+	"io"
+	"net/http"
 	"strings"
 	"sync"
+	"time"
 )
 
 var syncId = sync.Mutex{}
@@ -207,4 +212,42 @@ func (j jsonRpcBoolQueryParam) IsArray() bool {
 
 func (j jsonRpcBoolQueryParam) String() string {
 	return j.value
+}
+
+const generalEvmQueryTimeout = 3 * time.Second
+
+func DoEvmQuery(host string, qb JsonRpcQueryBuilder, optionalTimeout time.Duration) ([]byte, error) {
+	var timeout = optionalTimeout
+	if optionalTimeout == 0 {
+		timeout = generalEvmQueryTimeout
+	}
+	if timeout < time.Second {
+		timeout = time.Second
+	}
+
+	httpClient := http.Client{
+		Timeout: timeout,
+	}
+
+	fmt.Println("Querying", host, strings.ReplaceAll(strings.ReplaceAll(qb.String(), "\n", " "), " ", ""))
+
+	resp, err := httpClient.Post(host, "application/json", bytes.NewBuffer([]byte(qb.String())))
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("non-OK status code: %d", resp.StatusCode)
+	}
+
+	defer func() {
+		_ = resp.Body.Close()
+	}()
+
+	bz, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to read response body")
+	}
+
+	return bz, nil
 }
