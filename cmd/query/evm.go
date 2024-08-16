@@ -3,13 +3,14 @@ package query
 import (
 	"context"
 	"fmt"
+	"math/big"
+	"os"
+	"strings"
+
 	"github.com/bcdevtools/devd/v2/cmd/utils"
 	"github.com/bcdevtools/devd/v2/constants"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/spf13/cobra"
-	"math/big"
-	"os"
-	"strings"
 )
 
 func mustGetEthClient(cmd *cobra.Command, fallbackDeprecatedFlagHost bool) (ethClient8545 *ethclient.Client, rpc string) {

@@ -2,12 +2,13 @@ package query
 
 import (
 	"context"
-	"github.com/bcdevtools/devd/v2/cmd/utils"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/spf13/cobra"
 	"os"
 	"regexp"
 	"strings"
+
+	"github.com/bcdevtools/devd/v2/cmd/utils"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/spf13/cobra"
 )
 
 func GetQueryTxCommand() *cobra.Command {

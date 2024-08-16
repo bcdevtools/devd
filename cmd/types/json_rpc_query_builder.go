@@ -3,13 +3,14 @@ package types
 import (
 	"bytes"
 	"fmt"
-	"github.com/bcdevtools/devd/v2/cmd/utils"
-	"github.com/pkg/errors"
 	"io"
 	"net/http"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/bcdevtools/devd/v2/cmd/utils"
+	"github.com/pkg/errors"
 )
 
 var syncId = sync.Mutex{}
@@ -217,7 +218,7 @@ func (j jsonRpcBoolQueryParam) String() string {
 const generalEvmQueryTimeout = 3 * time.Second
 
 func DoEvmQuery(host string, qb JsonRpcQueryBuilder, optionalTimeout time.Duration) ([]byte, error) {
-	var timeout = optionalTimeout
+	timeout := optionalTimeout
 	if optionalTimeout == 0 {
 		timeout = generalEvmQueryTimeout
 	}

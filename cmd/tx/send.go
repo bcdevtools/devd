@@ -5,10 +5,11 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
+	"math/big"
+
 	"github.com/bcdevtools/devd/v2/cmd/utils"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/spf13/cobra"
-	"math/big"
 )
 
 func GetSendEvmTxCommand() *cobra.Command {

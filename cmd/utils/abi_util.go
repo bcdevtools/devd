@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+
 	"github.com/ethereum/go-ethereum/accounts/abi"
 )
 
@@ -23,8 +24,10 @@ func AbiDecodeString(bz []byte) (string, error) {
 	return "", fmt.Errorf("is not string")
 }
 
-var abiTypeString abi.Type
-var abiArgsSingleString abi.Arguments
+var (
+	abiTypeString       abi.Type
+	abiArgsSingleString abi.Arguments
+)
 
 func init() {
 	var err error

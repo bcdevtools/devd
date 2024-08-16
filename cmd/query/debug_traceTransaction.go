@@ -3,13 +3,14 @@ package query
 import (
 	"encoding/hex"
 	"fmt"
+	"os"
+	"regexp"
+	"strings"
+
 	"github.com/bcdevtools/devd/v2/cmd/types"
 	"github.com/bcdevtools/devd/v2/cmd/utils"
 	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/spf13/cobra"
-	"os"
-	"regexp"
-	"strings"
 )
 
 func GetQueryTraceTxCommand() *cobra.Command {

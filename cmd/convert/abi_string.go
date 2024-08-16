@@ -3,10 +3,11 @@ package convert
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/bcdevtools/devd/v2/cmd/utils"
-	"github.com/spf13/cobra"
 	"regexp"
 	"strings"
+
+	"github.com/bcdevtools/devd/v2/cmd/utils"
+	"github.com/spf13/cobra"
 )
 
 func GetConvertAbiStringCmd() *cobra.Command {

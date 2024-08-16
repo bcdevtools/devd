@@ -3,14 +3,15 @@ package query
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/bcdevtools/devd/v2/cmd/utils"
-	"github.com/bcdevtools/devd/v2/constants"
-	"github.com/pkg/errors"
-	"github.com/spf13/cobra"
 	"io"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/bcdevtools/devd/v2/cmd/utils"
+	"github.com/bcdevtools/devd/v2/constants"
+	"github.com/pkg/errors"
+	"github.com/spf13/cobra"
 )
 
 func mustGetRest(cmd *cobra.Command) (rest string) {

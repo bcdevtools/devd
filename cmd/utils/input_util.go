@@ -2,9 +2,10 @@ package utils
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"os"
 	"strings"
+
+	"github.com/spf13/cobra"
 )
 
 // ProvidedArgsOrFromPipe will prioritize provided args, if not provided, it will try to read from pipe.

@@ -1,8 +1,9 @@
 package types
 
 import (
-	"github.com/pkg/errors"
 	"strings"
+
+	"github.com/pkg/errors"
 )
 
 // ErrUpstreamRpcReturnedError is the error when the upstream RPC returned error
