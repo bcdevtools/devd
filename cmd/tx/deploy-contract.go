@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"math/big"
 	"strings"
+	"time"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -76,12 +77,27 @@ func deployEvmContract(bytecode string, cmd *cobra.Command) {
 	err = signedTx.EncodeRLP(&buf)
 	utils.ExitOnErr(err, "failed to encode tx")
 
-	rawTxRLPHex := hex.EncodeToString(buf.Bytes())
-	fmt.Printf("RawTx: 0x%s\n", rawTxRLPHex)
-
 	err = ethClient8545.SendTransaction(context.Background(), signedTx)
 	utils.ExitOnErr(err, "failed to send tx")
 
-	fmt.Println("New contract deployed at")
+	fmt.Println("Tx hash", signedTx.Hash())
+
+	var found bool
+	for try := 1; try <= 6; try++ {
+		txByHash, pending, err := ethClient8545.TransactionByHash(context.Background(), signedTx.Hash())
+		if err == nil && !pending && txByHash != nil {
+			found = true
+			break
+		}
+
+		time.Sleep(time.Second)
+	}
+
+	if found {
+		fmt.Println("New contract deployed at:")
+	} else {
+		fmt.Println("Timed-out waiting for tx to be mined, contract may have been deployed.")
+		fmt.Println("Expected contract address:")
+	}
 	fmt.Println(newContractAddress)
 }
