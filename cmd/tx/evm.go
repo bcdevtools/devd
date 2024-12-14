@@ -4,6 +4,9 @@ import (
 	"context"
 	"crypto/ecdsa"
 	"fmt"
+	"os"
+	"strings"
+
 	"github.com/bcdevtools/devd/v2/cmd/utils"
 	"github.com/bcdevtools/devd/v2/constants"
 	"github.com/ethereum/go-ethereum/common"
@@ -11,8 +14,6 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/spf13/cobra"
-	"os"
-	"strings"
 )
 
 func mustGetEthClient(cmd *cobra.Command) (ethClient8545 *ethclient.Client, rpc string) {

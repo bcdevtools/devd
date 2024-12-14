@@ -1,13 +1,14 @@
 package query
 
 import (
-	"github.com/bcdevtools/devd/v2/cmd/types"
-	"github.com/bcdevtools/devd/v2/cmd/utils"
-	"github.com/spf13/cobra"
 	"math/big"
 	"os"
 	"regexp"
 	"strings"
+
+	"github.com/bcdevtools/devd/v2/cmd/types"
+	"github.com/bcdevtools/devd/v2/cmd/utils"
+	"github.com/spf13/cobra"
 )
 
 func GetQueryBlockCommand() *cobra.Command {

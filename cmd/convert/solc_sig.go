@@ -2,12 +2,13 @@ package convert
 
 import (
 	"fmt"
+	"regexp"
+	"strings"
+
 	"github.com/bcdevtools/devd/v2/cmd/utils"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/spf13/cobra"
-	"regexp"
-	"strings"
 )
 
 // GetConvertSolcSignatureCmd creates a helper command that convert EVM method/event into keccak256 hash and 4 bytes signature

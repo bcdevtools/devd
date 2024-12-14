@@ -2,8 +2,9 @@ package types
 
 import (
 	"context"
-	"github.com/bcdevtools/devd/v2/constants"
 	"time"
+
+	"github.com/bcdevtools/devd/v2/constants"
 )
 
 type Context struct {

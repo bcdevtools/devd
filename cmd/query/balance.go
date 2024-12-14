@@ -3,12 +3,13 @@ package query
 import (
 	"context"
 	"fmt"
+	"math/big"
+
 	"github.com/bcdevtools/devd/v2/cmd/utils"
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/spf13/cobra"
-	"math/big"
 )
 
 func GetQueryBalanceCommand() *cobra.Command {

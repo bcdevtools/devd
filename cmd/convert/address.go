@@ -2,14 +2,15 @@ package convert
 
 import (
 	"fmt"
+	"os"
+	"regexp"
+	"strings"
+
 	"github.com/bcdevtools/devd/v2/cmd/utils"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/bech32"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/spf13/cobra"
-	"os"
-	"regexp"
-	"strings"
 )
 
 // GetConvertAddressCmd creates a helper command that convert account bech32 address into hex address or vice versa

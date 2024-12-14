@@ -2,9 +2,10 @@ package types
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/require"
 	"math"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func Benchmark_nextRequestId(b *testing.B) {

@@ -2,9 +2,10 @@ package convert
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/bcdevtools/devd/v2/cmd/utils"
 	"github.com/spf13/cobra"
-	"strings"
 )
 
 // GetConvertToUpperCaseCmd creates a helper command that convert input into upper case

@@ -2,9 +2,10 @@ package utils
 
 import (
 	"fmt"
-	"github.com/ethereum/go-ethereum/common"
 	"math/big"
 	"strings"
+
+	"github.com/ethereum/go-ethereum/common"
 )
 
 func ConvertNumberIntoDisplayWithExponent(number *big.Int, exponent int) (display string, highNumber, lowNumber *big.Int, err error) {

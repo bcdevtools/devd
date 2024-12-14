@@ -2,6 +2,8 @@ package cmd
 
 //goland:noinspection GoSnakeCaseUsage
 import (
+	"os"
+
 	"github.com/bcdevtools/devd/v2/cmd/check"
 	"github.com/bcdevtools/devd/v2/cmd/convert"
 	"github.com/bcdevtools/devd/v2/cmd/debug"
@@ -11,7 +13,6 @@ import (
 	"github.com/bcdevtools/devd/v2/cmd/types"
 	"github.com/bcdevtools/devd/v2/constants"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 // rootCmd represents the base command when called without any subcommands

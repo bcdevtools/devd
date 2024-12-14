@@ -2,11 +2,12 @@ package convert
 
 import (
 	"fmt"
-	"github.com/bcdevtools/devd/v2/cmd/utils"
-	"github.com/spf13/cobra"
 	"math/big"
 	"os"
 	"strconv"
+
+	"github.com/bcdevtools/devd/v2/cmd/utils"
+	"github.com/spf13/cobra"
 )
 
 // GetDisplayBalanceCmd creates a helper command that convert raw balance into display balance

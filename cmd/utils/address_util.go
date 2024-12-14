@@ -3,10 +3,11 @@ package utils
 import (
 	"encoding/hex"
 	"fmt"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/ethereum/go-ethereum/common"
 	"regexp"
 	"strings"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/ethereum/go-ethereum/common"
 )
 
 func GetEvmAddressFromAnyFormatAddress(addrs ...string) (evmAddrs []common.Address, err error) {
