@@ -24,6 +24,7 @@ func Commands() *cobra.Command {
 
 	cmd.AddCommand(
 		GetSendEvmTxCommand(),
+		GetDeployErc20EvmTxCommand(),
 	)
 
 	return cmd
