@@ -76,7 +76,19 @@ devd query debug_traceTransaction [0xHash] [--tracer callTracer] [--rpc http://l
 #### Send EVM transaction
 
 ```bash
-devd tx send [to] [amount] [--rpc http://localhost:8545]
+# Transfer native coin
+devd tx send [to] [amount]
+# Transfer ERC-20 token
+devd tx send [to] [amount] [--erc20 contract_address]
+```
+
+#### Deploy EVM contract
+
+```bash
+# Deploy contract with deployment bytecode
+devd tx deploy-contract [deployment bytecode]
+# Deploy ERC-20 contract with pre-defined bytecode
+devd tx deploy-contract erc20
 ```
 
 ### Convert tools

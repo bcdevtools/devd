@@ -9,6 +9,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/ethereum/go-ethereum/ethclient"
+
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 
@@ -59,7 +61,7 @@ func deployEvmContract(bytecode string, cmd *cobra.Command) {
 	txData := ethtypes.LegacyTx{
 		Nonce:    nonce,
 		GasPrice: big.NewInt(20_000_000_000),
-		Gas:      2_000_000,
+		Gas:      4_000_000,
 		To:       nil,
 		Data:     deploymentBytes,
 		Value:    common.Big0,
@@ -77,27 +79,29 @@ func deployEvmContract(bytecode string, cmd *cobra.Command) {
 	err = signedTx.EncodeRLP(&buf)
 	utils.ExitOnErr(err, "failed to encode tx")
 
+	fmt.Println("Tx hash", signedTx.Hash())
+
 	err = ethClient8545.SendTransaction(context.Background(), signedTx)
 	utils.ExitOnErr(err, "failed to send tx")
 
-	fmt.Println("Tx hash", signedTx.Hash())
-
-	var found bool
-	for try := 1; try <= 6; try++ {
-		txByHash, pending, err := ethClient8545.TransactionByHash(context.Background(), signedTx.Hash())
-		if err == nil && !pending && txByHash != nil {
-			found = true
-			break
-		}
-
-		time.Sleep(time.Second)
-	}
-
-	if found {
+	if tx := waitForEthTx(ethClient8545, signedTx.Hash()); tx != nil {
 		fmt.Println("New contract deployed at:")
 	} else {
 		fmt.Println("Timed-out waiting for tx to be mined, contract may have been deployed.")
 		fmt.Println("Expected contract address:")
 	}
 	fmt.Println(newContractAddress)
+}
+
+func waitForEthTx(ethClient8545 *ethclient.Client, txHash common.Hash) *ethtypes.Transaction {
+	for try := 1; try <= 6; try++ {
+		tx, _, err := ethClient8545.TransactionByHash(context.Background(), txHash)
+		if err == nil && tx != nil {
+			return tx
+		}
+
+		time.Sleep(time.Second)
+	}
+
+	return nil
 }
