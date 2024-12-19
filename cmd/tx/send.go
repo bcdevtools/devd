@@ -106,8 +106,16 @@ func GetSendEvmTxCommand() *cobra.Command {
 			rawTxRLPHex := hex.EncodeToString(buf.Bytes())
 			fmt.Printf("RawTx: 0x%s\n", rawTxRLPHex)
 
+			fmt.Println("Tx hash", signedTx.Hash())
+
 			err = ethClient8545.SendTransaction(context.Background(), signedTx)
 			utils.ExitOnErr(err, "failed to send tx")
+
+			if tx := waitForEthTx(ethClient8545, signedTx.Hash()); tx != nil {
+				fmt.Println("Tx executed successfully")
+			} else {
+				fmt.Println("Timed out waiting for tx to be mined")
+			}
 		},
 	}
 
