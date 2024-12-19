@@ -61,7 +61,7 @@ func deployEvmContract(bytecode string, cmd *cobra.Command) {
 	txData := ethtypes.LegacyTx{
 		Nonce:    nonce,
 		GasPrice: big.NewInt(20_000_000_000),
-		Gas:      2_000_000,
+		Gas:      4_000_000,
 		To:       nil,
 		Data:     deploymentBytes,
 		Value:    common.Big0,
