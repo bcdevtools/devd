@@ -14,6 +14,7 @@ const (
 	flagHeight      = "height"
 	flagNoTranslate = "no-translate"
 	flagErc20       = "erc20"
+	flagFilter      = "filter"
 )
 
 const (
@@ -38,6 +39,7 @@ func Commands() *cobra.Command {
 		GetQueryTraceTxCommand(),
 		GetQueryBalanceCommand(),
 		GetQueryTxsInBlockCommand(),
+		GetQueryTxEventsCommand(),
 	)
 
 	return cmd
