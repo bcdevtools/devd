@@ -34,7 +34,7 @@ _`--erc20` flag, if provided, will attempt to fetch user balance of contracts on
 
 #### Query tx events
 ```bash
-devd query events [hash] [--tm-rpc http://localhost:26657]
+devd query events [hash] [--filter one] [--filter two] [--tm-rpc http://localhost:26657]
 ```
 
 #### Query ERC20 token information
