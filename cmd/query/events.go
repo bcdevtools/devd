@@ -7,32 +7,28 @@ import (
 	"fmt"
 	"github.com/bcdevtools/devd/v2/cmd/utils"
 	acbitypes "github.com/cometbft/cometbft/abci/types"
-	coretypes "github.com/cometbft/cometbft/rpc/core/types"
 	"github.com/spf13/cobra"
 	"golang.org/x/exp/maps"
+	"regexp"
+	"strconv"
 	"strings"
 )
 
 func GetQueryTxEventsCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "events [hash]",
-		Short: "Query tx events by hash",
+		Use:   "events [height/tx hash]",
+		Short: "Query block/tx events",
 		Args:  cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			txHash := args[0]
-
-			txHashType := utils.DetectTxHashType(txHash)
-			if txHashType == utils.TxHashTypeInvalid {
-				utils.PrintlnStdErr("ERR: invalid tx hash format")
-				return
-			}
-
-			isEvmTxHash := txHashType == utils.TxHashTypeEvm
-
+			txHashType := utils.DetectTxHashType(args[0])
 			tendermintRpcHttpClient, _ := mustGetTmRpc(cmd)
 
-			var resultTx *coretypes.ResultTx
-			if isEvmTxHash {
+			var events []acbitypes.Event
+
+			switch txHashType {
+			case utils.TxHashTypeEvm:
+				txHash := args[0]
+
 				resTx, err := tendermintRpcHttpClient.TxSearch(context.Background(), "ethereum_tx.ethereumTxHash='"+txHash+"'", false, nil, nil, "")
 				utils.ExitOnErr(err, "failed to find Cosmos tx by EVM tx hash")
 				if len(resTx.Txs) == 0 {
@@ -40,16 +36,37 @@ func GetQueryTxEventsCommand() *cobra.Command {
 					return
 				}
 
-				resultTx = resTx.Txs[0]
-			} else {
+				events = resTx.Txs[0].TxResult.Events
+			case utils.TxHashTypeCosmos:
+				txHash := args[0]
+
 				txHashBz, err := hex.DecodeString(txHash)
 				utils.ExitOnErr(err, "failed to decode tx hash")
 
-				resultTx, err = tendermintRpcHttpClient.Tx(context.Background(), txHashBz, false)
+				resultTx, err := tendermintRpcHttpClient.Tx(context.Background(), txHashBz, false)
 				utils.ExitOnErr(err, "failed to get tx")
+
+				events = resultTx.TxResult.Events
+			default:
+				if !regexp.MustCompile(`^\d+$`).MatchString(args[0]) {
+					utils.PrintlnStdErr("ERR: input is neither a height nor a tx hash")
+					return
+				}
+
+				height, err := strconv.ParseInt(args[0], 10, 64)
+				utils.ExitOnErr(err, "failed to parse height")
+
+				resultBlockResult, err := tendermintRpcHttpClient.BlockResults(context.Background(), &height)
+				utils.ExitOnErr(err, "failed to get block results")
+
+				events = append(events, resultBlockResult.BeginBlockEvents...)
+				for _, txResult := range resultBlockResult.TxsResults {
+					events = append(events, txResult.Events...)
+				}
+				events = append(events, resultBlockResult.EndBlockEvents...)
 			}
 
-			events := utils.ResolveBase64Events(resultTx.TxResult.Events)
+			events = utils.ResolveBase64Events(events)
 
 			filters, _ := cmd.Flags().GetStringSlice(flagFilter)
 			filters = func() []string {
