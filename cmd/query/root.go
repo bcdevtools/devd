@@ -14,6 +14,7 @@ const (
 	flagHeight      = "height"
 	flagNoTranslate = "no-translate"
 	flagErc20       = "erc20"
+	flagFilter      = "filter"
 )
 
 const (
