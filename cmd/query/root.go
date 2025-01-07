@@ -38,6 +38,7 @@ func Commands() *cobra.Command {
 		GetQueryTraceTxCommand(),
 		GetQueryBalanceCommand(),
 		GetQueryTxsInBlockCommand(),
+		GetQueryTxEventsCommand(),
 	)
 
 	return cmd
