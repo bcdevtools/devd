@@ -36,10 +36,11 @@ _`--erc20` flag, if provided, will attempt to fetch user balance of contracts on
 
 ```bash
 devd query events [height/tx hash] [--filter one] [--filter of_] [--filter these] [--tm-rpc http://localhost:26657]
-# devd q events COS...MOS --filter sig --filter seq_
-# devd q events 0x...evm
+# devd q events COS...MOS -f sig -f seq_
+# devd q events 0x...evm -f txHash
 # devd q events 10000
 ```
+_`--filter` flags, if provided, will accept events those contain at least one provided criteria_
 
 #### Query ERC20 token information
 

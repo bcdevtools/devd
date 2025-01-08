@@ -123,7 +123,7 @@ func GetQueryTxEventsCommand() *cobra.Command {
 	}
 
 	cmd.Flags().String(flagTmRpc, "", flagTmRpcDesc)
-	cmd.Flags().StringSlice(flagFilter, []string{}, "filter events, output only events which contains the filter string. If multiple filters are provided, events that contain one of the filters will be output.")
+	cmd.Flags().StringSliceP(flagFilter, "f", []string{}, "filter events, output only events which contains the filter string. If multiple filters are provided, events that contain one of the filters will be output.")
 
 	return cmd
 }
