@@ -14,6 +14,12 @@ export DEVD_EVM_RPC='https://evm.example.com:8545'
 ```
 _By setting this environment variable, you don't need to pass `--rpc` flag everytime for non-localhost EVM Json-RPC_
 ___
+Lazy TM-RPC setting
+```bash
+export DEVD_TM_RPC='https://rpc.example.com:26657'
+```
+_By setting this environment variable, you don't need to pass `--tm-rpc` flag everytime for non-localhost Tendermint RPC_
+___
 Lazy Rest API setting
 ```bash
 export DEVD_COSMOS_REST='https://ethermint-rest.example.com:1317'
