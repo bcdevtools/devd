@@ -5,13 +5,14 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"regexp"
+	"strconv"
+	"strings"
+
 	"github.com/bcdevtools/devd/v2/cmd/utils"
 	acbitypes "github.com/cometbft/cometbft/abci/types"
 	"github.com/spf13/cobra"
 	"golang.org/x/exp/maps"
-	"regexp"
-	"strconv"
-	"strings"
 )
 
 func GetQueryTxEventsCommand() *cobra.Command {

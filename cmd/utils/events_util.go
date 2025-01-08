@@ -2,8 +2,9 @@ package utils
 
 import (
 	"encoding/base64"
-	acbitypes "github.com/cometbft/cometbft/abci/types"
 	"regexp"
+
+	acbitypes "github.com/cometbft/cometbft/abci/types"
 )
 
 func ResolveBase64Events(events []acbitypes.Event) []acbitypes.Event {
