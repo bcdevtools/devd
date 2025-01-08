@@ -33,9 +33,10 @@ devd query balance [account addr] [optional ERC20 addr..] [--erc20] [--rpc http:
 _`--erc20` flag, if provided, will attempt to fetch user balance of contracts on `x/erc20` module and virtual frontier bank contracts. This request additional Rest-API endpoint provided, or use default 1317._
 
 #### Query block/tx events
+
 ```bash
-devd query events [height/tx hash] [--filter one] [--filter two] [--tm-rpc http://localhost:26657]
-# devd q events COS...MOS
+devd query events [height/tx hash] [--filter one] [--filter of_] [--filter these] [--tm-rpc http://localhost:26657]
+# devd q events COS...MOS --filter sig --filter seq_
 # devd q events 0x...evm
 # devd q events 10000
 ```
