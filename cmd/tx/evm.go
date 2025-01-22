@@ -5,6 +5,7 @@ import (
 	"crypto/ecdsa"
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 
 	"github.com/bcdevtools/devd/v2/cmd/utils"
@@ -64,17 +65,28 @@ func mustSecretEvmAccount(cmd *cobra.Command) (privKey string, ecdsaPrivateKey *
 		os.Exit(1)
 	}
 
-	privKey = strings.TrimPrefix(privKey, "0x")
+	if regexp.MustCompile(`^(0x)?[a-fA-F\d]{64}$`).MatchString(privKey) {
+		// private key
+		privKey = strings.TrimPrefix(privKey, "0x")
 
-	pKeyBytes, err := hexutil.Decode("0x" + privKey)
-	if err != nil {
-		utils.PrintlnStdErr("ERR: failed to decode secret key")
-		os.Exit(1)
-	}
+		pKeyBytes, err := hexutil.Decode("0x" + privKey)
+		if err != nil {
+			utils.PrintlnStdErr("ERR: failed to decode private key")
+			os.Exit(1)
+		}
 
-	ecdsaPrivateKey, err = crypto.ToECDSA(pKeyBytes)
-	if err != nil {
-		utils.PrintlnStdErr("ERR: failed to convert secret key to ECDSA")
+		ecdsaPrivateKey, err = crypto.ToECDSA(pKeyBytes)
+		if err != nil {
+			utils.PrintlnStdErr("ERR: failed to convert private key to ECDSA")
+			os.Exit(1)
+		}
+	} else if mnemonicCount := len(strings.Split(privKey, " ")); mnemonicCount == 12 || mnemonicCount == 24 {
+		// is mnemonic
+		mnemonic := privKey
+		ecdsaPrivateKey, err = utils.FromMnemonicToPrivateKey(mnemonic, "" /*no password protected*/)
+		utils.ExitOnErr(err, "failed to convert mnemonic to private key")
+	} else {
+		utils.PrintlnStdErr("ERR: invalid secret key format")
 		os.Exit(1)
 	}
 

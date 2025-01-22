@@ -12,7 +12,7 @@ const (
 
 const (
 	flagEvmRpcDesc    = "EVM Json-RPC endpoint, default is " + constants.DEFAULT_EVM_RPC + ", can be set by environment variable " + constants.ENV_EVM_RPC
-	flagSecretKeyDesc = "Secret key of the account, can be set by environment variable " + constants.ENV_SECRET_KEY
+	flagSecretKeyDesc = "Secret private key or mnemonic of the account, can be set by environment variable " + constants.ENV_SECRET_KEY
 )
 
 // Commands registers a sub-tree of commands
