@@ -32,8 +32,8 @@ func GetQueryTxCommand() *cobra.Command {
 			utils.ExitOnErr(err, "failed to get transaction by hash")
 
 			bz, err := utils.MarshalPrettyJsonEvmTx(tx, &utils.PrettyMarshalJsonEvmTxOption{
-				InjectFrom:               true,
-				InjectHexTranslatedField: true,
+				InjectFrom:                true,
+				InjectTranslateAbleFields: true,
 			})
 			utils.ExitOnErr(err, "failed to marshal transaction to json")
 

@@ -45,8 +45,8 @@ func DecodeRawEvmTx(rawTx string) (*ethtypes.Transaction, error) {
 }
 
 type PrettyMarshalJsonEvmTxOption struct {
-	InjectFrom               bool
-	InjectHexTranslatedField bool
+	InjectFrom                bool
+	InjectTranslateAbleFields bool
 }
 
 func MarshalPrettyJsonEvmTx(tx *ethtypes.Transaction, option *PrettyMarshalJsonEvmTxOption) ([]byte, error) {
@@ -62,7 +62,7 @@ func MarshalPrettyJsonEvmTx(tx *ethtypes.Transaction, option *PrettyMarshalJsonE
 	}
 
 	if option != nil {
-		if option.InjectHexTranslatedField {
+		if option.InjectTranslateAbleFields {
 			tryInjectHexTranslatedFieldForEvmTx(_map, "chainId")
 			tryInjectHexTranslatedFieldForEvmTx(_map, "gas")
 			tryInjectHexTranslatedFieldForEvmTx(_map, "gasPrice")
@@ -80,6 +80,40 @@ func MarshalPrettyJsonEvmTx(tx *ethtypes.Transaction, option *PrettyMarshalJsonE
 				return nil, err
 			}
 			_map["_from"] = from.String()
+		}
+	}
+
+	return json.MarshalIndent(_map, "", "  ")
+}
+
+type PrettyMarshalJsonEvmTxReceiptOption struct {
+	InjectTranslateAbleFields bool
+}
+
+func MarshalPrettyJsonEvmTxReceipt(receipt *ethtypes.Receipt, option *PrettyMarshalJsonEvmTxReceiptOption) ([]byte, error) {
+	bz, err := receipt.MarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+
+	var _map map[string]interface{}
+	err = json.Unmarshal(bz, &_map)
+	if err != nil {
+		return nil, err
+	}
+
+	if option != nil {
+		if option.InjectTranslateAbleFields {
+			tryInjectTranslatedTypeForEvmTx(_map, "type")
+			if receipt.Status == ethtypes.ReceiptStatusSuccessful {
+				_map["_status"] = "Success"
+			} else {
+				_map["_status"] = "Failed"
+			}
+			tryInjectHexTranslatedFieldForEvmTx(_map, "cumulativeGasUsed")
+			tryInjectHexTranslatedFieldForEvmTx(_map, "gasUsed")
+			tryInjectHexTranslatedFieldForEvmTx(_map, "blockNumber")
+			tryInjectHexTranslatedFieldForEvmTx(_map, "transactionIndex")
 		}
 	}
 

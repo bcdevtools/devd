@@ -26,8 +26,8 @@ func GetDecodeRawEvmTxCommand() *cobra.Command {
 			utils.ExitOnErr(err, "failed to decode into EVM tx")
 
 			bz, err := utils.MarshalPrettyJsonEvmTx(tx, &utils.PrettyMarshalJsonEvmTxOption{
-				InjectFrom:               true,
-				InjectHexTranslatedField: true,
+				InjectFrom:                true,
+				InjectTranslateAbleFields: true,
 			})
 			utils.ExitOnErr(err, "failed to marshal tx to json")
 
