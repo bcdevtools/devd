@@ -2,6 +2,7 @@ package query
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"regexp"
 	"strings"
@@ -30,10 +31,13 @@ func GetQueryTxCommand() *cobra.Command {
 			tx, _, err := ethClient.TransactionByHash(context.Background(), common.HexToHash(input))
 			utils.ExitOnErr(err, "failed to get transaction by hash")
 
-			bz, err := tx.MarshalJSON()
+			bz, err := utils.MarshalPrettyJsonEvmTx(tx, &utils.PrettyMarshalJsonEvmTxOption{
+				InjectFrom:               true,
+				InjectHexTranslatedField: true,
+			})
 			utils.ExitOnErr(err, "failed to marshal transaction to json")
 
-			utils.TryPrintBeautyJson(bz)
+			fmt.Println(string(bz))
 		},
 	}
 
