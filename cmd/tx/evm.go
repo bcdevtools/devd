@@ -48,16 +48,16 @@ func mustGetEthClient(cmd *cobra.Command) (ethClient8545 *ethclient.Client, rpc 
 	return
 }
 
-func mustSecretEvmAccount(cmd *cobra.Command) (privKey string, ecdsaPrivateKey *ecdsa.PrivateKey, ecdsaPubKey *ecdsa.PublicKey, account *common.Address) {
-	var inputSource string
+func mustSecretEvmAccount(cmd *cobra.Command) (ecdsaPrivateKey *ecdsa.PrivateKey, ecdsaPubKey *ecdsa.PublicKey, account *common.Address) {
+	var inputSource, secret string
 	var err error
 	var ok bool
 
 	if secretFromFlag, _ := cmd.Flags().GetString(flagSecretKey); len(secretFromFlag) > 0 {
-		privKey = secretFromFlag
+		secret = secretFromFlag
 		inputSource = "flag"
 	} else if secretFromEnv := os.Getenv(constants.ENV_SECRET_KEY); len(secretFromEnv) > 0 {
-		privKey = secretFromEnv
+		secret = secretFromEnv
 		inputSource = "environment variable"
 	} else {
 		utils.PrintlnStdErr("ERR: secret key is required")
@@ -65,9 +65,9 @@ func mustSecretEvmAccount(cmd *cobra.Command) (privKey string, ecdsaPrivateKey *
 		os.Exit(1)
 	}
 
-	if regexp.MustCompile(`^(0x)?[a-fA-F\d]{64}$`).MatchString(privKey) {
+	if regexp.MustCompile(`^(0x)?[a-fA-F\d]{64}$`).MatchString(secret) {
 		// private key
-		privKey = strings.TrimPrefix(privKey, "0x")
+		privKey := strings.TrimPrefix(secret, "0x")
 
 		pKeyBytes, err := hexutil.Decode("0x" + privKey)
 		if err != nil {
@@ -80,9 +80,9 @@ func mustSecretEvmAccount(cmd *cobra.Command) (privKey string, ecdsaPrivateKey *
 			utils.PrintlnStdErr("ERR: failed to convert private key to ECDSA")
 			os.Exit(1)
 		}
-	} else if mnemonicCount := len(strings.Split(privKey, " ")); mnemonicCount == 12 || mnemonicCount == 24 {
+	} else if mnemonicCount := len(strings.Split(secret, " ")); mnemonicCount == 12 || mnemonicCount == 24 {
 		// is mnemonic
-		mnemonic := privKey
+		mnemonic := secret
 		ecdsaPrivateKey, err = utils.FromMnemonicToPrivateKey(mnemonic, "" /*no password protected*/)
 		utils.ExitOnErr(err, "failed to convert mnemonic to private key")
 	} else {
