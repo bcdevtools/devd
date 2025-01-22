@@ -63,36 +63,14 @@ func MarshalPrettyJsonEvmTx(tx *ethtypes.Transaction, option *PrettyMarshalJsonE
 
 	if option != nil {
 		if option.InjectHexTranslatedField {
-			tryInjectHexTranslatedField := func(name string) {
-				defer func() {
-					_ = recover() // omit any panic
-				}()
-
-				v, found := _map[name]
-				if !found || v == nil {
-					return
-				}
-
-				hexStr, ok := v.(string)
-				if !ok || !strings.HasPrefix(hexStr, "0x") || len(hexStr) < 3 {
-					return
-				}
-				hexStr = hexStr[2:]
-
-				bi, ok := new(big.Int).SetString(hexStr, 16)
-				if !ok {
-					return
-				}
-
-				_map["_"+name] = bi.String()
-			}
-			tryInjectHexTranslatedField("chainId")
-			tryInjectHexTranslatedField("gas")
-			tryInjectHexTranslatedField("gasPrice")
-			tryInjectHexTranslatedField("maxFeePerGas")
-			tryInjectHexTranslatedField("maxPriorityFeePerGas")
-			tryInjectHexTranslatedField("nonce")
-			tryInjectHexTranslatedField("value")
+			tryInjectHexTranslatedFieldForEvmTx(_map, "chainId")
+			tryInjectHexTranslatedFieldForEvmTx(_map, "gas")
+			tryInjectHexTranslatedFieldForEvmTx(_map, "gasPrice")
+			tryInjectHexTranslatedFieldForEvmTx(_map, "maxFeePerGas")
+			tryInjectHexTranslatedFieldForEvmTx(_map, "maxPriorityFeePerGas")
+			tryInjectHexTranslatedFieldForEvmTx(_map, "nonce")
+			tryInjectHexTranslatedFieldForEvmTx(_map, "value")
+			tryInjectTranslatedTypeForEvmTx(_map, "type")
 		}
 
 		if option.InjectFrom {
@@ -106,4 +84,61 @@ func MarshalPrettyJsonEvmTx(tx *ethtypes.Transaction, option *PrettyMarshalJsonE
 	}
 
 	return json.MarshalIndent(_map, "", "  ")
+}
+
+func tryInjectTranslatedTypeForEvmTx(_map map[string]interface{}, key string) {
+	keyTransform := func(key string) string {
+		return "_" + key
+	}
+
+	valueTransform := func(v interface{}) (interface{}, bool) {
+		if v == nil {
+			return nil, false
+		}
+
+		hexStr, ok := v.(string)
+		if !ok || !strings.HasPrefix(hexStr, "0x") || len(hexStr) < 3 {
+			return nil, false
+		}
+
+		switch hexStr {
+		case "0x0":
+			return "Legacy", true
+		case "0x1":
+			return "Access List", true
+		case "0x2":
+			return "Dynamic Fee (EIP-1559)", true
+		default:
+			return nil, false
+		}
+	}
+
+	TryInjectTranslationValueByKey(_map, key, keyTransform, valueTransform)
+}
+
+func tryInjectHexTranslatedFieldForEvmTx(_map map[string]interface{}, key string) {
+	keyTransform := func(key string) string {
+		return "_" + key
+	}
+
+	valueTransform := func(v interface{}) (interface{}, bool) {
+		if v == nil {
+			return nil, false
+		}
+
+		hexStr, ok := v.(string)
+		if !ok || !strings.HasPrefix(hexStr, "0x") || len(hexStr) < 3 {
+			return nil, false
+		}
+		hexStr = hexStr[2:]
+
+		bi, ok := new(big.Int).SetString(hexStr, 16)
+		if !ok {
+			return nil, false
+		}
+
+		return bi.String(), true
+	}
+
+	TryInjectTranslationValueByKey(_map, key, keyTransform, valueTransform)
 }
