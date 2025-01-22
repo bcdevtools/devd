@@ -60,7 +60,7 @@ func GetSendEvmTxCommand() *cobra.Command {
 			display, _, _, err := utils.ConvertNumberIntoDisplayWithExponent(amount, exponent)
 			utils.ExitOnErr(err, "failed to convert amount into display with exponent")
 
-			_, ecdsaPrivateKey, _, from := mustSecretEvmAccount(cmd)
+			ecdsaPrivateKey, _, from := mustSecretEvmAccount(cmd)
 
 			nonce, err := ethClient8545.NonceAt(context.Background(), *from, nil)
 			utils.ExitOnErr(err, "failed to get nonce of sender")

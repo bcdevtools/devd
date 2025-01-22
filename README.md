@@ -25,6 +25,9 @@ Lazy Rest API setting
 export DEVD_COSMOS_REST='https://ethermint-rest.example.com:1317'
 ```
 _By setting this environment variable, you don't need to pass `--rest` flag everytime for non-localhost Rest API_
+___
+Some queries will try to decode some fields in response data into human-readable format
+and inject back into the response data with `_` prefix like EVM tx, receipt, block, trace.
 
 #### Query account balance
 
@@ -189,6 +192,13 @@ devd convert raw_balance [display balance] [exponent] [--decimals-point , or .]
 # > 10011100
 # devd c rbal 10,0111 6 -d ,
 # > 10011100
+```
+
+#### Convert (decode) raw RLP-encoded EVM tx into tx object
+
+```bash
+devd convert decode_raw_tx [raw RLP-encoded EVM tx hex]
+# view inner tx information, including sender address
 ```
 
 ### Hashing tools

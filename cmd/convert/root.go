@@ -24,6 +24,7 @@ func Commands() *cobra.Command {
 		GetEncodeBase64CaseCmd(),
 		GetDisplayBalanceCmd(),
 		GetRawBalanceCmd(),
+		GetDecodeRawEvmTxCommand(),
 	)
 
 	return cmd

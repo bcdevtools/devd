@@ -44,7 +44,7 @@ Predefined bytecode: erc20`,
 func deployEvmContract(bytecode string, cmd *cobra.Command) {
 	ethClient8545, _ := mustGetEthClient(cmd)
 
-	_, ecdsaPrivateKey, _, from := mustSecretEvmAccount(cmd)
+	ecdsaPrivateKey, _, from := mustSecretEvmAccount(cmd)
 
 	nonce, err := ethClient8545.NonceAt(context.Background(), *from, nil)
 	utils.ExitOnErr(err, "failed to get nonce of sender")
