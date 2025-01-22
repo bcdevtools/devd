@@ -2,6 +2,7 @@ package query
 
 import (
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"os"
 	"regexp"
@@ -53,7 +54,17 @@ func GetQueryTraceTxCommand() *cobra.Command {
 			)
 			utils.ExitOnErr(err, "failed to trace transaction")
 
-			utils.TryPrintBeautyJson(bz)
+			traceContentAsMap, err := getResultObjectFromEvmRpcResponse(bz)
+			if err == nil {
+				recursivelyTranslateTraceFrames(traceContentAsMap)
+
+				bz, err = json.Marshal(traceContentAsMap)
+				utils.ExitOnErr(err, "failed to marshal response trace tx")
+
+				utils.TryPrintBeautyJson(bz)
+			} else {
+				utils.TryPrintBeautyJson(bz)
+			}
 
 			if !cmd.Flag(flagNoTranslate).Changed {
 				// try to decode error message if any
@@ -90,4 +101,32 @@ func GetQueryTraceTxCommand() *cobra.Command {
 	cmd.Flags().Bool(flagNoTranslate, false, "do not translate and print EVM revert error message")
 
 	return cmd
+}
+
+func recursivelyTranslateTraceFrames(_map map[string]interface{}) {
+	if _map == nil {
+		return
+	}
+
+	utils.TryInjectTranslatedFieldForEvmRpcObjects(nil, _map, "gas")
+	utils.TryInjectTranslatedFieldForEvmRpcObjects(nil, _map, "gasUsed")
+	utils.TryInjectTranslatedFieldForEvmRpcObjects(nil, _map, "value")
+
+	calls, found := _map["calls"]
+	if !found {
+		return
+	}
+
+	callsArray, ok := calls.([]interface{})
+	if !ok {
+		return
+	}
+
+	for _, call := range callsArray {
+		callAsMap, ok := call.(map[string]interface{})
+		if !ok {
+			continue
+		}
+		recursivelyTranslateTraceFrames(callAsMap)
+	}
 }
