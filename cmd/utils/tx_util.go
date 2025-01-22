@@ -63,14 +63,14 @@ func MarshalPrettyJsonEvmTx(tx *ethtypes.Transaction, option *PrettyMarshalJsonE
 
 	if option != nil {
 		if option.InjectTranslateAbleFields {
-			tryInjectHexTranslatedFieldForEvmRpcObjects(tx, _map, "chainId")
-			tryInjectHexTranslatedFieldForEvmRpcObjects(tx, _map, "gas")
-			tryInjectHexTranslatedFieldForEvmRpcObjects(tx, _map, "gasPrice")
-			tryInjectHexTranslatedFieldForEvmRpcObjects(tx, _map, "maxFeePerGas")
-			tryInjectHexTranslatedFieldForEvmRpcObjects(tx, _map, "maxPriorityFeePerGas")
-			tryInjectHexTranslatedFieldForEvmRpcObjects(tx, _map, "nonce")
-			tryInjectHexTranslatedFieldForEvmRpcObjects(tx, _map, "value")
-			tryInjectHexTranslatedFieldForEvmRpcObjects(tx, _map, "type")
+			TryInjectTranslatedFieldForEvmRpcObjects(tx, _map, "chainId")
+			TryInjectTranslatedFieldForEvmRpcObjects(tx, _map, "gas")
+			TryInjectTranslatedFieldForEvmRpcObjects(tx, _map, "gasPrice")
+			TryInjectTranslatedFieldForEvmRpcObjects(tx, _map, "maxFeePerGas")
+			TryInjectTranslatedFieldForEvmRpcObjects(tx, _map, "maxPriorityFeePerGas")
+			TryInjectTranslatedFieldForEvmRpcObjects(tx, _map, "nonce")
+			TryInjectTranslatedFieldForEvmRpcObjects(tx, _map, "value")
+			TryInjectTranslatedFieldForEvmRpcObjects(tx, _map, "type")
 		}
 
 		if option.InjectFrom {
@@ -104,25 +104,27 @@ func MarshalPrettyJsonEvmTxReceipt(receipt *ethtypes.Receipt, option *PrettyMars
 
 	if option != nil {
 		if option.InjectTranslateAbleFields {
-			tryInjectHexTranslatedFieldForEvmRpcObjects(receipt, _map, "type")
-			tryInjectHexTranslatedFieldForEvmRpcObjects(receipt, _map, "status")
-			tryInjectHexTranslatedFieldForEvmRpcObjects(receipt, _map, "cumulativeGasUsed")
-			tryInjectHexTranslatedFieldForEvmRpcObjects(receipt, _map, "gasUsed")
-			tryInjectHexTranslatedFieldForEvmRpcObjects(receipt, _map, "blockNumber")
-			tryInjectHexTranslatedFieldForEvmRpcObjects(receipt, _map, "transactionIndex")
+			TryInjectTranslatedFieldForEvmRpcObjects(receipt, _map, "type")
+			TryInjectTranslatedFieldForEvmRpcObjects(receipt, _map, "status")
+			TryInjectTranslatedFieldForEvmRpcObjects(receipt, _map, "cumulativeGasUsed")
+			TryInjectTranslatedFieldForEvmRpcObjects(receipt, _map, "gasUsed")
+			TryInjectTranslatedFieldForEvmRpcObjects(receipt, _map, "blockNumber")
+			TryInjectTranslatedFieldForEvmRpcObjects(receipt, _map, "transactionIndex")
 		}
 	}
 
 	return json.MarshalIndent(_map, "", "  ")
 }
 
-func tryInjectHexTranslatedFieldForEvmRpcObjects(originalObject any, _map map[string]interface{}, key string) {
+func TryInjectTranslatedFieldForEvmRpcObjects(originalObject any, _map map[string]interface{}, key string) {
 	var isEvmTx, isEvmTxReceipt bool
-	switch originalObject.(type) {
-	case *ethtypes.Transaction, ethtypes.Transaction:
-		isEvmTx = true
-	case *ethtypes.Receipt, ethtypes.Receipt:
-		isEvmTxReceipt = true
+	if originalObject != nil {
+		switch originalObject.(type) {
+		case *ethtypes.Transaction, ethtypes.Transaction:
+			isEvmTx = true
+		case *ethtypes.Receipt, ethtypes.Receipt:
+			isEvmTxReceipt = true
+		}
 	}
 
 	keyTransform := func(key string) string {

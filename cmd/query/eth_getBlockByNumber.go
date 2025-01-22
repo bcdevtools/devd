@@ -1,6 +1,9 @@
 package query
 
 import (
+	"encoding/json"
+	"fmt"
+	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"math/big"
 	"os"
 	"regexp"
@@ -68,6 +71,22 @@ func GetQueryBlockCommand() *cobra.Command {
 			)
 			utils.ExitOnErr(err, "failed to get block by number")
 
+			blockInfoAsMap, err := getResultObjectFromEvmRpcResponse(bz)
+			if err != nil {
+				utils.TryPrintBeautyJson(bz)
+				return
+			}
+
+			utils.TryInjectTranslatedFieldForEvmRpcObjects(&ethtypes.Block{}, blockInfoAsMap, "baseFeePerGas")
+			utils.TryInjectTranslatedFieldForEvmRpcObjects(&ethtypes.Block{}, blockInfoAsMap, "gasLimit")
+			utils.TryInjectTranslatedFieldForEvmRpcObjects(&ethtypes.Block{}, blockInfoAsMap, "gasUsed")
+			utils.TryInjectTranslatedFieldForEvmRpcObjects(&ethtypes.Block{}, blockInfoAsMap, "number")
+			utils.TryInjectTranslatedFieldForEvmRpcObjects(&ethtypes.Block{}, blockInfoAsMap, "size")
+			utils.TryInjectTranslatedFieldForEvmRpcObjects(&ethtypes.Block{}, blockInfoAsMap, "timestamp")
+
+			bz, err = json.Marshal(blockInfoAsMap)
+			utils.ExitOnErr(err, "failed to marshal response block by number")
+
 			utils.TryPrintBeautyJson(bz)
 		},
 	}
@@ -76,4 +95,21 @@ func GetQueryBlockCommand() *cobra.Command {
 	cmd.Flags().Bool(flagFull, false, "should returns the full transaction objects when this value is true otherwise, it returns only the hashes of the transactions")
 
 	return cmd
+}
+
+func getResultObjectFromEvmRpcResponse(bz []byte) (map[string]interface{}, error) {
+	var _map map[string]interface{}
+	err := json.Unmarshal(bz, &_map)
+	if err != nil {
+		return nil, err
+	}
+	result, found := _map["result"]
+	if !found {
+		return nil, nil
+	}
+	resultAsMap, ok := result.(map[string]interface{})
+	if !ok {
+		return nil, fmt.Errorf("failed to convert into map")
+	}
+	return resultAsMap, nil
 }
