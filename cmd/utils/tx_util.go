@@ -63,14 +63,14 @@ func MarshalPrettyJsonEvmTx(tx *ethtypes.Transaction, option *PrettyMarshalJsonE
 
 	if option != nil {
 		if option.InjectTranslateAbleFields {
-			tryInjectHexTranslatedFieldForEvmTx(_map, "chainId")
-			tryInjectHexTranslatedFieldForEvmTx(_map, "gas")
-			tryInjectHexTranslatedFieldForEvmTx(_map, "gasPrice")
-			tryInjectHexTranslatedFieldForEvmTx(_map, "maxFeePerGas")
-			tryInjectHexTranslatedFieldForEvmTx(_map, "maxPriorityFeePerGas")
-			tryInjectHexTranslatedFieldForEvmTx(_map, "nonce")
-			tryInjectHexTranslatedFieldForEvmTx(_map, "value")
-			tryInjectTranslatedTypeForEvmTx(_map, "type")
+			tryInjectHexTranslatedFieldForEvmRpcObjects(tx, _map, "chainId")
+			tryInjectHexTranslatedFieldForEvmRpcObjects(tx, _map, "gas")
+			tryInjectHexTranslatedFieldForEvmRpcObjects(tx, _map, "gasPrice")
+			tryInjectHexTranslatedFieldForEvmRpcObjects(tx, _map, "maxFeePerGas")
+			tryInjectHexTranslatedFieldForEvmRpcObjects(tx, _map, "maxPriorityFeePerGas")
+			tryInjectHexTranslatedFieldForEvmRpcObjects(tx, _map, "nonce")
+			tryInjectHexTranslatedFieldForEvmRpcObjects(tx, _map, "value")
+			tryInjectHexTranslatedFieldForEvmRpcObjects(tx, _map, "type")
 		}
 
 		if option.InjectFrom {
@@ -104,23 +104,27 @@ func MarshalPrettyJsonEvmTxReceipt(receipt *ethtypes.Receipt, option *PrettyMars
 
 	if option != nil {
 		if option.InjectTranslateAbleFields {
-			tryInjectTranslatedTypeForEvmTx(_map, "type")
-			if receipt.Status == ethtypes.ReceiptStatusSuccessful {
-				_map["_status"] = "Success"
-			} else {
-				_map["_status"] = "Failed"
-			}
-			tryInjectHexTranslatedFieldForEvmTx(_map, "cumulativeGasUsed")
-			tryInjectHexTranslatedFieldForEvmTx(_map, "gasUsed")
-			tryInjectHexTranslatedFieldForEvmTx(_map, "blockNumber")
-			tryInjectHexTranslatedFieldForEvmTx(_map, "transactionIndex")
+			tryInjectHexTranslatedFieldForEvmRpcObjects(receipt, _map, "type")
+			tryInjectHexTranslatedFieldForEvmRpcObjects(receipt, _map, "status")
+			tryInjectHexTranslatedFieldForEvmRpcObjects(receipt, _map, "cumulativeGasUsed")
+			tryInjectHexTranslatedFieldForEvmRpcObjects(receipt, _map, "gasUsed")
+			tryInjectHexTranslatedFieldForEvmRpcObjects(receipt, _map, "blockNumber")
+			tryInjectHexTranslatedFieldForEvmRpcObjects(receipt, _map, "transactionIndex")
 		}
 	}
 
 	return json.MarshalIndent(_map, "", "  ")
 }
 
-func tryInjectTranslatedTypeForEvmTx(_map map[string]interface{}, key string) {
+func tryInjectHexTranslatedFieldForEvmRpcObjects(originalObject any, _map map[string]interface{}, key string) {
+	var isEvmTx, isEvmTxReceipt bool
+	switch originalObject.(type) {
+	case *ethtypes.Transaction, ethtypes.Transaction:
+		isEvmTx = true
+	case *ethtypes.Receipt, ethtypes.Receipt:
+		isEvmTxReceipt = true
+	}
+
 	keyTransform := func(key string) string {
 		return "_" + key
 	}
@@ -131,37 +135,35 @@ func tryInjectTranslatedTypeForEvmTx(_map map[string]interface{}, key string) {
 		}
 
 		hexStr, ok := v.(string)
-		if !ok || !strings.HasPrefix(hexStr, "0x") || len(hexStr) < 3 {
+		if !ok {
 			return nil, false
 		}
 
-		switch hexStr {
-		case "0x0":
-			return "Legacy", true
-		case "0x1":
-			return "Access List", true
-		case "0x2":
-			return "Dynamic Fee (EIP-1559)", true
-		default:
-			return nil, false
-		}
-	}
-
-	TryInjectTranslationValueByKey(_map, key, keyTransform, valueTransform)
-}
-
-func tryInjectHexTranslatedFieldForEvmTx(_map map[string]interface{}, key string) {
-	keyTransform := func(key string) string {
-		return "_" + key
-	}
-
-	valueTransform := func(v interface{}) (interface{}, bool) {
-		if v == nil {
-			return nil, false
+		if key == "type" && (isEvmTx || isEvmTxReceipt) {
+			switch hexStr {
+			case "0x0":
+				return "Legacy", true
+			case "0x1":
+				return "Access List", true
+			case "0x2":
+				return "Dynamic Fee (EIP-1559)", true
+			default:
+				return nil, false
+			}
 		}
 
-		hexStr, ok := v.(string)
-		if !ok || !strings.HasPrefix(hexStr, "0x") || len(hexStr) < 3 {
+		if key == "status" && isEvmTxReceipt {
+			switch hexStr {
+			case "0x0":
+				return "Failed", true
+			case "0x1":
+				return "Success", true
+			default:
+				return nil, false
+			}
+		}
+
+		if !strings.HasPrefix(hexStr, "0x") || len(hexStr) < 3 {
 			return nil, false
 		}
 		hexStr = hexStr[2:]
