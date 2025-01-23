@@ -121,39 +121,40 @@ func ReadCustomInteger(input string) (out *big.Int, err error) {
 		return
 	}
 
-	if regexp.MustCompile(`^\d+[kmb]+$`).MatchString(positiveInput) {
-		finalMultiplier := big.NewInt(1)
-		var base *big.Int
+	if regexp.MustCompile(`^\d+(\.\d+)?[kmb]+$`).MatchString(positiveInput) {
+		var base *big.Float
+		suffixMultiplier := big.NewInt(1)
 		for true {
 			if strings.HasSuffix(positiveInput, "k") {
-				finalMultiplier = new(big.Int).Mul(finalMultiplier, big.NewInt(1_000))
+				suffixMultiplier = new(big.Int).Mul(suffixMultiplier, big.NewInt(1_000))
 				positiveInput = strings.TrimSuffix(positiveInput, "k")
 				continue
 			}
 
 			if strings.HasSuffix(positiveInput, "m") {
-				finalMultiplier = new(big.Int).Mul(finalMultiplier, big.NewInt(1_000_000))
+				suffixMultiplier = new(big.Int).Mul(suffixMultiplier, big.NewInt(1_000_000))
 				positiveInput = strings.TrimSuffix(positiveInput, "m")
 				continue
 			}
 
 			if strings.HasSuffix(positiveInput, "b") {
-				finalMultiplier = new(big.Int).Mul(finalMultiplier, big.NewInt(1_000_000_000))
+				suffixMultiplier = new(big.Int).Mul(suffixMultiplier, big.NewInt(1_000_000_000))
 				positiveInput = strings.TrimSuffix(positiveInput, "b")
 				continue
 			}
 
 			var ok bool
-			base, ok = new(big.Int).SetString(positiveInput, 10)
+			base, ok = new(big.Float).SetString(positiveInput)
 			if !ok {
-				err = fmt.Errorf("unexpected error, cannot read integer from %s", positiveInput)
+				err = fmt.Errorf("unexpected error, cannot read number from %s", positiveInput)
 				return
 			}
 
 			break
 		}
 
-		out = new(big.Int).Mul(base, finalMultiplier)
+		result := new(big.Float).Mul(base, new(big.Float).SetInt(suffixMultiplier))
+		out, _ = result.Int(nil)
 		return
 	}
 
