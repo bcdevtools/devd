@@ -2,7 +2,9 @@ package utils
 
 import (
 	"fmt"
+	"math/big"
 	"os"
+	"regexp"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -75,5 +77,86 @@ func tryReadPipe() (dataFromPipe string, err error) {
 		}
 	}
 
+	return
+}
+
+func ReadCustomInteger(input string) (out *big.Int, err error) {
+	normalizedInput := strings.ToLower(strings.TrimSpace(input))
+
+	negative := strings.HasPrefix(normalizedInput, "-")
+	defer func() {
+		if negative {
+			out = out.Neg(out)
+		}
+	}()
+
+	positiveInput := strings.TrimPrefix(normalizedInput, "-")
+
+	if regexp.MustCompile(`^\d+$`).MatchString(positiveInput) { // general format
+		bi, ok := new(big.Int).SetString(positiveInput, 10)
+		if !ok {
+			err = fmt.Errorf("unexpected error, cannot read integer from %s", normalizedInput)
+			return
+		}
+		out = bi
+		return
+	}
+
+	if regexp.MustCompile(`^\d+e\d+$`).MatchString(positiveInput) { // scientific notation
+		parts := strings.Split(positiveInput, "e")
+
+		base, ok := new(big.Int).SetString(parts[0], 10)
+		if !ok {
+			err = fmt.Errorf("unexpected error, cannot read integer from base %s", parts[0])
+			return
+		}
+
+		exp, ok := new(big.Int).SetString(parts[1], 10)
+		if !ok {
+			err = fmt.Errorf("unexpected error, cannot read integer from exponent %s", parts[1])
+			return
+		}
+
+		out = new(big.Int).Exp(base, exp, nil)
+		return
+	}
+
+	if regexp.MustCompile(`^\d+[kmb]+$`).MatchString(positiveInput) {
+		finalMultiplier := big.NewInt(1)
+		var base *big.Int
+		for true {
+			if strings.HasSuffix(positiveInput, "k") {
+				finalMultiplier = new(big.Int).Mul(finalMultiplier, big.NewInt(1_000))
+				positiveInput = strings.TrimSuffix(positiveInput, "k")
+				continue
+			}
+
+			if strings.HasSuffix(positiveInput, "m") {
+				finalMultiplier = new(big.Int).Mul(finalMultiplier, big.NewInt(1_000_000))
+				positiveInput = strings.TrimSuffix(positiveInput, "m")
+				continue
+			}
+
+			if strings.HasSuffix(positiveInput, "b") {
+				finalMultiplier = new(big.Int).Mul(finalMultiplier, big.NewInt(1_000_000_000))
+				positiveInput = strings.TrimSuffix(positiveInput, "b")
+				continue
+			}
+
+			var ok bool
+			base, ok = new(big.Int).SetString(positiveInput, 10)
+			if !ok {
+				err = fmt.Errorf("unexpected error, cannot read integer from %s", positiveInput)
+				return
+			}
+
+			break
+		}
+
+		out = new(big.Int).Mul(base, finalMultiplier)
+		return
+	}
+
+	err = fmt.Errorf("unexpected error, unrecorgnized format: %s", normalizedInput)
 	return
 }
