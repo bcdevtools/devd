@@ -36,16 +36,28 @@ func TestReadCustomInteger(t *testing.T) {
 			wantOut: "23000",
 		},
 		{
+			input:   "23.1k",
+			wantOut: "23100",
+		},
+		{
 			input:   "23m",
 			wantOut: "23000000",
+		},
+		{
+			input:   "23.001m",
+			wantOut: "23001000",
 		},
 		{
 			input:   "23b",
 			wantOut: "23000000000",
 		},
 		{
-			input:   "-35b",
-			wantOut: "-35000000000",
+			input:   "23.123456b",
+			wantOut: "23123456000",
+		},
+		{
+			input:   "-35.123456b",
+			wantOut: "-35123456000",
 		},
 		{
 			input:   "53kb",
@@ -58,6 +70,14 @@ func TestReadCustomInteger(t *testing.T) {
 		{
 			input:   "53bb",
 			wantOut: "53000000000000000000",
+		},
+		{
+			input:   "53.001bb",
+			wantOut: "53001000000000000000",
+		},
+		{
+			input:   "-53.001bb",
+			wantOut: "-53001000000000000000",
 		},
 		{
 			input:   "53kbb",
