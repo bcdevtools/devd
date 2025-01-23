@@ -14,14 +14,14 @@ const (
 	flagRpc       = "rpc"
 	flagSecretKey = "secret-key"
 	flagGasLimit  = "gas"
-	flagGasPrice  = "gas-price"
+	flagGasPrices = "gas-prices"
 )
 
 const (
 	flagEvmRpcDesc    = "EVM Json-RPC endpoint, default is " + constants.DEFAULT_EVM_RPC + ", can be set by environment variable " + constants.ENV_EVM_RPC
 	flagSecretKeyDesc = "Secret private key or mnemonic of the account, can be set by environment variable " + constants.ENV_SECRET_KEY
 	flagGasLimitDesc  = "Gas limit for the transaction, support custom unit (eg: 1m equals to one million, 21k equals to thousand)"
-	flagGasPriceDesc  = "Gas price for the transaction, support custom unit (eg: both 20b and 20g(wei) equals to twenty billion)"
+	flagGasPricesDesc = "Gas prices for the transaction, support custom unit (eg: both 20b and 20g(wei) equals to twenty billion)"
 )
 
 // Commands registers a sub-tree of commands
@@ -40,23 +40,33 @@ func Commands() *cobra.Command {
 	return cmd
 }
 
-func readGasPrice(cmd *cobra.Command) (*big.Int, error) {
-	gasPrice, _ := cmd.Flags().GetString(flagGasPrice)
-	if gasPrice == "" {
-		gasPrice = "20b"
+func readGasPrices(cmd *cobra.Command) (*big.Int, error) {
+	gasPrices, _ := cmd.Flags().GetString(flagGasPrices)
+	if gasPrices == "" {
+		gasPrices = "20b"
 	}
 
-	if regexp.MustCompile(`^\d+g$`).MatchString(gasPrice) {
-		gasPrice = strings.TrimSuffix(gasPrice, "g")
-		bi, ok := new(big.Int).SetString(gasPrice, 10)
+	if regexp.MustCompile(`^\d+g$`).MatchString(gasPrices) {
+		gasPrices = strings.TrimSuffix(gasPrices, "g")
+		bi, ok := new(big.Int).SetString(gasPrices, 10)
 		if !ok {
-			panic("failed to parse gas price")
+			panic("failed to parse gas prices")
 		}
 		bi = new(big.Int).Mul(bi, big.NewInt(1e9))
 		return bi, nil
 	}
 
-	bi, err := utils.ReadCustomInteger(gasPrice)
+	if regexp.MustCompile(`^\d+gwei$`).MatchString(gasPrices) {
+		gasPrices = strings.TrimSuffix(gasPrices, "gwei")
+		bi, ok := new(big.Int).SetString(gasPrices, 10)
+		if !ok {
+			panic("failed to parse gas prices")
+		}
+		bi = new(big.Int).Mul(bi, big.NewInt(1e9))
+		return bi, nil
+	}
+
+	bi, err := utils.ReadCustomInteger(gasPrices)
 	if err != nil {
 		return nil, err
 	}
