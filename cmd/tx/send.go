@@ -39,9 +39,14 @@ func GetSendEvmTxCommand() *cobra.Command {
 			}
 
 			receiverAddr := evmAddrs[0]
-			amount, ok := new(big.Int).SetString(args[1], 10)
-			if !ok {
-				utils.ExitOnErr(fmt.Errorf("invalid amount %s", args[1]), "failed to parse amount")
+
+			amount, err := utils.ReadCustomInteger(args[1])
+			if err != nil {
+				var ok bool
+				amount, ok = new(big.Int).SetString(args[1], 10)
+				if !ok {
+					utils.ExitOnErr(fmt.Errorf("invalid amount %s", args[1]), "failed to parse amount")
+				}
 			}
 
 			var exponent int

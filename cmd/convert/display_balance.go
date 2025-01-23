@@ -23,10 +23,14 @@ Sample: 10011100 with 6 exponent => 10.0111`,
 			rawBalanceStr := args[0]
 			decimalsStr := args[1]
 
-			balance, ok := new(big.Int).SetString(rawBalanceStr, 10)
-			if !ok {
-				utils.PrintlnStdErr("ERR: failed to read, raw balance is not a number")
-				os.Exit(1)
+			balance, err := utils.ReadCustomInteger(rawBalanceStr)
+			if err != nil {
+				var ok bool
+				balance, ok = new(big.Int).SetString(rawBalanceStr, 10)
+				if !ok {
+					utils.PrintlnStdErr("ERR: failed to read, raw balance is not a number")
+					os.Exit(1)
+				}
 			}
 
 			decimals, err := strconv.ParseInt(decimalsStr, 10, 64)
