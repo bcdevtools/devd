@@ -24,11 +24,16 @@ Support pipe.`,
 
 			input := strings.ToLower(args[0])
 
-			bi, ok := new(big.Int).SetString(input, 10)
-			if !ok {
-				utils.PrintlnStdErr("ERR: failed to convert decimal to hexadecimal")
-				os.Exit(1)
+			bi, err := utils.ReadCustomInteger(input)
+			if err != nil {
+				var ok bool
+				bi, ok = new(big.Int).SetString(input, 10)
+				if !ok {
+					utils.PrintlnStdErr("ERR: failed to convert decimal to hexadecimal")
+					os.Exit(1)
+				}
 			}
+
 			fmt.Printf("0x%x\n", bi)
 		},
 	}
