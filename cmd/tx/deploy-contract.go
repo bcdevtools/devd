@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
-	"math/big"
 	"strings"
 	"time"
 
@@ -37,6 +36,8 @@ Predefined bytecode: erc20`,
 
 	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
 	cmd.Flags().String(flagSecretKey, "", flagSecretKeyDesc)
+	cmd.Flags().String(flagGasLimit, "4m", flagGasLimitDesc)
+	cmd.Flags().String(flagGasPrices, "20b", flagGasPricesDesc)
 
 	return cmd
 }
@@ -45,6 +46,12 @@ func deployEvmContract(bytecode string, cmd *cobra.Command) {
 	ethClient8545, _ := mustGetEthClient(cmd)
 
 	ecdsaPrivateKey, _, from := mustSecretEvmAccount(cmd)
+
+	gasPrices, err := readGasPrices(cmd)
+	utils.ExitOnErr(err, "failed to parse gas price")
+
+	gasLimit, err := readGasLimit(cmd)
+	utils.ExitOnErr(err, "failed to parse gas limit")
 
 	nonce, err := ethClient8545.NonceAt(context.Background(), *from, nil)
 	utils.ExitOnErr(err, "failed to get nonce of sender")
@@ -60,8 +67,8 @@ func deployEvmContract(bytecode string, cmd *cobra.Command) {
 
 	txData := ethtypes.LegacyTx{
 		Nonce:    nonce,
-		GasPrice: big.NewInt(20_000_000_000),
-		Gas:      4_000_000,
+		GasPrice: gasPrices,
+		Gas:      gasLimit,
 		To:       nil,
 		Data:     deploymentBytes,
 		Value:    common.Big0,

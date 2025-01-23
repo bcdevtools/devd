@@ -25,6 +25,12 @@ func GetSendEvmTxCommand() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			ethClient8545, _ := mustGetEthClient(cmd)
 
+			gasPrices, err := readGasPrices(cmd)
+			utils.ExitOnErr(err, "failed to parse gas price")
+
+			gasLimit, err := readGasLimit(cmd)
+			utils.ExitOnErr(err, "failed to parse gas limit")
+
 			evmAddrs, err := utils.GetEvmAddressFromAnyFormatAddress(args[0])
 			utils.ExitOnErr(err, "failed to get evm address from input")
 
@@ -81,16 +87,19 @@ func GetSendEvmTxCommand() *cobra.Command {
 
 				txData = ethtypes.LegacyTx{
 					Nonce:    nonce,
-					GasPrice: big.NewInt(20_000_000_000),
-					Gas:      500_000,
+					GasPrice: gasPrices,
+					Gas:      gasLimit,
 					To:       pErc20ContractAddress,
 					Value:    big.NewInt(0),
 					Data:     data,
 				}
 			} else {
+				if gasLimit > 21000 {
+					utils.PrintfStdErr("WARN: setting gas limit by flag --%s will be ignored, ony use 21,000 gas\n", flagGasLimit)
+				}
 				txData = ethtypes.LegacyTx{
 					Nonce:    nonce,
-					GasPrice: big.NewInt(20_000_000_000),
+					GasPrice: gasPrices,
 					Gas:      21000,
 					To:       &receiverAddr,
 					Value:    amount,
@@ -127,6 +136,8 @@ func GetSendEvmTxCommand() *cobra.Command {
 	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
 	cmd.Flags().String(flagSecretKey, "", flagSecretKeyDesc)
 	cmd.Flags().String(flagErc20, "", "contract address if you want to send ERC-20 token instead of native coin")
+	cmd.Flags().String(flagGasLimit, "500k", fmt.Sprintf("%s. Ignored during normal EVM transfer, fixed to 21k", flagGasLimitDesc))
+	cmd.Flags().String(flagGasPrices, "20b", flagGasPricesDesc)
 
 	return cmd
 }

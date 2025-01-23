@@ -107,7 +107,7 @@ _Support custom integer like 10e18, 2k, 3m, 4b, 5kb,...: devd tx send [to] [10e1
 
 ```bash
 # Deploy contract with deployment bytecode
-devd tx deploy-contract [deployment bytecode]
+devd tx deploy-contract [deployment bytecode] [--gas 4m] [--gas-prices 20b]
 # Deploy ERC-20 contract with pre-defined bytecode
 devd tx deploy-contract erc20
 ```
