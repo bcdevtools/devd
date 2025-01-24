@@ -1,26 +1,32 @@
-package tx
+package flags
 
 import (
 	"crypto/ecdsa"
-	"fmt"
-	"os"
-	"regexp"
-	"strings"
-
 	"github.com/bcdevtools/devd/v3/cmd/utils"
 	"github.com/bcdevtools/devd/v3/constants"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/spf13/cobra"
+	"os"
+	"regexp"
+	"strings"
 )
 
-func mustSecretEvmAccount(cmd *cobra.Command) (ecdsaPrivateKey *ecdsa.PrivateKey, ecdsaPubKey *ecdsa.PublicKey, account *common.Address) {
+const (
+	FlagSecretKey = "secret-key"
+)
+
+const (
+	FlagSecretKeyDesc = "Secret private key or mnemonic of the account, can be set by environment variable " + constants.ENV_SECRET_KEY
+)
+
+func MustSecretEvmAccount(cmd *cobra.Command) (ecdsaPrivateKey *ecdsa.PrivateKey, ecdsaPubKey *ecdsa.PublicKey, account *common.Address) {
 	var inputSource, secret string
 	var err error
 	var ok bool
 
-	if secretFromFlag, _ := cmd.Flags().GetString(flagSecretKey); len(secretFromFlag) > 0 {
+	if secretFromFlag, _ := cmd.Flags().GetString(FlagSecretKey); len(secretFromFlag) > 0 {
 		secret = secretFromFlag
 		inputSource = "flag"
 	} else if secretFromEnv := os.Getenv(constants.ENV_SECRET_KEY); len(secretFromEnv) > 0 {
@@ -28,7 +34,7 @@ func mustSecretEvmAccount(cmd *cobra.Command) (ecdsaPrivateKey *ecdsa.PrivateKey
 		inputSource = "environment variable"
 	} else {
 		utils.PrintlnStdErr("ERR: secret key is required")
-		utils.PrintfStdErr("ERR: secret key can be set by flag '--%s <your_secret_key>' or environment variable 'export %s=<your_secret_key>'.\n", flagSecretKey, constants.ENV_SECRET_KEY)
+		utils.PrintfStdErr("ERR: secret key can be set by flag '--%s <your_secret_key>' or environment variable 'export %s=<your_secret_key>'.\n", FlagSecretKey, constants.ENV_SECRET_KEY)
 		os.Exit(1)
 	}
 
@@ -67,7 +73,7 @@ func mustSecretEvmAccount(cmd *cobra.Command) (ecdsaPrivateKey *ecdsa.PrivateKey
 	fromAddress := crypto.PubkeyToAddress(*ecdsaPubKey)
 	account = &fromAddress
 
-	fmt.Println("Account Address:", account.Hex(), "(from", inputSource, ")")
+	utils.PrintlnStdErr("INF: Account Address:", account.Hex(), "(from", inputSource, ")")
 
 	return
 }

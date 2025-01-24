@@ -37,7 +37,7 @@ Predefined bytecode: erc20`,
 	}
 
 	cmd.Flags().String(flags.FlagEvmRpc, "", flags.FlagEvmRpcDesc)
-	cmd.Flags().String(flagSecretKey, "", flagSecretKeyDesc)
+	cmd.Flags().String(flags.FlagSecretKey, "", flags.FlagSecretKeyDesc)
 	cmd.Flags().String(flagGasLimit, "4m", flagGasLimitDesc)
 	cmd.Flags().String(flagGasPrices, "20b", flagGasPricesDesc)
 
@@ -47,7 +47,7 @@ Predefined bytecode: erc20`,
 func deployEvmContract(bytecode string, cmd *cobra.Command) {
 	ethClient8545, _ := flags.MustGetEthClient(cmd)
 
-	ecdsaPrivateKey, _, from := mustSecretEvmAccount(cmd)
+	ecdsaPrivateKey, _, from := flags.MustSecretEvmAccount(cmd)
 
 	gasPrices, err := readGasPrices(cmd)
 	utils.ExitOnErr(err, "failed to parse gas price")

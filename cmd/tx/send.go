@@ -73,7 +73,7 @@ func GetSendEvmTxCommand() *cobra.Command {
 			display, _, _, err := utils.ConvertNumberIntoDisplayWithExponent(amount, exponent)
 			utils.ExitOnErr(err, "failed to convert amount into display with exponent")
 
-			ecdsaPrivateKey, _, from := mustSecretEvmAccount(cmd)
+			ecdsaPrivateKey, _, from := flags.MustSecretEvmAccount(cmd)
 
 			nonce, err := ethClient8545.NonceAt(context.Background(), *from, nil)
 			utils.ExitOnErr(err, "failed to get nonce of sender")
@@ -136,7 +136,7 @@ func GetSendEvmTxCommand() *cobra.Command {
 	}
 
 	cmd.Flags().String(flags.FlagEvmRpc, "", flags.FlagEvmRpcDesc)
-	cmd.Flags().String(flagSecretKey, "", flagSecretKeyDesc)
+	cmd.Flags().String(flags.FlagSecretKey, "", flags.FlagSecretKeyDesc)
 	cmd.Flags().String(flagErc20, "", "contract address if you want to send ERC-20 token instead of native coin")
 	cmd.Flags().String(flagGasLimit, "500k", fmt.Sprintf("%s. Ignored during normal EVM transfer, fixed to 21k", flagGasLimitDesc))
 	cmd.Flags().String(flagGasPrices, "20b", flagGasPricesDesc)

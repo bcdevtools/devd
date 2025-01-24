@@ -20,7 +20,7 @@ func GetDeployErc20EvmTxCommand() *cobra.Command {
 	}
 
 	cmd.Flags().String(flags.FlagEvmRpc, "", flags.FlagEvmRpcDesc)
-	cmd.Flags().String(flagSecretKey, "", flagSecretKeyDesc)
+	cmd.Flags().String(flags.FlagSecretKey, "", flags.FlagSecretKeyDesc)
 	cmd.Flags().String(flagGasLimit, "4m", flagGasLimitDesc)
 	cmd.Flags().String(flagGasPrices, "20b", flagGasPricesDesc)
 
