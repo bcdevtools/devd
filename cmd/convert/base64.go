@@ -32,7 +32,7 @@ Support pipe.`, flagDecode),
 				fmt.Println(string(data))
 			} else {
 				utils.RequireArgs(args, cmd)
-				utils.PrintlnStdErr("INF: encoding base64")
+				utils.PrintfStdErr("INF: encoding base64 (use --%s to decode)\n", flagDecode)
 				fmt.Println(base64.StdEncoding.EncodeToString([]byte(strings.Join(args, " "))))
 			}
 		},

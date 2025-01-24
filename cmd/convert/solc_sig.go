@@ -39,9 +39,13 @@ Output will be 4 lines:
 				solcSig = _4BytesSig
 			}
 
+			utils.PrintlnStdErr("INF: Type")
 			fmt.Println(_type)
+			utils.PrintlnStdErr("INF: Final Interface")
 			fmt.Println(finalInterface)
+			utils.PrintlnStdErr("INF: Hash")
 			fmt.Println(hash.Hex())
+			utils.PrintlnStdErr("INF: Signature")
 			fmt.Println(solcSig)
 		},
 	}
@@ -52,6 +56,7 @@ Output will be 4 lines:
 func getSignatureFromInterface(_interface string) (_4BytesSig string, hash common.Hash, finalInterface string, err error) {
 	_interface = normalizeEvmEventOrMethodInterface(_interface)
 
+	utils.PrintlnStdErr("INF: Interface")
 	fmt.Println(_interface)
 
 	if !regexp.MustCompile(`^\w+\s*\(.+\)$`).MatchString(_interface) {

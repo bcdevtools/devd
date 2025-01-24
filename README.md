@@ -152,16 +152,18 @@ devd convert solc-sig [event/method signature]
 # devd c solc-sig 'event Transfer(address indexed from, address indexed to, uint256 value);'
 ```
 
-#### Convert input into upper/lower case
+#### Convert input into lower/upper case
 
 ***Support pipe***
 ```bash
-devd convert to-lower-case [input]
-# devd c lowercase AA
-# echo AA | devd c lowercase
-devd convert to-upper-case [input]
-# devd c uppercase aa
-# echo aa | devd c uppercase
+devd convert case [input]
+# devd c case AA
+# echo AA | devd c case
+# > aa
+devd convert case [input] --upper
+# devd c case aa
+# echo aa | devd c case --upper
+# > AA
 ```
 
 #### Encode/Decode base64
