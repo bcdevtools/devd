@@ -3,6 +3,7 @@ package query
 import (
 	"context"
 	"fmt"
+	"github.com/bcdevtools/devd/v3/cmd/flags"
 	"os"
 	"regexp"
 	"strings"
@@ -19,7 +20,7 @@ func GetQueryTxCommand() *cobra.Command {
 		Short:   "eth_getTransactionByHash",
 		Args:    cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			ethClient, _ := mustGetEthClient(cmd, false)
+			ethClient, _ := flags.MustGetEthClient(cmd)
 
 			input := strings.ToLower(args[0])
 
@@ -41,7 +42,7 @@ func GetQueryTxCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagEvmRpc, "", flagEvmRpcDesc)
+	cmd.Flags().String(flags.FlagEvmRpc, "", flags.FlagEvmRpcDesc)
 
 	return cmd
 }

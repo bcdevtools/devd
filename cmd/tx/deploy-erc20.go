@@ -1,6 +1,7 @@
 package tx
 
 import (
+	"github.com/bcdevtools/devd/v3/cmd/flags"
 	"github.com/spf13/cobra"
 )
 
@@ -18,7 +19,7 @@ func GetDeployErc20EvmTxCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagEvmRpc, "", flagEvmRpcDesc)
+	cmd.Flags().String(flags.FlagEvmRpc, "", flags.FlagEvmRpcDesc)
 	cmd.Flags().String(flagSecretKey, "", flagSecretKeyDesc)
 	cmd.Flags().String(flagGasLimit, "4m", flagGasLimitDesc)
 	cmd.Flags().String(flagGasPrices, "20b", flagGasPricesDesc)

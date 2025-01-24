@@ -3,6 +3,7 @@ package query
 import (
 	"context"
 	"fmt"
+	"github.com/bcdevtools/devd/v3/cmd/flags"
 	"math/big"
 
 	"github.com/bcdevtools/devd/v3/cmd/utils"
@@ -10,6 +11,10 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/spf13/cobra"
+)
+
+const (
+	flagErc20 = "erc20"
 )
 
 func GetQueryBalanceCommand() *cobra.Command {
@@ -25,12 +30,12 @@ func GetQueryBalanceCommand() *cobra.Command {
 				return
 			}
 
-			ethClient8545, _ := mustGetEthClient(cmd, false)
+			ethClient8545, _ := flags.MustGetEthClient(cmd)
 			var restApiEndpoint string
 
 			fetchErc20ModuleAndVfbc := cmd.Flags().Changed(flagErc20)
 			if fetchErc20ModuleAndVfbc {
-				restApiEndpoint = mustGetRest(cmd)
+				restApiEndpoint = flags.MustGetCosmosRest(cmd)
 			}
 
 			contextHeight := readContextHeightFromFlag(cmd)
@@ -123,8 +128,8 @@ func GetQueryBalanceCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagEvmRpc, "", flagEvmRpcDesc)
-	cmd.Flags().String(flagRest, "", flagCosmosRestDesc)
+	cmd.Flags().String(flags.FlagEvmRpc, "", flags.FlagEvmRpcDesc)
+	cmd.Flags().String(flags.FlagCosmosRest, "", flags.FlagCosmosRestDesc)
 	cmd.Flags().Int64(flagHeight, 0, "query balance at specific height")
 	cmd.Flags().Bool(flagErc20, false, "query balance of ERC-20 contracts of `x/erc20` module and virtual frontier bank contracts")
 

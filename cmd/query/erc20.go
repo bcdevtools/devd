@@ -3,6 +3,7 @@ package query
 import (
 	"context"
 	"fmt"
+	"github.com/bcdevtools/devd/v3/cmd/flags"
 	"math/big"
 
 	"github.com/bcdevtools/devd/v3/cmd/utils"
@@ -17,7 +18,7 @@ func GetQueryErc20Command() *cobra.Command {
 		Short: "Get ERC-20 token information. If account address is provided, it will query the balance of the account (bech32 is accepted).",
 		Args:  cobra.RangeArgs(1, 2),
 		Run: func(cmd *cobra.Command, args []string) {
-			ethClient8545, _ := mustGetEthClient(cmd, true)
+			ethClient8545, _ := flags.MustGetEthClient(cmd)
 
 			evmAddrs, err := utils.GetEvmAddressFromAnyFormatAddress(args...)
 			utils.ExitOnErr(err, "failed to get evm address from input")
@@ -78,8 +79,7 @@ func GetQueryErc20Command() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagEvmRpc, "", flagEvmRpcDesc)
-	cmd.Flags().String("host", "", fmt.Sprintf("deprecated flag, use '--%s' instead", flagEvmRpc))
+	cmd.Flags().String(flags.FlagEvmRpc, "", flags.FlagEvmRpcDesc)
 	cmd.Flags().Int64(flagHeight, 0, "query balance at specific height")
 
 	return cmd

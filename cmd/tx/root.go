@@ -11,14 +11,12 @@ import (
 )
 
 const (
-	flagEvmRpc    = "evm-rpc"
 	flagSecretKey = "secret-key"
 	flagGasLimit  = "gas"
 	flagGasPrices = "gas-prices"
 )
 
 const (
-	flagEvmRpcDesc    = "EVM Json-RPC endpoint, default is " + constants.DEFAULT_EVM_RPC + ", can be set by environment variable " + constants.ENV_EVM_RPC
 	flagSecretKeyDesc = "Secret private key or mnemonic of the account, can be set by environment variable " + constants.ENV_SECRET_KEY
 	flagGasLimitDesc  = "Gas limit for the transaction, support custom unit (eg: 1m equals to one million, 21k equals to thousand)"
 	flagGasPricesDesc = "Gas prices for the transaction, support custom unit (eg: both 20b and 20g(wei) equals to twenty billion)"

@@ -1,26 +1,12 @@
 package query
 
 import (
-	"github.com/bcdevtools/devd/v3/constants"
 	"github.com/spf13/cobra"
+	"math/big"
 )
 
 const (
-	flagEvmRpc      = "evm-rpc"
-	flagRest        = "rest"
-	flagTmRpc       = "tm-rpc"
-	flagFull        = "full"
-	flagTracer      = "tracer"
-	flagHeight      = "height"
-	flagNoTranslate = "no-translate"
-	flagErc20       = "erc20"
-	flagFilter      = "filter"
-)
-
-const (
-	flagEvmRpcDesc     = "EVM Json-RPC endpoint, default is " + constants.DEFAULT_EVM_RPC + ", can be set by environment variable " + constants.ENV_EVM_RPC
-	flagCosmosRestDesc = "Cosmos Rest API endpoint, default is " + constants.DEFAULT_COSMOS_REST + ", can be set by environment variable " + constants.ENV_COSMOS_REST
-	flagTmRpcDesc      = "Tendermint RPC endpoint, default is " + constants.DEFAULT_TM_RPC + ", can be set by environment variable " + constants.ENV_TM_RPC
+	flagHeight = "height"
 )
 
 // Commands registers a sub-tree of commands
@@ -43,4 +29,13 @@ func Commands() *cobra.Command {
 	)
 
 	return cmd
+}
+
+func readContextHeightFromFlag(cmd *cobra.Command) *big.Int {
+	height, _ := cmd.Flags().GetInt64(flagHeight)
+	if height > 0 {
+		return big.NewInt(height)
+	}
+
+	return nil
 }

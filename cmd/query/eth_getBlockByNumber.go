@@ -3,6 +3,7 @@ package query
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/bcdevtools/devd/v3/cmd/flags"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"math/big"
 	"os"
@@ -14,6 +15,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const (
+	flagFull = "full"
+)
+
 func GetQueryBlockCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "eth_getBlockByNumber [height dec or 0xHex]",
@@ -21,7 +26,7 @@ func GetQueryBlockCommand() *cobra.Command {
 		Short:   "eth_getBlockByNumber",
 		Args:    cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			_, rpc := mustGetEthClient(cmd, false)
+			_, evmRpc := flags.MustGetEthClient(cmd)
 
 			input := strings.ToLower(args[0])
 
@@ -61,7 +66,7 @@ func GetQueryBlockCommand() *cobra.Command {
 			}
 
 			bz, err := types.DoEvmQuery(
-				rpc,
+				evmRpc,
 				types.NewJsonRpcQueryBuilder(
 					"eth_getBlockByNumber",
 					paramBlockNumber,
@@ -91,7 +96,7 @@ func GetQueryBlockCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagEvmRpc, "", flagEvmRpcDesc)
+	cmd.Flags().String(flags.FlagEvmRpc, "", flags.FlagEvmRpcDesc)
 	cmd.Flags().Bool(flagFull, false, "should returns the full transaction objects when this value is true otherwise, it returns only the hashes of the transactions")
 
 	return cmd

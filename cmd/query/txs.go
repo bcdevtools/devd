@@ -3,6 +3,7 @@ package query
 import (
 	"context"
 	"fmt"
+	"github.com/bcdevtools/devd/v3/cmd/flags"
 	"strconv"
 
 	"github.com/bcdevtools/devd/v3/cmd/utils"
@@ -21,7 +22,7 @@ func GetQueryTxsInBlockCommand() *cobra.Command {
 				return
 			}
 
-			tendermintRpcHttpClient, _ := mustGetTmRpc(cmd)
+			tendermintRpcHttpClient, _ := flags.MustGetTmRpc(cmd)
 
 			resBlock, err := tendermintRpcHttpClient.Block(context.Background(), &blockNumber)
 			utils.ExitOnErr(err, "failed to get block")
@@ -39,7 +40,7 @@ func GetQueryTxsInBlockCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagTmRpc, "", flagTmRpcDesc)
+	cmd.Flags().String(flags.FlagTendermintRpc, "", flags.FlagTmRpcDesc)
 
 	return cmd
 }

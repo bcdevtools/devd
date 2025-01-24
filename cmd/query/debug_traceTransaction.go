@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/bcdevtools/devd/v3/cmd/flags"
 	"os"
 	"regexp"
 	"strings"
@@ -14,6 +15,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const (
+	flagTracer      = "tracer"
+	flagNoTranslate = "no-translate"
+)
+
 func GetQueryTraceTxCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "debug_traceTransaction [0xhash]",
@@ -21,7 +27,7 @@ func GetQueryTraceTxCommand() *cobra.Command {
 		Short:   "debug_traceTransaction",
 		Args:    cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			_, rpc := mustGetEthClient(cmd, false)
+			_, evmRpc := flags.MustGetEthClient(cmd)
 
 			input := strings.ToLower(args[0])
 
@@ -45,7 +51,7 @@ func GetQueryTraceTxCommand() *cobra.Command {
 			}
 
 			bz, err := types.DoEvmQuery(
-				rpc,
+				evmRpc,
 				types.NewJsonRpcQueryBuilder(
 					"debug_traceTransaction",
 					params...,
@@ -96,7 +102,7 @@ func GetQueryTraceTxCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagEvmRpc, "", flagEvmRpcDesc)
+	cmd.Flags().String(flags.FlagEvmRpc, "", flags.FlagEvmRpcDesc)
 	cmd.Flags().String(flagTracer, "callTracer", "EVM tracer")
 	cmd.Flags().Bool(flagNoTranslate, false, "do not translate and print EVM revert error message")
 

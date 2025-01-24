@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
+	"github.com/bcdevtools/devd/v3/cmd/flags"
 	"strings"
 	"time"
 
@@ -34,7 +35,7 @@ Predefined bytecode: erc20`,
 		},
 	}
 
-	cmd.Flags().String(flagEvmRpc, "", flagEvmRpcDesc)
+	cmd.Flags().String(flags.FlagEvmRpc, "", flags.FlagEvmRpcDesc)
 	cmd.Flags().String(flagSecretKey, "", flagSecretKeyDesc)
 	cmd.Flags().String(flagGasLimit, "4m", flagGasLimitDesc)
 	cmd.Flags().String(flagGasPrices, "20b", flagGasPricesDesc)
@@ -43,7 +44,7 @@ Predefined bytecode: erc20`,
 }
 
 func deployEvmContract(bytecode string, cmd *cobra.Command) {
-	ethClient8545, _ := mustGetEthClient(cmd)
+	ethClient8545, _ := flags.MustGetEthClient(cmd)
 
 	ecdsaPrivateKey, _, from := mustSecretEvmAccount(cmd)
 

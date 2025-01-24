@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
+	"github.com/bcdevtools/devd/v3/cmd/flags"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum"
@@ -23,7 +24,7 @@ func GetSendEvmTxCommand() *cobra.Command {
 		Short: "Send some native coin or ERC-20 token to an address",
 		Args:  cobra.ExactArgs(2),
 		Run: func(cmd *cobra.Command, args []string) {
-			ethClient8545, _ := mustGetEthClient(cmd)
+			ethClient8545, _ := flags.MustGetEthClient(cmd)
 
 			gasPrices, err := readGasPrices(cmd)
 			utils.ExitOnErr(err, "failed to parse gas price")
@@ -133,7 +134,7 @@ func GetSendEvmTxCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagEvmRpc, "", flagEvmRpcDesc)
+	cmd.Flags().String(flags.FlagEvmRpc, "", flags.FlagEvmRpcDesc)
 	cmd.Flags().String(flagSecretKey, "", flagSecretKeyDesc)
 	cmd.Flags().String(flagErc20, "", "contract address if you want to send ERC-20 token instead of native coin")
 	cmd.Flags().String(flagGasLimit, "500k", fmt.Sprintf("%s. Ignored during normal EVM transfer, fixed to 21k", flagGasLimitDesc))
