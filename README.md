@@ -171,12 +171,12 @@ devd convert to-upper-case [input]
 
 ***Support pipe***
 ```bash
-devd convert encode-base64 [input]
+devd convert base64 [input]
 # devd c base64 123
 # echo 123 | devd c base64
-devd convert decode-base64 [base64]
-# devd c decode-base64 TVRJeg==
-# echo TVRJeg== | devd c decode-base64
+devd convert base64 [base64] --decode
+# devd c base64 TVRJeg== --decode
+# echo TVRJeg== | devd c base64 --decode
 ```
 
 #### Convert raw balance into display balance and vice versa
