@@ -79,7 +79,7 @@ func deployEvmContract(bytecode string, cmd *cobra.Command) {
 
 	newContractAddress := crypto.CreateAddress(*from, nonce)
 
-	fmt.Println("Deploying new contract using account", from)
+	utils.PrintlnStdErr("INF: Deploying new contract using account", from)
 
 	signedTx, err := ethtypes.SignTx(tx, ethtypes.LatestSignerForChainID(chainId), ecdsaPrivateKey)
 	utils.ExitOnErr(err, "failed to sign tx")
@@ -88,16 +88,16 @@ func deployEvmContract(bytecode string, cmd *cobra.Command) {
 	err = signedTx.EncodeRLP(&buf)
 	utils.ExitOnErr(err, "failed to encode tx")
 
-	fmt.Println("Tx hash", signedTx.Hash())
+	utils.PrintlnStdErr("INF: Tx hash", signedTx.Hash())
 
 	err = ethClient8545.SendTransaction(context.Background(), signedTx)
 	utils.ExitOnErr(err, "failed to send tx")
 
 	if tx := waitForEthTx(ethClient8545, signedTx.Hash()); tx != nil {
-		fmt.Println("New contract deployed at:")
+		utils.PrintlnStdErr("INF: New contract deployed at:")
 	} else {
-		fmt.Println("Timed-out waiting for tx to be mined, contract may have been deployed.")
-		fmt.Println("Expected contract address:")
+		utils.PrintlnStdErr("WARN: Timed-out waiting for tx to be mined, contract may have been deployed.")
+		utils.PrintlnStdErr("INF: Expected contract address:")
 	}
 	fmt.Println(newContractAddress)
 }

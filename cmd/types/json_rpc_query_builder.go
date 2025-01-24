@@ -230,7 +230,7 @@ func DoEvmQuery(host string, qb JsonRpcQueryBuilder, optionalTimeout time.Durati
 		Timeout: timeout,
 	}
 
-	fmt.Println("Querying", host, strings.ReplaceAll(strings.ReplaceAll(qb.String(), "\n", " "), " ", ""))
+	utils.PrintlnStdErr("INF: Querying", host, strings.ReplaceAll(strings.ReplaceAll(qb.String(), "\n", " "), " ", ""))
 
 	resp, err := httpClient.Post(host, "application/json", bytes.NewBuffer([]byte(qb.String())))
 	if err != nil {

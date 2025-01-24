@@ -3,7 +3,6 @@ package tx
 import (
 	"bytes"
 	"context"
-	"encoding/hex"
 	"fmt"
 	"math/big"
 
@@ -109,8 +108,8 @@ func GetSendEvmTxCommand() *cobra.Command {
 			}
 			tx := ethtypes.NewTx(&txData)
 
-			fmt.Println("Send", display, "from", from.Hex(), "to", receiverAddr.Hex())
-			fmt.Println("EIP155 Chain ID:", chainId.String(), "and nonce", txData.Nonce)
+			utils.PrintlnStdErr("INF: Send", display, "from", from.Hex(), "to", receiverAddr.Hex())
+			utils.PrintlnStdErr("INF: EIP155 Chain ID:", chainId.String(), "and nonce", txData.Nonce)
 
 			signedTx, err := ethtypes.SignTx(tx, ethtypes.LatestSignerForChainID(chainId), ecdsaPrivateKey)
 			utils.ExitOnErr(err, "failed to sign tx")
@@ -119,18 +118,15 @@ func GetSendEvmTxCommand() *cobra.Command {
 			err = signedTx.EncodeRLP(&buf)
 			utils.ExitOnErr(err, "failed to encode tx")
 
-			rawTxRLPHex := hex.EncodeToString(buf.Bytes())
-			fmt.Printf("RawTx: 0x%s\n", rawTxRLPHex)
-
-			fmt.Println("Tx hash", signedTx.Hash())
+			utils.PrintlnStdErr("INF: Tx hash", signedTx.Hash())
 
 			err = ethClient8545.SendTransaction(context.Background(), signedTx)
 			utils.ExitOnErr(err, "failed to send tx")
 
 			if tx := waitForEthTx(ethClient8545, signedTx.Hash()); tx != nil {
-				fmt.Println("Tx executed successfully")
+				utils.PrintlnStdErr("INF: Tx executed successfully")
 			} else {
-				fmt.Println("Timed out waiting for tx to be mined")
+				utils.PrintlnStdErr("WARN: Timed out waiting for tx to be mined")
 			}
 		},
 	}

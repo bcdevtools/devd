@@ -42,7 +42,7 @@ func GetQueryBalanceCommand() *cobra.Command {
 			contextHeight := readContextHeightFromFlag(cmd)
 
 			accountAddr := evmAddrs[0]
-			fmt.Println("Account", accountAddr)
+			utils.PrintlnStdErr("INF: Account", accountAddr)
 
 			printRow := func(colType, colContract, colSymbol, colBalance, colRaw, colDecimals, colHigh, colLow, extra string) {
 				fmt.Printf("%-7s | %42s | %10s | %28s | %27s | %8s | %9s | %18s | %-1s\n", colType, colContract, colSymbol, colBalance, colRaw, colDecimals, colHigh, colLow, extra)
