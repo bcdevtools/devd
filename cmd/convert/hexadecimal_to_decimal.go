@@ -13,7 +13,7 @@ import (
 
 func GetConvertHexadecimalToDecimalCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "hex_2_dec [hex]",
+		Use:     "hex-2-dec [hex]",
 		Aliases: []string{"h2d"},
 		Short:   "Convert hexadecimal to decimal.",
 		Long: `Convert hexadecimal to decimal.

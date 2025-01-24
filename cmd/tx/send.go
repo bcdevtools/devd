@@ -47,7 +47,7 @@ func GetSendEvmTxCommand() *cobra.Command {
 
 			receiverAddr := evmAddrs[0]
 
-			amount, err := utils.ReadCustomInteger(args[1])
+			amount, err := utils.ReadShortInt(args[1])
 			if err != nil {
 				var ok bool
 				amount, ok = new(big.Int).SetString(args[1], 10)

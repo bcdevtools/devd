@@ -16,7 +16,7 @@ import (
 
 func GetIntrinsicCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "intrinsic_gas [0xdata]",
+		Use:   "intrinsic-gas [0xdata]",
 		Short: `Get intrinsic gas used by the given EVM transaction input data.`,
 		Long: fmt.Sprintf(`Get intrinsic gas used by the given EVM transaction input data.
 This operation assumes:

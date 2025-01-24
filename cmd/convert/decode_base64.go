@@ -11,7 +11,7 @@ import (
 // GetDecodeBase64CaseCmd creates a helper command that decode base64
 func GetDecodeBase64CaseCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "decode_base64 [base64]",
+		Use:   "decode-base64 [base64]",
 		Short: "Decode base64.",
 		Long: `Decode base64.
 Support pipe.`,

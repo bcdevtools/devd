@@ -64,7 +64,7 @@ func readGasPrices(cmd *cobra.Command) (*big.Int, error) {
 		return bi, nil
 	}
 
-	bi, err := utils.ReadCustomInteger(gasPrices)
+	bi, err := utils.ReadShortInt(gasPrices)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +78,7 @@ func readGasLimit(cmd *cobra.Command) (uint64, error) {
 		gasLimit = "500k"
 	}
 
-	bi, err := utils.ReadCustomInteger(gasLimit)
+	bi, err := utils.ReadShortInt(gasLimit)
 	if err != nil {
 		return 0, err
 	}

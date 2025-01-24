@@ -13,7 +13,7 @@ import (
 // GetDisplayBalanceCmd creates a helper command that convert raw balance into display balance
 func GetDisplayBalanceCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "display_balance [raw balance] [decimals]",
+		Use:     "display-balance [raw balance] [decimals]",
 		Aliases: []string{"dbal"},
 		Short:   "Convert raw balance into display balance.",
 		Long: `Convert raw balance into display balance.
@@ -23,7 +23,7 @@ Sample: 10011100 with 6 exponent => 10.0111`,
 			rawBalanceStr := args[0]
 			decimalsStr := args[1]
 
-			balance, err := utils.ReadCustomInteger(rawBalanceStr)
+			balance, err := utils.ReadShortInt(rawBalanceStr)
 			if err != nil {
 				var ok bool
 				balance, ok = new(big.Int).SetString(rawBalanceStr, 10)

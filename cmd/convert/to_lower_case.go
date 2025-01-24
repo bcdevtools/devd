@@ -11,7 +11,7 @@ import (
 // GetConvertToLowerCaseCmd creates a helper command that convert input into lower case
 func GetConvertToLowerCaseCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "to_lower_case [text]",
+		Use:     "to-lower-case [text]",
 		Aliases: []string{"lowercase"},
 		Short:   "Convert input text into lower case.",
 		Long: `Convert input text into lower case.

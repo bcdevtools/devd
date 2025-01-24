@@ -12,7 +12,7 @@ import (
 
 func GetDecodeRawEvmTxCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "decode_raw_tx [raw RLP-encoded EVM tx hex]",
+		Use:   "decode-raw-tx [raw RLP-encoded EVM tx hex]",
 		Short: `Decode the raw RLP-encoded EVM tx to see inner details, additional information will be injected with prefix '_'`,
 		Args:  cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {

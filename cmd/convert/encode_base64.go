@@ -12,7 +12,7 @@ import (
 // GetEncodeBase64CaseCmd creates a helper command that encode input into base64
 func GetEncodeBase64CaseCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "encode_base64 [text]",
+		Use:     "encode-base64 [text]",
 		Aliases: []string{"base64"},
 		Short:   "Encode input text into base64.",
 		Long: `Encode input text into base64.

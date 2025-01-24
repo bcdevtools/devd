@@ -23,7 +23,7 @@ const (
 func GetQueryTraceTxCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "debug_traceTransaction [0xhash]",
-		Aliases: []string{"trace", "trace_tx"},
+		Aliases: []string{"trace"},
 		Short:   "debug_traceTransaction",
 		Args:    cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {

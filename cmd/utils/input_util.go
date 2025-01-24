@@ -80,7 +80,7 @@ func tryReadPipe() (dataFromPipe string, err error) {
 	return
 }
 
-func ReadCustomInteger(input string) (out *big.Int, err error) {
+func ReadShortInt(input string) (out *big.Int, err error) {
 	normalizedInput := strings.ToLower(strings.TrimSpace(input))
 
 	negative := strings.HasPrefix(normalizedInput, "-")

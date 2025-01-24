@@ -14,7 +14,7 @@ import (
 // GetConvertSolcSignatureCmd creates a helper command that convert EVM method/event into keccak256 hash and 4 bytes signature
 func GetConvertSolcSignatureCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "solc_sig [method or event]",
+		Use:   "solc-sig [method or event]",
 		Short: "Convert Solidity method/event signature into hashed signature and 4 bytes signature.",
 		Long: `Convert Solidity method/event signature into hashed signature and 4 bytes signature.
 Output will be 4 lines:

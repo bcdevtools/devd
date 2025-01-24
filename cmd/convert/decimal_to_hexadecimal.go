@@ -12,11 +12,11 @@ import (
 
 func GetConvertDecimalToHexadecimalCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "dec_2_hex [dec]",
+		Use:     "dec-2-hex [dec]",
 		Aliases: []string{"d2h"},
 		Short:   "Convert decimal to hexadecimal.",
 		Long: `Convert decimal to hexadecimal.
-Support pipe.`,
+Support pipe and short int.`,
 		Run: func(cmd *cobra.Command, args []string) {
 			args, err := utils.ProvidedArgsOrFromPipe(args)
 			utils.ExitOnErr(err, "failed to get args from pipe")
@@ -24,7 +24,7 @@ Support pipe.`,
 
 			input := strings.ToLower(args[0])
 
-			bi, err := utils.ReadCustomInteger(input)
+			bi, err := utils.ReadShortInt(input)
 			if err != nil {
 				var ok bool
 				bi, ok = new(big.Int).SetString(input, 10)

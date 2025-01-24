@@ -126,21 +126,21 @@ devd convert address [address] [optional bech32 hrp]
 
 ***Support pipe***
 ```bash
-devd convert abi_string [string or ABI encoded string]
-# devd c abi_string 000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000045553444300000000000000000000000000000000000000000000000000000000
-# devd c abi_string USDC Token
-# echo 'USDC Token' | devd c abi_string
+devd convert abi-string [string or ABI encoded string]
+# devd c abi-string 000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000045553444300000000000000000000000000000000000000000000000000000000
+# devd c abi-string USDC Token
+# echo 'USDC Token' | devd c abi-string
 ```
 
 #### Convert hexadecimal to decimal and vice versa
 
 ***Support pipe***
 ```bash
-devd convert hex_2_dec [hexadecimal]
+devd convert hex-2-dec [hexadecimal]
 # devd c h2d 0x16a
 # devd c h2d 16a
 # echo 16a | devd c h2d
-devd convert dec_2_hex [decimal]
+devd convert dec-2-hex [decimal]
 # devd c d2h 170
 # echo 170 | devd c d2h
 # Support short int: `devd c d2h 20bb`
@@ -149,20 +149,20 @@ devd convert dec_2_hex [decimal]
 #### Convert Solidity event/method signature into hashed signature
 
 ```bash
-devd convert solc_sig [event/method signature]
-# devd c solc_sig 'transfer(address,uint256)'
-# devd c solc_sig 'function transfer(address recipient, uint256 amount) external returns (bool);'
-# devd c solc_sig 'event Transfer(address indexed from, address indexed to, uint256 value);'
+devd convert solc-sig [event/method signature]
+# devd c solc-sig 'transfer(address,uint256)'
+# devd c solc-sig 'function transfer(address recipient, uint256 amount) external returns (bool);'
+# devd c solc-sig 'event Transfer(address indexed from, address indexed to, uint256 value);'
 ```
 
 #### Convert input into upper/lower case
 
 ***Support pipe***
 ```bash
-devd convert to_lower_case [input]
+devd convert to-lower-case [input]
 # devd c lowercase AA
 # echo AA | devd c lowercase
-devd convert to_upper_case [input]
+devd convert to-upper-case [input]
 # devd c uppercase aa
 # echo aa | devd c uppercase
 ```
@@ -171,18 +171,18 @@ devd convert to_upper_case [input]
 
 ***Support pipe***
 ```bash
-devd convert encode_base64 [input]
+devd convert encode-base64 [input]
 # devd c base64 123
 # echo 123 | devd c base64
-devd convert decode_base64 [base64]
-# devd c decode_base64 TVRJeg==
-# echo TVRJeg== | devd c decode_base64
+devd convert decode-base64 [base64]
+# devd c decode-base64 TVRJeg==
+# echo TVRJeg== | devd c decode-base64
 ```
 
 #### Convert raw balance into display balance and vice versa
 
 ```bash
-devd convert display_balance [raw balance] [exponent]
+devd convert display-balance [raw balance] [exponent]
 # devd c dbal 10011100 6
 # > 10.0111
 # Support short int:
@@ -191,7 +191,7 @@ devd convert display_balance [raw balance] [exponent]
 ```
 
 ```bash
-devd convert raw_balance [display balance] [exponent] [--decimals-point , or .]
+devd convert raw-balance [display balance] [exponent] [--decimals-point , or .]
 # devd c rbal 10.0111 6
 # > 10011100
 # devd c rbal 10,0111 6 -d ,
@@ -201,7 +201,7 @@ devd convert raw_balance [display balance] [exponent] [--decimals-point , or .]
 #### Convert (decode) raw RLP-encoded EVM tx into tx object
 
 ```bash
-devd convert decode_raw_tx [raw RLP-encoded EVM tx hex]
+devd convert decode-raw-tx [raw RLP-encoded EVM tx hex]
 # view inner tx information, including sender address
 ```
 
@@ -237,8 +237,8 @@ devd check port [port]
 #### Compute EVM transaction intrinsic gas
 
 ```bash
-devd debug intrinsic_gas [0xCallData]
-# devd d intrinsic_gas 0xCallData
+devd debug intrinsic-gas [0xCallData]
+# devd d intrinsic-gas 0xCallData
 ```
 _Assumption: no access list, not contract creation, Homestead, EIP-2028 (Istanbul). If contract creation, plus 32,000 into the output._
 
