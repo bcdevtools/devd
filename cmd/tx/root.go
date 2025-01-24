@@ -2,8 +2,8 @@ package tx
 
 import (
 	"fmt"
-	"github.com/bcdevtools/devd/v2/cmd/utils"
-	"github.com/bcdevtools/devd/v2/constants"
+	"github.com/bcdevtools/devd/v3/cmd/utils"
+	"github.com/bcdevtools/devd/v3/constants"
 	"github.com/spf13/cobra"
 	"math/big"
 	"regexp"

@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/bcdevtools/devd/v2/cmd/utils"
+	"github.com/bcdevtools/devd/v3/cmd/utils"
 	acbitypes "github.com/cometbft/cometbft/abci/types"
 	"github.com/spf13/cobra"
 	"golang.org/x/exp/maps"

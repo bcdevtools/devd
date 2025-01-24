@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/bcdevtools/devd/v2/constants"
+	"github.com/bcdevtools/devd/v3/constants"
 )
 
 type Context struct {
