@@ -62,16 +62,14 @@ func GetQueryTraceTxCommand() *cobra.Command {
 			utils.ExitOnErr(err, "failed to trace transaction")
 
 			traceContentAsMap, err := getResultObjectFromEvmRpcResponse(bz)
-			if err == nil {
-				recursivelyTranslateTraceFrames(traceContentAsMap)
+			utils.ExitOnErr(err, "failed to get result object from response")
 
-				bz, err = json.Marshal(traceContentAsMap)
-				utils.ExitOnErr(err, "failed to marshal response trace tx")
+			recursivelyTranslateTraceFrames(traceContentAsMap)
 
-				utils.TryPrintBeautyJson(bz)
-			} else {
-				utils.TryPrintBeautyJson(bz)
-			}
+			bz, err = json.Marshal(traceContentAsMap)
+			utils.ExitOnErr(err, "failed to marshal response trace tx")
+
+			utils.TryPrintBeautyJson(bz)
 
 			if !cmd.Flag(flagNoTranslate).Changed {
 				// try to decode error message if any

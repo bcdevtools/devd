@@ -17,7 +17,8 @@ func GetDisplayBalanceCmd() *cobra.Command {
 		Aliases: []string{"dbal"},
 		Short:   "Convert raw balance into display balance.",
 		Long: `Convert raw balance into display balance.
-Sample: 10011100 with 6 exponent => 10.0111`,
+Sample: 10011100 with 6 exponent => 10.0111
+Support short int`,
 		Args: cobra.ExactArgs(2),
 		Run: func(cmd *cobra.Command, args []string) {
 			rawBalanceStr := args[0]

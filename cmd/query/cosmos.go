@@ -70,10 +70,6 @@ func fetchVirtualFrontierBankContractPairsFromRest(rest string) (vfbcPairs []Vfb
 		return
 	}
 
-	type responseStruct struct {
-		Pairs []VfbcTokenPair `json:"pairs"`
-	}
-
 	defer func() {
 		_ = resp.Body.Close()
 	}()
@@ -82,6 +78,10 @@ func fetchVirtualFrontierBankContractPairsFromRest(rest string) (vfbcPairs []Vfb
 	if err != nil {
 		err = errors.Wrap(err, "failed to read response body of VFBC pairs")
 		return
+	}
+
+	type responseStruct struct {
+		Pairs []VfbcTokenPair `json:"pairs"`
 	}
 
 	var response responseStruct

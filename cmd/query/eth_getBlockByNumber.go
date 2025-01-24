@@ -32,7 +32,7 @@ func GetQueryBlockCommand() *cobra.Command {
 			input := strings.ToLower(args[0])
 
 			if regexp.MustCompile(`[a-f]`).MatchString(input) && !strings.HasPrefix(input, "0x") {
-				utils.PrintlnStdErr("Hexadecimal block number must have 0x prefix.")
+				utils.PrintlnStdErr("ERR: hexadecimal block number must have 0x prefix.")
 				os.Exit(1)
 			}
 
@@ -78,10 +78,7 @@ func GetQueryBlockCommand() *cobra.Command {
 			utils.ExitOnErr(err, "failed to get block by number")
 
 			blockInfoAsMap, err := getResultObjectFromEvmRpcResponse(bz)
-			if err != nil {
-				utils.TryPrintBeautyJson(bz)
-				return
-			}
+			utils.ExitOnErr(err, "failed to get result object from response")
 
 			utils.TryInjectTranslatedFieldForEvmRpcObjects(&ethtypes.Block{}, blockInfoAsMap, "baseFeePerGas")
 			utils.TryInjectTranslatedFieldForEvmRpcObjects(&ethtypes.Block{}, blockInfoAsMap, "gasLimit")

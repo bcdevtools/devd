@@ -23,8 +23,8 @@ import (
 func GetDeployContractEvmTxCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "deploy-contract [bytecode]",
-		Short: `Deploy an EVM contract using bytecode.`,
-		Long: `Deploy an EVM contract.
+		Short: `Deploy an EVM contract using bytecode. Constructor calldata is needed if contract has constructor.`,
+		Long: `Deploy an EVM contract. Constructor calldata is needed if contract has constructor.
 Predefined bytecode: erc20`,
 		Args: cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {

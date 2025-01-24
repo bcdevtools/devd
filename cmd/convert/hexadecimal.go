@@ -41,11 +41,9 @@ Support pipe.`,
 			}
 
 			if regexp.MustCompile(`^[a-f\d]+$`).MatchString(input) { // input is hexadecimal without 0x prefix or decimal
-				for _, c := range input {
-					if c >= 'a' && c <= 'f' {
-						utils.PrintlnStdErr("ERR: hexadecimal must has 0x prefix")
-						os.Exit(1)
-					}
+				if regexp.MustCompile(`[a-f]`).MatchString(input) {
+					utils.PrintlnStdErr("ERR: hexadecimal must have 0x prefix")
+					os.Exit(1)
 				}
 
 				utils.PrintlnStdErr("INF: converting decimal to hexadecimal")
