@@ -5,9 +5,10 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
-	"github.com/bcdevtools/devd/v3/cmd/flags"
 	"strings"
 	"time"
+
+	"github.com/bcdevtools/devd/v3/cmd/flags"
 
 	"github.com/ethereum/go-ethereum/ethclient"
 

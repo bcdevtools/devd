@@ -3,8 +3,9 @@ package query
 import (
 	"context"
 	"fmt"
-	"github.com/bcdevtools/devd/v3/cmd/flags"
 	"math/big"
+
+	"github.com/bcdevtools/devd/v3/cmd/flags"
 
 	"github.com/bcdevtools/devd/v3/cmd/utils"
 	"github.com/ethereum/go-ethereum"

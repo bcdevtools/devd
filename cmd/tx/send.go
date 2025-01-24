@@ -5,8 +5,9 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
-	"github.com/bcdevtools/devd/v3/cmd/flags"
 	"math/big"
+
+	"github.com/bcdevtools/devd/v3/cmd/flags"
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"

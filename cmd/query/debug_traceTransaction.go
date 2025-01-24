@@ -4,10 +4,11 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"github.com/bcdevtools/devd/v3/cmd/flags"
 	"os"
 	"regexp"
 	"strings"
+
+	"github.com/bcdevtools/devd/v3/cmd/flags"
 
 	"github.com/bcdevtools/devd/v3/cmd/types"
 	"github.com/bcdevtools/devd/v3/cmd/utils"

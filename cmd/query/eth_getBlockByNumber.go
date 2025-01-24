@@ -3,12 +3,13 @@ package query
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/bcdevtools/devd/v3/cmd/flags"
-	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"math/big"
 	"os"
 	"regexp"
 	"strings"
+
+	"github.com/bcdevtools/devd/v3/cmd/flags"
+	ethtypes "github.com/ethereum/go-ethereum/core/types"
 
 	"github.com/bcdevtools/devd/v3/cmd/types"
 	"github.com/bcdevtools/devd/v3/cmd/utils"

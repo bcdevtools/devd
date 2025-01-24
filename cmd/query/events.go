@@ -5,10 +5,11 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"github.com/bcdevtools/devd/v3/cmd/flags"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/bcdevtools/devd/v3/cmd/flags"
 
 	"github.com/bcdevtools/devd/v3/cmd/utils"
 	acbitypes "github.com/cometbft/cometbft/abci/types"

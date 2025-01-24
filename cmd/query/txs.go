@@ -3,8 +3,9 @@ package query
 import (
 	"context"
 	"fmt"
-	"github.com/bcdevtools/devd/v3/cmd/flags"
 	"strconv"
+
+	"github.com/bcdevtools/devd/v3/cmd/flags"
 
 	"github.com/bcdevtools/devd/v3/cmd/utils"
 	"github.com/spf13/cobra"

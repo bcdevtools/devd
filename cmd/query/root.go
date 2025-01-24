@@ -1,8 +1,9 @@
 package query
 
 import (
-	"github.com/spf13/cobra"
 	"math/big"
+
+	"github.com/spf13/cobra"
 )
 
 const (
