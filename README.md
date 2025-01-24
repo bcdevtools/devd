@@ -136,14 +136,11 @@ devd convert abi-string [string or ABI encoded string]
 
 ***Support pipe***
 ```bash
-devd convert hex-2-dec [hexadecimal]
-# devd c h2d 0x16a
-# devd c h2d 16a
-# echo 16a | devd c h2d
-devd convert dec-2-hex [decimal]
-# devd c d2h 170
-# echo 170 | devd c d2h
-# Support short int: `devd c d2h 20bb`
+devd convert hexadecimal [hexadecimal or decimal]
+# devd c hex 0x16a
+# echo 0x16a | devd c hex
+# devd c hex 362
+# echo 362 | devd c hex
 ```
 
 #### Convert Solidity event/method signature into hashed signature
@@ -248,7 +245,7 @@ _Assumption: no access list, not contract creation, Homestead, EIP-2028 (Istanbu
 - Output messages are printed via stdout, while messages with prefixes `INF:` `WARN:` and `ERR:` are printed via stderr. So for integration with other tools, to omit stderr, forward stdout only.
   > Eg: `devd c a cosmos1... 1> /tmp/output.txt`
 - When passing arguments into command via both argument and pipe, the argument will be used.
-  > Eg: `echo 123 | devd c d2h 456` will convert `456` to hexadecimal, not `123`.
+  > Eg: `echo 123 | devd c hex 456` will convert `456` to hexadecimal, not `123`.
 - For commands those marked `support short int`, you can pass number with format like:
   - `2e18` = 2 x 10^18
   - `2k` = 2,000
