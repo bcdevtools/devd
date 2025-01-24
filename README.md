@@ -101,7 +101,7 @@ devd tx send [to] [amount]
 devd tx send [to] [amount] [--erc20 contract_address]
 ```
 
-_Support custom integer like 10e18, 2k, 3m, 4b, 5kb,...: devd tx send [to] [10e18/1bb]_
+_Support custom integer like 1e18, 2k, 3m, 4b, 5kb,...: devd tx send [to] [1e18/1bb]_
 
 #### Deploy EVM contract
 
@@ -145,7 +145,7 @@ devd convert hex_2_dec [hexadecimal]
 devd convert dec_2_hex [decimal]
 # devd c d2h 170
 # echo 170 | devd c d2h
-# Support custom integer like 10e18, 2k, 3m, 4b, 5kb,...:
+# Support custom integer like 1e18, 2k, 3m, 4b, 5kb,...:
 #   devd c d2h 20bb
 ```
 
@@ -188,7 +188,7 @@ devd convert decode_base64 [base64]
 devd convert display_balance [raw balance] [exponent]
 # devd c dbal 10011100 6
 # > 10.0111
-# Support custom integer like 10e18, 2k, 3m, 4b, 5kb,...:
+# Support custom integer like 1e18, 2k, 3m, 4b, 5kb,...:
 #  devd c dbal 20bb 18
 #  > 20.0
 ```
@@ -251,4 +251,4 @@ _Assumption: no access list, not contract creation, Homestead, EIP-2028 (Istanbu
   > Eg: `devd c a cosmos1... 1> /tmp/output.txt`
 - When passing arguments into command via both argument and pipe, the argument will be used.
   > Eg: `echo 123 | devd c d2h 456` will convert `456` to hexadecimal, not `123`.
-- For commands those marked `support custom integer`, you can pass number with format like `10e18`, `1k` (thousand), `2m` (million), `3b` (billion), `4kb` (trillion), `5mb` (million billion), `6bb`,... Decimal point also supported for `k`, `m`, `b` suffixes like `1.5k`, `2.5m`, `3.5bb`,...
+- For commands those marked `support custom integer`, you can pass number with format like `1e18`, `1k` (thousand), `2m` (million), `3b` (billion), `4kb` (trillion), `5mb` (million billion), `6bb`,... Decimal point also supported for `k`, `m`, `b` suffixes like `1.5k`, `2.5m`, `3.5bb`,...
