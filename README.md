@@ -26,8 +26,6 @@ export DEVD_COSMOS_REST='https://cosmos-rest.example.com:1317'
 ```
 _By setting this environment variable, you don't need to pass `--rest` flag everytime for non-localhost Rest API_
 ___
-Some queries will try to decode some fields in response data into human-readable format
-and inject back into the response data with `_` prefix like EVM tx, receipt, block, trace.
 
 #### Query account balance
 
@@ -101,7 +99,7 @@ devd tx send [to] [amount]
 devd tx send [to] [amount] [--erc20 contract_address]
 ```
 
-_Support custom integer like 1e18, 2k, 3m, 4b, 5kb,...: devd tx send [to] [1e18/1bb]_
+_support short int (2e18, 5bb,...): `devd tx send [to] [1e18/1bb]`_
 
 #### Deploy EVM contract
 
@@ -145,8 +143,7 @@ devd convert hex_2_dec [hexadecimal]
 devd convert dec_2_hex [decimal]
 # devd c d2h 170
 # echo 170 | devd c d2h
-# Support custom integer like 1e18, 2k, 3m, 4b, 5kb,...:
-#   devd c d2h 20bb
+# Support short int: `devd c d2h 20bb`
 ```
 
 #### Convert Solidity event/method signature into hashed signature
@@ -188,7 +185,7 @@ devd convert decode_base64 [base64]
 devd convert display_balance [raw balance] [exponent]
 # devd c dbal 10011100 6
 # > 10.0111
-# Support custom integer like 1e18, 2k, 3m, 4b, 5kb,...:
+# Support short int:
 #  devd c dbal 20bb 18
 #  > 20.0
 ```
@@ -251,4 +248,12 @@ _Assumption: no access list, not contract creation, Homestead, EIP-2028 (Istanbu
   > Eg: `devd c a cosmos1... 1> /tmp/output.txt`
 - When passing arguments into command via both argument and pipe, the argument will be used.
   > Eg: `echo 123 | devd c d2h 456` will convert `456` to hexadecimal, not `123`.
-- For commands those marked `support custom integer`, you can pass number with format like `1e18`, `1k` (thousand), `2m` (million), `3b` (billion), `4kb` (trillion), `5mb` (million billion), `6bb`,... Decimal point also supported for `k`, `m`, `b` suffixes like `1.5k`, `2.5m`, `3.5bb`,...
+- For commands those marked `support short int`, you can pass number with format like:
+  - `2e18` = 2 x 10^18
+  - `2k` = 2,000
+  - `2.7m` = 2,700,000
+  - `3.08b` = 3,080,000,000
+  - `4kb` = 4,000,000,000,000
+  - `5.555mb` = 5,555,000,000,000,000
+  - `6bb` = 6,000,000,000,000,000,000 = 6e18
+- Some queries will try to decode some fields in response data into human-readable format and inject back into the response data with `_` prefix like EVM tx, receipt, block, trace.
