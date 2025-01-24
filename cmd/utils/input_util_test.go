@@ -24,12 +24,16 @@ func TestReadCustomInteger(t *testing.T) {
 			wantOut: "1234",
 		},
 		{
-			input:   "10e18",
+			input:   "1e18",
 			wantOut: "1000000000000000000",
 		},
 		{
-			input:   "-10e18",
+			input:   "-1e18",
 			wantOut: "-1000000000000000000",
+		},
+		{
+			input:   "33e18",
+			wantOut: "33000000000000000000",
 		},
 		{
 			input:   "23k",

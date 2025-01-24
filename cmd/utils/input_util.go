@@ -105,19 +105,20 @@ func ReadCustomInteger(input string) (out *big.Int, err error) {
 	if regexp.MustCompile(`^\d+e\d+$`).MatchString(positiveInput) { // scientific notation
 		parts := strings.Split(positiveInput, "e")
 
-		base, ok := new(big.Int).SetString(parts[0], 10)
+		baseMultiplier, ok := new(big.Int).SetString(parts[0], 10)
 		if !ok {
-			err = fmt.Errorf("unexpected error, cannot read integer from base %s", parts[0])
+			err = fmt.Errorf("unexpected error, cannot read integer %s", parts[0])
 			return
 		}
 
-		exp, ok := new(big.Int).SetString(parts[1], 10)
+		baseExp, ok := new(big.Int).SetString(parts[1], 10)
 		if !ok {
-			err = fmt.Errorf("unexpected error, cannot read integer from exponent %s", parts[1])
+			err = fmt.Errorf("unexpected error, cannot read integer %s", parts[1])
 			return
 		}
+		exp := new(big.Int).Exp(big.NewInt(10), baseExp, nil)
 
-		out = new(big.Int).Exp(base, exp, nil)
+		out = new(big.Int).Mul(baseMultiplier, exp)
 		return
 	}
 
