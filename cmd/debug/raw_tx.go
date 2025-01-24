@@ -1,4 +1,4 @@
-package convert
+package debug
 
 import (
 	"fmt"
@@ -10,9 +10,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func GetDecodeRawEvmTxCommand() *cobra.Command {
+func GetRawTxCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "decode-raw-tx [raw RLP-encoded EVM tx hex]",
+		Use:   "raw-tx [raw RLP-encoded EVM tx hex]",
 		Short: `Decode the raw RLP-encoded EVM tx to see inner details, additional information will be injected with prefix '_'`,
 		Args:  cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {

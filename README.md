@@ -198,13 +198,6 @@ devd convert raw-balance [display balance] [exponent] [--decimals-point , or .]
 # > 10011100
 ```
 
-#### Convert (decode) raw RLP-encoded EVM tx into tx object
-
-```bash
-devd convert decode-raw-tx [raw RLP-encoded EVM tx hex]
-# view inner tx information, including sender address
-```
-
 ### Hashing tools
 
 ***Support pipe***
@@ -233,6 +226,14 @@ devd check port [port]
 ```
 
 ### Debug tools
+
+#### Decode raw RLP-encoded EVM tx into tx object
+
+```bash
+devd debug raw-tx [raw RLP-encoded EVM tx hex]
+# devd debug raw-tx 0x02f8af82271c3b83112a8883aba95082be209480b5a32e4f032b2a058b4f29ec95eefeeb87adcd80b844a9059cbb000000000000000000000000bfcfe6d5ad56aa831313856949e98656d46f9248000000000000000000000000000000000000000000000000002386f26fc10000c001a088907374a796ed70a5a2bdc51b50010b68dcc4d2ed12d94abc607bb0a90271b6a0167d3e031b70ec511b67416d9ad8334caee7013d95ff8275721b23798c5c3602
+```
+_to view inner tx information, including sender address_
 
 #### Compute EVM transaction intrinsic gas
 
