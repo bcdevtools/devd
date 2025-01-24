@@ -78,8 +78,8 @@ func GetQueryErc20Command() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
-	cmd.Flags().String("host", "", fmt.Sprintf("deprecated flag, use '--%s' instead", flagRpc))
+	cmd.Flags().String(flagEvmRpc, "", flagEvmRpcDesc)
+	cmd.Flags().String("host", "", fmt.Sprintf("deprecated flag, use '--%s' instead", flagEvmRpc))
 	cmd.Flags().Int64(flagHeight, 0, "query balance at specific height")
 
 	return cmd

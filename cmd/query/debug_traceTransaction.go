@@ -96,7 +96,7 @@ func GetQueryTraceTxCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
+	cmd.Flags().String(flagEvmRpc, "", flagEvmRpcDesc)
 	cmd.Flags().String(flagTracer, "callTracer", "EVM tracer")
 	cmd.Flags().Bool(flagNoTranslate, false, "do not translate and print EVM revert error message")
 

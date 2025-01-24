@@ -34,7 +34,7 @@ Predefined bytecode: erc20`,
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
+	cmd.Flags().String(flagEvmRpc, "", flagEvmRpcDesc)
 	cmd.Flags().String(flagSecretKey, "", flagSecretKeyDesc)
 	cmd.Flags().String(flagGasLimit, "4m", flagGasLimitDesc)
 	cmd.Flags().String(flagGasPrices, "20b", flagGasPricesDesc)

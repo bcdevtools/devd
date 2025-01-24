@@ -133,7 +133,7 @@ func GetSendEvmTxCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
+	cmd.Flags().String(flagEvmRpc, "", flagEvmRpcDesc)
 	cmd.Flags().String(flagSecretKey, "", flagSecretKeyDesc)
 	cmd.Flags().String(flagErc20, "", "contract address if you want to send ERC-20 token instead of native coin")
 	cmd.Flags().String(flagGasLimit, "500k", fmt.Sprintf("%s. Ignored during normal EVM transfer, fixed to 21k", flagGasLimitDesc))

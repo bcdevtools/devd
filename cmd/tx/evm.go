@@ -17,31 +17,31 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func mustGetEthClient(cmd *cobra.Command) (ethClient8545 *ethclient.Client, rpc string) {
+func mustGetEthClient(cmd *cobra.Command) (ethClient8545 *ethclient.Client, evmRpc string) {
 	var inputSource string
 	var err error
 
-	if rpcFromFlagRpc, _ := cmd.Flags().GetString(flagRpc); len(rpcFromFlagRpc) > 0 {
-		rpc = rpcFromFlagRpc
+	if evmRpcFromFlag, _ := cmd.Flags().GetString(flagEvmRpc); len(evmRpcFromFlag) > 0 {
+		evmRpc = evmRpcFromFlag
 		inputSource = "flag"
-	} else if rpcFromEnv := os.Getenv(constants.ENV_EVM_RPC); len(rpcFromEnv) > 0 {
-		rpc = rpcFromEnv
+	} else if evmRpcFromEnv := os.Getenv(constants.ENV_EVM_RPC); len(evmRpcFromEnv) > 0 {
+		evmRpc = evmRpcFromEnv
 		inputSource = "environment variable"
 	} else {
-		rpc = constants.DEFAULT_EVM_RPC
+		evmRpc = constants.DEFAULT_EVM_RPC
 		inputSource = "default"
 	}
 
-	utils.PrintlnStdErr("INF: Connecting to EVM Json-RPC", rpc, fmt.Sprintf("(from %s)", inputSource))
+	utils.PrintlnStdErr("INF: Connecting to EVM Json-RPC", evmRpc, fmt.Sprintf("(from %s)", inputSource))
 
-	ethClient8545, err = ethclient.Dial(rpc)
+	ethClient8545, err = ethclient.Dial(evmRpc)
 	utils.ExitOnErr(err, "failed to connect to EVM Json-RPC")
 
 	// pre-flight check to ensure the connection is working
 	_, err = ethClient8545.BlockNumber(context.Background())
 	if err != nil && strings.Contains(err.Error(), "connection refused") {
 		utils.PrintlnStdErr("ERR: failed to connect to EVM Json-RPC, please check the connection and try again.")
-		utils.PrintfStdErr("ERR: if you are using a custom EVM Json-RPC, please provide it via flag '--%s <your_custom>' or setting environment variable 'export %s=<your_custom>'.\n", flagRpc, constants.ENV_EVM_RPC)
+		utils.PrintfStdErr("ERR: if you are using a custom EVM Json-RPC, please provide it via flag '--%s <your_custom>' or setting environment variable 'export %s=<your_custom>'.\n", flagEvmRpc, constants.ENV_EVM_RPC)
 		os.Exit(1)
 	}
 

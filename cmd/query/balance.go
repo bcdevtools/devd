@@ -92,7 +92,7 @@ func GetQueryBalanceCommand() *cobra.Command {
 					}
 				}
 
-				vfcbPairs, statusCode, err := fetchVirtualFrontierBankContractPairsFromRest(restApiEndpoint)
+				vfbcPairs, statusCode, err := fetchVirtualFrontierBankContractPairsFromRest(restApiEndpoint)
 				if err != nil {
 					if statusCode == 501 {
 						utils.PrintlnStdErr("WARN: virtual frontier contract feature is not available on the chain")
@@ -100,7 +100,7 @@ func GetQueryBalanceCommand() *cobra.Command {
 						utils.PrintlnStdErr("ERR:", err)
 					}
 				} else {
-					for _, vfbcPair := range vfcbPairs {
+					for _, vfbcPair := range vfbcPairs {
 						if !vfbcPair.Enabled {
 							continue
 						}
@@ -123,7 +123,7 @@ func GetQueryBalanceCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
+	cmd.Flags().String(flagEvmRpc, "", flagEvmRpcDesc)
 	cmd.Flags().String(flagRest, "", flagCosmosRestDesc)
 	cmd.Flags().Int64(flagHeight, 0, "query balance at specific height")
 	cmd.Flags().Bool(flagErc20, false, "query balance of ERC-20 contracts of `x/erc20` module and virtual frontier bank contracts")

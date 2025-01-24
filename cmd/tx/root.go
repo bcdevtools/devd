@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	flagRpc       = "rpc"
+	flagEvmRpc    = "evm-rpc"
 	flagSecretKey = "secret-key"
 	flagGasLimit  = "gas"
 	flagGasPrices = "gas-prices"

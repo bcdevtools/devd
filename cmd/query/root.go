@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	flagRpc         = "rpc"
+	flagEvmRpc      = "evm-rpc"
 	flagRest        = "rest"
 	flagTmRpc       = "tm-rpc"
 	flagFull        = "full"

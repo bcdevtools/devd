@@ -41,7 +41,7 @@ func GetQueryTxCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
+	cmd.Flags().String(flagEvmRpc, "", flagEvmRpcDesc)
 
 	return cmd
 }

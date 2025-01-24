@@ -8,11 +8,11 @@ go install -v github.com/bcdevtools/devd/v3/cmd/devd@latest
 
 ### Query tools
 
-Lazy RPC setting
+Lazy EVM-RPC setting
 ```bash
 export DEVD_EVM_RPC='https://evm.example.com:8545'
 ```
-_By setting this environment variable, you don't need to pass `--rpc` flag everytime for non-localhost EVM Json-RPC_
+_By setting this environment variable, you don't need to pass `--evm-rpc` flag everytime for non-localhost EVM Json-RPC_
 ___
 Lazy TM-RPC setting
 ```bash
@@ -22,7 +22,7 @@ _By setting this environment variable, you don't need to pass `--tm-rpc` flag ev
 ___
 Lazy Rest API setting
 ```bash
-export DEVD_COSMOS_REST='https://ethermint-rest.example.com:1317'
+export DEVD_COSMOS_REST='https://cosmos-rest.example.com:1317'
 ```
 _By setting this environment variable, you don't need to pass `--rest` flag everytime for non-localhost Rest API_
 ___
@@ -32,7 +32,7 @@ and inject back into the response data with `_` prefix like EVM tx, receipt, blo
 #### Query account balance
 
 ```bash
-devd query balance [account addr] [optional ERC20 addr..] [--erc20] [--rpc http://localhost:8545]
+devd query balance [account addr] [optional ERC20 addr..] [--erc20] [--evm-rpc http://localhost:8545]
 # devd q b 0xAccount
 # devd q b ethm1account
 # devd q b 0xAccount 0xErc20Contract
@@ -54,7 +54,7 @@ _`--filter` flags, if provided, will accept events those contain at least one pr
 #### Query ERC20 token information
 
 ```bash
-devd query erc20 [ERC20 addr] [optional account] [--rpc http://localhost:8545]
+devd query erc20 [ERC20 addr] [optional account] [--evm-rpc http://localhost:8545]
 # devd q erc20 0xErc20Contract
 # devd q erc20 0xErc20Contract 0xAccount
 # devd q erc20 0xErc20Contract ethm1account
@@ -63,21 +63,21 @@ devd query erc20 [ERC20 addr] [optional account] [--rpc http://localhost:8545]
 #### Get EVM transaction information
 
 ```bash
-devd query eth_getTransactionByHash [0xHash] [--rpc http://localhost:8545]
+devd query eth_getTransactionByHash [0xHash] [--evm-rpc http://localhost:8545]
 # devd q tx 0xHash
 ```
 
 #### Get EVM transaction receipt
 
 ```bash
-devd query eth_getTransactionReceipt [0xHash] [--rpc http://localhost:8545]
+devd query eth_getTransactionReceipt [0xHash] [--evm-rpc http://localhost:8545]
 # devd q receipt 0xHash
 ```
 
 #### Get EVM block by number
 
 ```bash
-devd query eth_getBlockByNumber [hex or dec block no] [--full] [--rpc http://localhost:8545]
+devd query eth_getBlockByNumber [hex or dec block no] [--full] [--evm-rpc http://localhost:8545]
 # devd q block 0xF
 # devd q block 16 --full
 ```
@@ -85,7 +85,7 @@ devd query eth_getBlockByNumber [hex or dec block no] [--full] [--rpc http://loc
 #### Trace EVM transaction
 
 ```bash
-devd query debug_traceTransaction [0xHash] [--tracer callTracer] [--rpc http://localhost:8545]
+devd query debug_traceTransaction [0xHash] [--tracer callTracer] [--evm-rpc http://localhost:8545]
 # devd q trace 0xHash
 # devd q trace 0xHash --tracer callTracer
 ```

@@ -91,7 +91,7 @@ func GetQueryBlockCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
+	cmd.Flags().String(flagEvmRpc, "", flagEvmRpcDesc)
 	cmd.Flags().Bool(flagFull, false, "should returns the full transaction objects when this value is true otherwise, it returns only the hashes of the transactions")
 
 	return cmd
