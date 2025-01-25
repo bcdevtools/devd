@@ -22,9 +22,9 @@ const (
 )
 
 const (
-	FlagEvmRpcDesc     = "EVM Json-RPC endpoint, default is " + constants.DEFAULT_EVM_RPC + ", can be set by environment variable " + constants.ENV_EVM_RPC
-	FlagCosmosRestDesc = "Cosmos Rest API endpoint, default is " + constants.DEFAULT_COSMOS_REST + ", can be set by environment variable " + constants.ENV_COSMOS_REST
-	FlagTmRpcDesc      = "Tendermint RPC endpoint, default is " + constants.DEFAULT_TM_RPC + ", can be set by environment variable " + constants.ENV_TM_RPC
+	FlagEvmRpcDesc     = "EVM Json-RPC endpoint, default is " + constants.DEFAULT_EVM_RPC + ", can be set via environment variable " + constants.ENV_EVM_RPC
+	FlagTmRpcDesc      = "Tendermint RPC endpoint, default is " + constants.DEFAULT_TM_RPC + ", can be set via environment variable " + constants.ENV_TM_RPC
+	FlagCosmosRestDesc = "Cosmos Rest API endpoint, default is " + constants.DEFAULT_COSMOS_REST + ", can be set via environment variable " + constants.ENV_COSMOS_REST
 )
 
 func MustGetEthClient(cmd *cobra.Command) (ethClient8545 *ethclient.Client, evmRpc string) {
