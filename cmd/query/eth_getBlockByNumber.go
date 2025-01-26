@@ -66,7 +66,7 @@ func GetQueryBlockCommand() *cobra.Command {
 				paramBlockNumber = types.NewJsonRpcInt64QueryParam(blockNumber.Int64())
 			}
 
-			bz, err := types.DoEvmQuery(
+			bz, err := types.DoEvmRpcQuery(
 				evmRpc,
 				types.NewJsonRpcQueryBuilder(
 					"eth_getBlockByNumber",

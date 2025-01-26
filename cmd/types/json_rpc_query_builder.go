@@ -217,7 +217,7 @@ func (j jsonRpcBoolQueryParam) String() string {
 
 const generalEvmQueryTimeout = 3 * time.Second
 
-func DoEvmQuery(host string, qb JsonRpcQueryBuilder, optionalTimeout time.Duration) ([]byte, error) {
+func DoEvmRpcQuery(host string, qb JsonRpcQueryBuilder, optionalTimeout time.Duration) ([]byte, error) {
 	timeout := optionalTimeout
 	if optionalTimeout == 0 {
 		timeout = generalEvmQueryTimeout
