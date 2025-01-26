@@ -16,8 +16,10 @@ import (
 func GetQueryErc20Command() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "erc20 [contract address] [?account address]",
-		Short: "Get ERC-20 token information. If account address is provided, it will query the balance of the account (bech32 is accepted).",
-		Args:  cobra.RangeArgs(1, 2),
+		Short: "Get ERC-20 token information. Optionally query the balance of an account.",
+		Long: `Get ERC-20 token information. If account address is provided, it will query the balance of the account.
+Support bech32 address format`,
+		Args: cobra.RangeArgs(1, 2),
 		Run: func(cmd *cobra.Command, args []string) {
 			ethClient8545, _ := flags.MustGetEthClient(cmd)
 
@@ -48,7 +50,19 @@ func GetQueryErc20Command() *cobra.Command {
 			}, contextHeight)
 			utils.ExitOnErr(err, "failed to get contract decimals")
 
-			contractDecimals := new(big.Int).SetBytes(bz)
+			contractDecimals := new(big.Int).SetBytes(bz).Uint64()
+
+			var totalSupply *big.Int
+			bz, err = ethClient8545.CallContract(context.Background(), ethereum.CallMsg{
+				To:   &contractAddr,
+				Data: []byte{0x18, 0x16, 0x0d, 0xdd}, // totalSupply()
+			}, contextHeight)
+			if err == nil && len(bz) > 0 {
+				totalSupply = new(big.Int).SetBytes(bz)
+				if totalSupply.Sign() != 1 {
+					totalSupply = nil
+				}
+			}
 
 			var accountBalance *big.Int
 			if accountAddr != (common.Address{}) {
@@ -61,12 +75,15 @@ func GetQueryErc20Command() *cobra.Command {
 				accountBalance = new(big.Int).SetBytes(bz)
 			}
 
-			decimals := contractDecimals.Uint64()
-
 			fmt.Println("Contract Symbol:", contractSymbol)
-			fmt.Println("Contract Decimals:", decimals)
+			fmt.Println("Contract Decimals:", contractDecimals)
+			if totalSupply != nil {
+				display, _, _, err := utils.ConvertNumberIntoDisplayWithExponent(totalSupply, int(contractDecimals))
+				utils.ExitOnErr(err, "failed to convert number into display with exponent")
+				fmt.Println("Total Supply:", display, contractSymbol)
+			}
 			if accountBalance != nil {
-				display, high, low, err := utils.ConvertNumberIntoDisplayWithExponent(accountBalance, int(decimals))
+				display, high, low, err := utils.ConvertNumberIntoDisplayWithExponent(accountBalance, int(contractDecimals))
 				utils.ExitOnErr(err, "failed to convert number into display with exponent")
 				fmt.Println("Account token balance:")
 				fmt.Println(" - Raw:", accountBalance)

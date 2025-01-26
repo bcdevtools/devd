@@ -58,6 +58,8 @@ devd query erc20 [ERC20 addr] [optional account] [--evm-rpc http://localhost:854
 # devd q erc20 0xErc20Contract ethm1account
 ```
 
+_This command will try to query `totalSupply()` if possible_
+
 #### Get EVM transaction information
 
 ```bash
