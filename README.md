@@ -94,9 +94,10 @@ devd query debug_traceTransaction [0xHash] [--tracer callTracer] [--evm-rpc http
 
 ```bash
 # Transfer native coin
-devd tx send [to] [amount]
+devd tx send [to] [amount] [--raw-tx]
 # Transfer ERC-20 token
 devd tx send [to] [amount] [--erc20 contract_address]
+# Use `--raw-tx` flag to see raw RLP-encoded EVM tx
 ```
 
 _support short int (2e18, 5bb,...): `devd tx send [to] [1e18/1bb]`_
@@ -105,9 +106,10 @@ _support short int (2e18, 5bb,...): `devd tx send [to] [1e18/1bb]`_
 
 ```bash
 # Deploy contract with deployment bytecode
-devd tx deploy-contract [deployment bytecode] [--gas 4m] [--gas-prices 20b]
+devd tx deploy-contract [deployment bytecode] [--gas 4m] [--gas-prices 20b] [--raw-tx]
 # Deploy ERC-20 contract with pre-defined bytecode
 devd tx deploy-contract erc20
+# Use `--raw-tx` flag to see raw RLP-encoded EVM tx
 ```
 
 ### Convert tools

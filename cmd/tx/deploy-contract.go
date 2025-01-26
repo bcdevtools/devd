@@ -44,6 +44,7 @@ Predefined bytecode: erc20`,
 	cmd.Flags().String(flags.FlagSecretKey, "", flags.FlagSecretKeyDesc)
 	cmd.Flags().String(flagGasLimit, "4m", flagGasLimitDesc)
 	cmd.Flags().String(flagGasPrices, "20b", flagGasPricesDesc)
+	cmd.Flags().Bool(flagRawTx, false, flagRawTxDesc)
 
 	return cmd
 }
@@ -93,6 +94,10 @@ func deployEvmContract(bytecode string, cmd *cobra.Command) {
 	utils.ExitOnErr(err, "failed to encode tx")
 
 	utils.PrintlnStdErr("INF: Tx hash", signedTx.Hash())
+
+	if cmd.Flags().Changed(flagRawTx) {
+		printRawEvmTx(signedTx)
+	}
 
 	err = ethClient8545.SendTransaction(context.Background(), signedTx)
 	utils.ExitOnErr(err, "failed to send tx")

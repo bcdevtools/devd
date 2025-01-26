@@ -1,7 +1,10 @@
 package tx
 
 import (
+	"bytes"
+	"encoding/hex"
 	"fmt"
+	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"math/big"
 	"regexp"
 	"strings"
@@ -13,11 +16,13 @@ import (
 const (
 	flagGasLimit  = "gas"
 	flagGasPrices = "gas-prices"
+	flagRawTx     = "raw-tx"
 )
 
 const (
 	flagGasLimitDesc  = "Gas limit for the transaction, support custom unit (eg: 1m equals to one million, 21k equals to thousand)"
 	flagGasPricesDesc = "Gas prices for the transaction, support custom unit (eg: both 20b and 20g(wei) equals to twenty billion)"
+	flagRawTxDesc     = "Print raw tx"
 )
 
 // Commands registers a sub-tree of commands
@@ -93,4 +98,13 @@ func readGasLimit(cmd *cobra.Command) (uint64, error) {
 	}
 
 	return num, nil
+}
+
+func printRawEvmTx(signedTx *ethtypes.Transaction) {
+	var buf bytes.Buffer
+	err := signedTx.EncodeRLP(&buf)
+	utils.ExitOnErr(err, "failed to encode tx")
+
+	rawTxRlpEncoded := hex.EncodeToString(buf.Bytes())
+	utils.PrintfStdErr("INF: Raw EVM tx: 0x%s\n", rawTxRlpEncoded)
 }

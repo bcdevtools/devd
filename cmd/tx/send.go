@@ -1,7 +1,6 @@
 package tx
 
 import (
-	"bytes"
 	"context"
 	"fmt"
 	"math/big"
@@ -21,8 +20,10 @@ const flagErc20 = "erc20"
 func GetSendEvmTxCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "send [to] [amount]",
-		Short: "Send some native coin or ERC-20 token to an address",
-		Args:  cobra.ExactArgs(2),
+		Short: "Send native coin or ERC-20 token to another account",
+		Long: `Send native coin or ERC-20 token to another account.
+Support short int`,
+		Args: cobra.ExactArgs(2),
 		Run: func(cmd *cobra.Command, args []string) {
 			ethClient8545, _ := flags.MustGetEthClient(cmd)
 
@@ -114,11 +115,11 @@ func GetSendEvmTxCommand() *cobra.Command {
 			signedTx, err := ethtypes.SignTx(tx, ethtypes.LatestSignerForChainID(chainId), ecdsaPrivateKey)
 			utils.ExitOnErr(err, "failed to sign tx")
 
-			var buf bytes.Buffer
-			err = signedTx.EncodeRLP(&buf)
-			utils.ExitOnErr(err, "failed to encode tx")
-
 			utils.PrintlnStdErr("INF: Tx hash", signedTx.Hash())
+
+			if cmd.Flags().Changed(flagRawTx) {
+				printRawEvmTx(signedTx)
+			}
 
 			err = ethClient8545.SendTransaction(context.Background(), signedTx)
 			utils.ExitOnErr(err, "failed to send tx")
@@ -136,6 +137,7 @@ func GetSendEvmTxCommand() *cobra.Command {
 	cmd.Flags().String(flagErc20, "", "contract address if you want to send ERC-20 token instead of native coin")
 	cmd.Flags().String(flagGasLimit, "500k", fmt.Sprintf("%s. Ignored during normal EVM transfer, fixed to 21k", flagGasLimitDesc))
 	cmd.Flags().String(flagGasPrices, "20b", flagGasPricesDesc)
+	cmd.Flags().Bool(flagRawTx, false, flagRawTxDesc)
 
 	return cmd
 }
