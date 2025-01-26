@@ -59,7 +59,7 @@ func getSignatureFromInterface(_interface string) (_4BytesSig string, hash commo
 	utils.PrintlnStdErr("INF: Interface")
 	fmt.Println(_interface)
 
-	if !regexp.MustCompile(`^\w+\s*\(.+\)$`).MatchString(_interface) {
+	if !regexp.MustCompile(`^\w+\s*\(.*\)$`).MatchString(_interface) {
 		err = fmt.Errorf("invalid EVM method/event interface, require format: `methodName(...)`")
 		return
 	}
