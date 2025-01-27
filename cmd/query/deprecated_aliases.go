@@ -1,10 +1,11 @@
 package query
 
 import (
+	"os"
+
 	"github.com/bcdevtools/devd/v3/cmd/utils"
 	"github.com/bcdevtools/devd/v3/constants"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 func GetDeprecatedAliasBlockAsCommand() *cobra.Command {

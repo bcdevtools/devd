@@ -76,6 +76,8 @@ devd query debug_traceTransaction [0xHash] [--tracer callTracer] [--evm-rpc http
 # devd q trace 0xHash
 # devd q trace 0xHash --tracer callTracer
 
+devd query eth_call 0xContractAddr 0xCallData [--evm-rpc http://localhost:8545] [--from 0xFromAddr] [--height 5m/0xHex/latest] [--gas 500k/hex] [--gas-prices 20e9/hex] [--value 1e18/hex] 
+
 devd query eth_chainId [--evm-rpc http://localhost:8545]
 ```
 

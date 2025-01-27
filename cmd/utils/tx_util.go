@@ -113,6 +113,12 @@ func MarshalPrettyJsonEvmTxReceipt(receipt *ethtypes.Receipt, option *PrettyMars
 		}
 	}
 
+	if logs, found := _map["logs"]; found && logs != nil {
+		if logsArray, ok := logs.([]interface{}); ok {
+			removeDeprecatedFieldsFromEvmTxLogs(logsArray)
+		}
+	}
+
 	return json.MarshalIndent(_map, "", "  ")
 }
 
@@ -179,4 +185,14 @@ func TryInjectTranslatedFieldForEvmRpcObjects(originalObject any, _map map[strin
 	}
 
 	TryInjectTranslationValueByKey(_map, key, keyTransform, valueTransform)
+}
+
+func removeDeprecatedFieldsFromEvmTxLogs(logs []interface{}) {
+	if len(logs) > 0 {
+		for _, log := range logs {
+			if logMap, ok := log.(map[string]interface{}); ok && logMap != nil {
+				delete(logMap, "removed")
+			}
+		}
+	}
 }

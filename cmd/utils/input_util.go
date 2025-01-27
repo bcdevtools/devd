@@ -80,6 +80,22 @@ func tryReadPipe() (dataFromPipe string, err error) {
 	return
 }
 
+func ReadShortIntOrHex(input string) (out *big.Int, err error) {
+	normalizedInput := strings.ToLower(strings.TrimSpace(input))
+	if strings.HasPrefix(normalizedInput, "0x") {
+		number, ok := new(big.Int).SetString(strings.TrimPrefix(normalizedInput, "0x"), 16)
+		if !ok {
+			err = fmt.Errorf("failed to convert hexadecimal to decimal: %s", normalizedInput)
+			return
+		}
+
+		out = number
+		return
+	}
+
+	return ReadShortInt(normalizedInput)
+}
+
 func ReadShortInt(input string) (out *big.Int, err error) {
 	normalizedInput := strings.ToLower(strings.TrimSpace(input))
 

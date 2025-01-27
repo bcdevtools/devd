@@ -1,13 +1,7 @@
 package query
 
 import (
-	"math/big"
-
 	"github.com/spf13/cobra"
-)
-
-const (
-	flagHeight = "height"
 )
 
 // Commands registers a sub-tree of commands
@@ -27,6 +21,7 @@ func Commands() *cobra.Command {
 		GetQueryEvmRpcEthGetTransactionReceiptCommand(),
 		GetQueryEvmRpcEthGetBlockByNumberCommand(),
 		GetQueryEvmRpcEthChainIdCommand(),
+		GetQueryEvmRpcEthCallCommand(),
 		GetQueryEvmRpcDebugTraceTransactionCommand(),
 		// fake command for deprecated alias
 		GetDeprecatedAliasBlockAsCommand(),
@@ -34,13 +29,4 @@ func Commands() *cobra.Command {
 	)
 
 	return cmd
-}
-
-func readContextHeightFromFlag(cmd *cobra.Command) *big.Int {
-	height, _ := cmd.Flags().GetInt64(flagHeight)
-	if height > 0 {
-		return big.NewInt(height)
-	}
-
-	return nil
 }

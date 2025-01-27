@@ -26,7 +26,8 @@ Support bech32 address format`,
 			evmAddrs, err := utils.GetEvmAddressFromAnyFormatAddress(args...)
 			utils.ExitOnErr(err, "failed to get evm address from input")
 
-			contextHeight := readContextHeightFromFlag(cmd)
+			contextHeight, err := flags.ReadFlagBlockNumberOrNil(cmd, flags.FlagHeight)
+			utils.ExitOnErr(err, "failed to parse block number")
 
 			var contractAddr, accountAddr common.Address
 
@@ -95,7 +96,7 @@ Support bech32 address format`,
 	}
 
 	cmd.Flags().String(flags.FlagEvmRpc, "", flags.FlagEvmRpcDesc)
-	cmd.Flags().Int64(flagHeight, 0, "query balance at specific height")
+	cmd.Flags().Int64(flags.FlagHeight, 0, "query balance at specific height")
 
 	return cmd
 }

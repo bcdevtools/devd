@@ -138,7 +138,8 @@ Bech32 account address is accepted.`, flagErc20),
 
 			// start fetching balances
 
-			contextHeight := readContextHeightFromFlag(cmd)
+			contextHeight, err := flags.ReadFlagBlockNumberOrNil(cmd, flags.FlagHeight)
+			utils.ExitOnErr(err, "failed to parse block number")
 
 			accountAddr := evmAddrs[0]
 			utils.PrintlnStdErr("INF: Account", accountAddr)
@@ -174,7 +175,7 @@ Bech32 account address is accepted.`, flagErc20),
 
 	cmd.Flags().String(flags.FlagEvmRpc, "", flags.FlagEvmRpcDesc)
 	cmd.Flags().String(flags.FlagCosmosRest, "", flags.FlagCosmosRestDesc)
-	cmd.Flags().Int64(flagHeight, 0, "query balance at specific height")
+	cmd.Flags().Int64(flags.FlagHeight, 0, "query balance at specific height")
 	cmd.Flags().Bool(flagErc20, false, "query balance of ERC-20 contracts of `x/erc20` module and virtual frontier bank contracts")
 
 	return cmd
