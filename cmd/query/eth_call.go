@@ -50,7 +50,7 @@ func GetQueryEvmRpcEthCallCommand() *cobra.Command {
 				}(),
 				To: &contractAddress,
 				Gas: func() uint64 {
-					gas, err := flags.ReadFlagShortIntOrHexOrZero(cmd, flags.FlagGas)
+					gas, err := flags.ReadFlagShortIntOrHexOrZero(cmd, flags.FlagGasLimit)
 					utils.ExitOnErr(err, "failed to parse gas")
 					if gas > 0 {
 						utils.PrintfStdErr("INF: using gas: %d\n", gas)
@@ -89,9 +89,9 @@ func GetQueryEvmRpcEthCallCommand() *cobra.Command {
 
 	cmd.Flags().String(flags.FlagEvmRpc, "", flags.FlagEvmRpcDesc)
 	cmd.Flags().StringP(flagFrom, "f", "", "the address from which the transaction is sent")
-	cmd.Flags().StringP(flags.FlagGas, "g", "", "the integer of gas provided for the transaction execution, support short int and hex")
-	cmd.Flags().StringP(flags.FlagGasPrices, "p", "", "the integer of gasPrice used for each paid gas encoded as hexadecimal, support short int and hex")
-	cmd.Flags().StringP(flagValue, "v", "", "the integer of value sent with this transaction encoded as hexadecimal, support short int and hex")
+	cmd.Flags().StringP(flags.FlagGasLimit, "g", "", "gas provided for the transaction execution, support short int and hex")
+	cmd.Flags().StringP(flags.FlagGasPrices, "p", "", "gas prices used for each paid gas, support short int and hex")
+	cmd.Flags().StringP(flagValue, "v", "", "value sent with this transaction, support short int and hex")
 	cmd.Flags().StringP(flags.FlagHeight, "h", "latest", "the context height of the block to exec, accept \"latest\"/short int/hex")
 
 	return cmd

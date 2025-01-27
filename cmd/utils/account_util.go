@@ -22,7 +22,7 @@ func FromMnemonicToPrivateKey(mnemonic, password string) (*ecdsa.PrivateKey, err
 		return nil, err
 	}
 
-	// create a BTC-utils hd-derivation key chain
+	// create a BTC-utils hd-derivation keychain
 	masterKey, err := hdkeychain.NewMaster(seed, &chaincfg.MainNetParams)
 	if err != nil {
 		return nil, err

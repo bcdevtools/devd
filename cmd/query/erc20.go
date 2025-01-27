@@ -96,7 +96,7 @@ Support bech32 address format`,
 	}
 
 	cmd.Flags().String(flags.FlagEvmRpc, "", flags.FlagEvmRpcDesc)
-	cmd.Flags().Int64(flags.FlagHeight, 0, "query balance at specific height")
+	cmd.Flags().String(flags.FlagHeight, "", "query balance at specific height")
 
 	return cmd
 }
