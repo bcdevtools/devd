@@ -4,10 +4,11 @@ import (
 	"bytes"
 	"encoding/hex"
 	"fmt"
-	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"math/big"
 	"regexp"
 	"strings"
+
+	ethtypes "github.com/ethereum/go-ethereum/core/types"
 
 	"github.com/bcdevtools/devd/v3/cmd/utils"
 	"github.com/spf13/cobra"
