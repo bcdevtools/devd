@@ -14,7 +14,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func GetQueryTxReceiptCommand() *cobra.Command {
+func GetQueryEvmRpcEthGetTransactionReceiptCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "eth_getTransactionReceipt [0xhash]",
 		Aliases: []string{"receipt"},

@@ -60,34 +60,23 @@ devd query erc20 [ERC20 addr] [optional account] [--evm-rpc http://localhost:854
 
 _This command will try to query `totalSupply()` if possible_
 
-#### Get EVM transaction information
+#### Some EVM-RPC queries
 
 ```bash
 devd query eth_getTransactionByHash [0xHash] [--evm-rpc http://localhost:8545]
-# devd q tx 0xHash
-```
 
-#### Get EVM transaction receipt
-
-```bash
 devd query eth_getTransactionReceipt [0xHash] [--evm-rpc http://localhost:8545]
 # devd q receipt 0xHash
-```
 
-#### Get EVM block by number
-
-```bash
 devd query eth_getBlockByNumber [hex or dec block no] [--full] [--evm-rpc http://localhost:8545]
-# devd q block 0xF
-# devd q block 16 --full
-```
+# devd q eth_getBlockByNumber 0xF
+# devd q eth_getBlockByNumber 16 --full
 
-#### Trace EVM transaction
-
-```bash
 devd query debug_traceTransaction [0xHash] [--tracer callTracer] [--evm-rpc http://localhost:8545]
 # devd q trace 0xHash
 # devd q trace 0xHash --tracer callTracer
+
+devd query eth_chainId [--evm-rpc http://localhost:8545]
 ```
 
 ### Tx tools

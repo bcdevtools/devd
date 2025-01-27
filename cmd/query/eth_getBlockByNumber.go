@@ -20,7 +20,7 @@ const (
 	flagFull = "full"
 )
 
-func GetQueryBlockCommand() *cobra.Command {
+func GetQueryEvmRpcEthGetBlockByNumberCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "eth_getBlockByNumber [height dec or 0xHex]",
 		Short: "Query `eth_getBlockByNumber` from EVM RPC",

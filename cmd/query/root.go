@@ -20,13 +20,14 @@ func Commands() *cobra.Command {
 
 	cmd.AddCommand(
 		GetQueryErc20Command(),
-		GetQueryTxCommand(),
-		GetQueryTxReceiptCommand(),
-		GetQueryBlockCommand(),
-		GetQueryTraceTxCommand(),
 		GetQueryBalanceCommand(),
 		GetQueryTxsInBlockCommand(),
 		GetQueryTxEventsCommand(),
+		GetQueryEvmRpcEthGetTransactionByHashCommand(),
+		GetQueryEvmRpcEthGetTransactionReceiptCommand(),
+		GetQueryEvmRpcEthGetBlockByNumberCommand(),
+		GetQueryEvmRpcEthChainIdCommand(),
+		GetQueryEvmRpcDebugTraceTransactionCommand(),
 		// fake command for deprecated alias
 		GetDeprecatedAliasBlockAsCommand(),
 		GetDeprecatedAliasTxAsCommand(),

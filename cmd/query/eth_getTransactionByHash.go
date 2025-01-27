@@ -14,7 +14,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func GetQueryTxCommand() *cobra.Command {
+func GetQueryEvmRpcEthGetTransactionByHashCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "eth_getTransactionByHash [0xhash]",
 		Short: "Query `eth_getTransactionByHash` from EVM RPC",

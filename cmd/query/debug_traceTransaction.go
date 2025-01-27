@@ -21,7 +21,7 @@ const (
 	flagNoTranslate = "no-translate"
 )
 
-func GetQueryTraceTxCommand() *cobra.Command {
+func GetQueryEvmRpcDebugTraceTransactionCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "debug_traceTransaction [0xhash]",
 		Aliases: []string{"trace"},
