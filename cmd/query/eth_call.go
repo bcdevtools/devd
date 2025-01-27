@@ -21,11 +21,15 @@ func GetQueryEvmRpcEthCallCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "eth_call [contract address] [call data]",
 		Short: "Call `eth_call` of EVM RPC: executes a new EVM message call immediately without creating a transaction on the block chain",
-		Args:  cobra.ExactArgs(2),
+		Long: `Call "eth_call" of EVM RPC: executes a new EVM message call immediately without creating a transaction on the block chain.
+Bech32 account address is accepted.`,
+		Args: cobra.ExactArgs(2),
 		Run: func(cmd *cobra.Command, args []string) {
 			ethClient, _ := flags.MustGetEthClient(cmd)
 
-			contractAddress := common.HexToAddress(args[0])
+			evmAddrs, err := utils.GetEvmAddressFromAnyFormatAddress(args[0])
+			utils.ExitOnErr(err, "failed to parse contract address")
+			contractAddress := evmAddrs[0]
 			callData, err := hex.DecodeString(strings.TrimPrefix(strings.ToLower(args[1]), "0x"))
 			utils.ExitOnErr(err, "failed to decode call data")
 
@@ -44,7 +48,9 @@ func GetQueryEvmRpcEthCallCommand() *cobra.Command {
 					if from == "" {
 						return common.Address{}
 					}
-					fromAddr := common.HexToAddress(from)
+					evmAddrs, err := utils.GetEvmAddressFromAnyFormatAddress(from)
+					utils.ExitOnErr(err, fmt.Sprintf("failed to parse address of --%s", flagFrom))
+					fromAddr := evmAddrs[0]
 					utils.PrintfStdErr("INF: using from: %s\n", fromAddr)
 					return fromAddr
 				}(),
@@ -62,9 +68,9 @@ func GetQueryEvmRpcEthCallCommand() *cobra.Command {
 				}(),
 				GasPrice: func() *big.Int {
 					gasPrice, err := flags.ReadFlagShortIntOrHexOrNil(cmd, flags.FlagGasPrices)
-					utils.ExitOnErr(err, "failed to parse gas price")
+					utils.ExitOnErr(err, "failed to parse gas prices")
 					if gasPrice != nil && gasPrice.Sign() == 1 {
-						utils.PrintfStdErr("INF: using gas-price: %s\n", gasPrice)
+						utils.PrintfStdErr("INF: using gas-prices: %s\n", gasPrice)
 					}
 					return gasPrice
 				}(),
@@ -88,7 +94,7 @@ func GetQueryEvmRpcEthCallCommand() *cobra.Command {
 	}
 
 	cmd.Flags().String(flags.FlagEvmRpc, "", flags.FlagEvmRpcDesc)
-	cmd.Flags().StringP(flagFrom, "f", "", "the address from which the transaction is sent")
+	cmd.Flags().StringP(flagFrom, "f", "", "the address from which the transaction is sent, support 0x or bech32")
 	cmd.Flags().StringP(flags.FlagGasLimit, "g", "", "gas provided for the transaction execution, support short int and hex")
 	cmd.Flags().StringP(flags.FlagGasPrices, "p", "", "gas prices used for each paid gas, support short int and hex")
 	cmd.Flags().StringP(flagValue, "v", "", "value sent with this transaction, support short int and hex")
