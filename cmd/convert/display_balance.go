@@ -2,6 +2,7 @@ package convert
 
 import (
 	"fmt"
+	"github.com/bcdevtools/devd/v2/constants"
 	"math/big"
 	"os"
 	"strconv"
@@ -14,12 +15,14 @@ import (
 func GetDisplayBalanceCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "display_balance [raw balance] [decimals]",
-		Aliases: []string{"dbal"},
+		Aliases: []string{"dbal", "display-balance"},
 		Short:   "Convert raw balance into display balance.",
 		Long: `Convert raw balance into display balance.
 Sample: 10011100 with 6 exponent => 10.0111`,
 		Args: cobra.ExactArgs(2),
 		Run: func(cmd *cobra.Command, args []string) {
+			utils.PrintfStdErr("WARN: from v3, this command will be renamed to `%s convert display-balance` (`-` instead of '_')\n", constants.BINARY_NAME)
+
 			rawBalanceStr := args[0]
 			decimalsStr := args[1]
 

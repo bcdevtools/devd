@@ -27,7 +27,7 @@ Output will be 4 lines:
 `,
 		Args: cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			utils.PrintfStdErr("WARN: from v3, this command will be renamed to `%s convert solc-sig ...`\n", constants.BINARY_NAME)
+			utils.PrintfStdErr("WARN: from v3, this command will be renamed to `%s convert solc-sig` (`-` instead of '_')\n", constants.BINARY_NAME)
 
 			_interface := strings.Join(args, " ")
 

@@ -3,6 +3,7 @@ package debug
 import (
 	"encoding/hex"
 	"fmt"
+	"github.com/bcdevtools/devd/v2/constants"
 	"os"
 	"regexp"
 	"strings"
@@ -16,8 +17,9 @@ import (
 
 func GetIntrinsicCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "intrinsic_gas [0xdata]",
-		Short: `Get intrinsic gas used by the given EVM transaction input data.`,
+		Use:     "intrinsic_gas [0xdata]",
+		Aliases: []string{"intrinsic-gas"},
+		Short:   `Get intrinsic gas used by the given EVM transaction input data.`,
 		Long: fmt.Sprintf(`Get intrinsic gas used by the given EVM transaction input data.
 This operation assumes:
 - No access list
@@ -26,6 +28,8 @@ This operation assumes:
 - The transaction is not a contract creation transaction, if it is, need to plus %d into the output to have the correct number`, params.TxGasContractCreation-params.TxGas),
 		Args: cobra.ExactArgs(1),
 		Run: func(_ *cobra.Command, args []string) {
+			utils.PrintfStdErr("WARN: from v3, this command will be renamed to `%s convert intrinsic-gas` (`-` instead of '_')\n", constants.BINARY_NAME)
+
 			input := strings.ToLower(args[0])
 			if !regexp.MustCompile(`^(0x)?[a-f\d]+$`).MatchString(input) {
 				utils.PrintlnStdErr("ERR: invalid EVM transaction input data format")
