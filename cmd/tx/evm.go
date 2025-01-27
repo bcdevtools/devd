@@ -32,6 +32,12 @@ func mustGetEthClient(cmd *cobra.Command) (ethClient8545 *ethclient.Client, rpc 
 		inputSource = "default"
 	}
 
+	if inputSource == "flag" {
+		utils.PrintfStdErr("WARN: from v3, use `--evm-rpc` instead of `--%s`, this old flag will no longer functioning\n", flagRpc)
+	} else {
+		utils.PrintfStdErr("WARN: from v3, flag `--%s` will be renamed to `--evm-rpc`\n", flagRpc)
+	}
+
 	utils.PrintlnStdErr("INF: Connecting to EVM Json-RPC", rpc, fmt.Sprintf("(from %s)", inputSource))
 
 	ethClient8545, err = ethclient.Dial(rpc)

@@ -1,6 +1,8 @@
 package tx
 
 import (
+	"github.com/bcdevtools/devd/v2/cmd/utils"
+	"github.com/bcdevtools/devd/v2/constants"
 	"github.com/spf13/cobra"
 )
 
@@ -14,6 +16,8 @@ func GetDeployErc20EvmTxCommand() *cobra.Command {
 		Short: "Deploy an ERC20 contract",
 		Args:  cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
+			utils.PrintfStdErr("WARN: from v3, this command will be removed, please use `%s tx deploy-contract erc20`\n", constants.BINARY_NAME)
+
 			deployEvmContract(BytecodeErc20Contract, cmd)
 		},
 	}

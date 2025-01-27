@@ -3,6 +3,7 @@ package convert
 import (
 	"encoding/hex"
 	"fmt"
+	"github.com/bcdevtools/devd/v2/constants"
 	"regexp"
 	"strings"
 
@@ -12,11 +13,14 @@ import (
 
 func GetConvertAbiStringCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "abi_string [hex or text]",
-		Short: `Convert ABI encoded hex to string or vice versa.`,
+		Use:     "abi_string [hex or text]",
+		Aliases: []string{"abi-string"},
+		Short:   `Convert ABI encoded hex to string or vice versa.`,
 		Long: `Convert ABI encoded hex to string or vice versa.
 Support pipe.`,
 		Run: func(cmd *cobra.Command, args []string) {
+			utils.PrintfStdErr("WARN: from v3, this command will be renamed to `%s convert abi-string` (`-` instead of '_')\n", constants.BINARY_NAME)
+
 			args, err := utils.ProvidedArgsOrFromPipe(args)
 			utils.ExitOnErr(err, "failed to get args from pipe")
 			utils.RequireArgs(args, cmd)

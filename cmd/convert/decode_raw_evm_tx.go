@@ -2,6 +2,7 @@ package convert
 
 import (
 	"fmt"
+	"github.com/bcdevtools/devd/v2/constants"
 	"os"
 	"regexp"
 	"strings"
@@ -12,10 +13,13 @@ import (
 
 func GetDecodeRawEvmTxCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "decode_raw_tx [raw RLP-encoded EVM tx hex]",
-		Short: `Decode the raw RLP-encoded EVM tx to see inner details, additional information will be injected with prefix '_'`,
-		Args:  cobra.ExactArgs(1),
+		Use:     "decode_raw_tx [raw RLP-encoded EVM tx hex]",
+		Aliases: []string{"raw-tx"},
+		Short:   `Decode the raw RLP-encoded EVM tx to see inner details, additional information will be injected with prefix '_'`,
+		Args:    cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
+			utils.PrintfStdErr("WARN: from v3, this command will be moved and renamed to `%s debug raw-tx ...`\n", constants.BINARY_NAME)
+
 			rawTx := strings.ToLower(args[0])
 			if !regexp.MustCompile(`^(0x)?[a-fA-F\d]+$`).MatchString(rawTx) {
 				utils.PrintlnStdErr("ERR: invalid raw EVM tx, must be valid hex-encoded string")

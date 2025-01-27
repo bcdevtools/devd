@@ -2,6 +2,7 @@ package convert
 
 import (
 	"fmt"
+	"github.com/bcdevtools/devd/v2/constants"
 	"math/big"
 	"os"
 	"regexp"
@@ -19,6 +20,8 @@ func GetConvertHexadecimalToDecimalCmd() *cobra.Command {
 		Long: `Convert hexadecimal to decimal.
 Support pipe.`,
 		Run: func(cmd *cobra.Command, args []string) {
+			utils.PrintfStdErr("WARN: from v3, this command will be renamed to `%s convert hex [0xHex]`\n", constants.BINARY_NAME)
+
 			args, err := utils.ProvidedArgsOrFromPipe(args)
 			utils.ExitOnErr(err, "failed to get args from pipe")
 			utils.RequireExactArgsCount(args, 1, cmd)

@@ -3,6 +3,7 @@ package query
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/bcdevtools/devd/v2/constants"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"math/big"
 	"os"
@@ -21,6 +22,8 @@ func GetQueryBlockCommand() *cobra.Command {
 		Short:   "eth_getBlockByNumber",
 		Args:    cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
+			utils.PrintfStdErr("WARN! Deprecation notice: from v3, command alias `block` will be removed, please use `%s q eth_getBlockByNumber ...` instead of `%s q block ...`\n", constants.BINARY_NAME, constants.BINARY_NAME)
+
 			_, rpc := mustGetEthClient(cmd, false)
 
 			input := strings.ToLower(args[0])

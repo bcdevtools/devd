@@ -2,6 +2,7 @@ package convert
 
 import (
 	"fmt"
+	"github.com/bcdevtools/devd/v2/constants"
 	"regexp"
 	"strings"
 
@@ -14,8 +15,9 @@ import (
 // GetConvertSolcSignatureCmd creates a helper command that convert EVM method/event into keccak256 hash and 4 bytes signature
 func GetConvertSolcSignatureCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "solc_sig [method or event]",
-		Short: "Convert Solidity method/event signature into hashed signature and 4 bytes signature.",
+		Use:     "solc_sig [method or event]",
+		Aliases: []string{"solc-sig"},
+		Short:   "Convert Solidity method/event signature into hashed signature and 4 bytes signature.",
 		Long: `Convert Solidity method/event signature into hashed signature and 4 bytes signature.
 Output will be 4 lines:
 1. Type: Method/Event
@@ -25,6 +27,8 @@ Output will be 4 lines:
 `,
 		Args: cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
+			utils.PrintfStdErr("WARN: from v3, this command will be renamed to `%s convert solc-sig ...`\n", constants.BINARY_NAME)
+
 			_interface := strings.Join(args, " ")
 
 			_4BytesSig, hash, finalInterface, err := getSignatureFromInterface(_interface)

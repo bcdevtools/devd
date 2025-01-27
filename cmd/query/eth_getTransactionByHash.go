@@ -3,6 +3,7 @@ package query
 import (
 	"context"
 	"fmt"
+	"github.com/bcdevtools/devd/v2/constants"
 	"os"
 	"regexp"
 	"strings"
@@ -19,6 +20,8 @@ func GetQueryTxCommand() *cobra.Command {
 		Short:   "eth_getTransactionByHash",
 		Args:    cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
+			utils.PrintfStdErr("WARN! Deprecation notice: from v3, command alias `tx` will be removed, please use `%s q eth_getTransactionByHash ...` instead of `%s q tx ...`\n", constants.BINARY_NAME, constants.BINARY_NAME)
+
 			ethClient, _ := mustGetEthClient(cmd, false)
 
 			input := strings.ToLower(args[0])
