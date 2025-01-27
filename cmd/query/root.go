@@ -27,6 +27,9 @@ func Commands() *cobra.Command {
 		GetQueryBalanceCommand(),
 		GetQueryTxsInBlockCommand(),
 		GetQueryTxEventsCommand(),
+		// fake command for deprecated alias
+		GetDeprecatedAliasBlockAsCommand(),
+		GetDeprecatedAliasTxAsCommand(),
 	)
 
 	return cmd

@@ -18,7 +18,7 @@ func GetQueryTxReceiptCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "eth_getTransactionReceipt [0xhash]",
 		Aliases: []string{"receipt"},
-		Short:   "eth_getTransactionReceipt",
+		Short:   "Query `eth_getTransactionReceipt` from EVM RPC",
 		Args:    cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			ethClient, _ := flags.MustGetEthClient(cmd)

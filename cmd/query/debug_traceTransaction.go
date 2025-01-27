@@ -25,8 +25,10 @@ func GetQueryTraceTxCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "debug_traceTransaction [0xhash]",
 		Aliases: []string{"trace"},
-		Short:   "debug_traceTransaction",
-		Args:    cobra.ExactArgs(1),
+		Short:   "Query 'debug_traceTransaction' from EVM RPC",
+		Long: `Query 'debug_traceTransaction' from EVM RPC, with optional tracer name.
+Require 'debug' namespace enabled in EVM RPC node.`,
+		Args: cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			_, evmRpc := flags.MustGetEthClient(cmd)
 

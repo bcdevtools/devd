@@ -16,10 +16,9 @@ import (
 
 func GetQueryTxCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "eth_getTransactionByHash [0xhash]",
-		Aliases: []string{"tx"},
-		Short:   "eth_getTransactionByHash",
-		Args:    cobra.ExactArgs(1),
+		Use:   "eth_getTransactionByHash [0xhash]",
+		Short: "Query `eth_getTransactionByHash` from EVM RPC",
+		Args:  cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			ethClient, _ := flags.MustGetEthClient(cmd)
 
