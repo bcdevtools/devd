@@ -16,11 +16,11 @@ import (
 func GetQueryTxCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "eth_getTransactionByHash [0xhash]",
-		Aliases: []string{"tx"},
+		Aliases: []string{"tx", "evm-tx"},
 		Short:   "eth_getTransactionByHash",
 		Args:    cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			utils.PrintfStdErr("WARN! Deprecation notice: from v3, command alias `tx` will be removed, please use `%s q eth_getTransactionByHash ...` instead of `%s q tx ...`\n", constants.BINARY_NAME, constants.BINARY_NAME)
+			utils.PrintfStdErr("WARN! Deprecation notice: from v3, command alias `tx` will be replaced by `evm-tx`, please use `%s q evm-tx/eth_getTransactionByHash ...` instead of `%s q tx ...`\n", constants.BINARY_NAME, constants.BINARY_NAME)
 
 			ethClient, _ := mustGetEthClient(cmd, false)
 

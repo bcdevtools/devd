@@ -18,11 +18,11 @@ import (
 func GetQueryBlockCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "eth_getBlockByNumber [height dec or 0xHex]",
-		Aliases: []string{"block"},
+		Aliases: []string{"block", "evm-block"},
 		Short:   "eth_getBlockByNumber",
 		Args:    cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			utils.PrintfStdErr("WARN! Deprecation notice: from v3, command alias `block` will be removed, please use `%s q eth_getBlockByNumber ...` instead of `%s q block ...`\n", constants.BINARY_NAME, constants.BINARY_NAME)
+			utils.PrintfStdErr("WARN! Deprecation notice: from v3, command alias `block` will be replaced by `evm-block`, please use `%s q evm-block/eth_getBlockByNumber ...` instead of `%s q block ...`\n", constants.BINARY_NAME, constants.BINARY_NAME)
 
 			_, rpc := mustGetEthClient(cmd, false)
 

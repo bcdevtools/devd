@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/bcdevtools/devd/v2/constants"
 	"os"
 	"regexp"
 	"strings"
@@ -17,10 +18,12 @@ import (
 func GetQueryTraceTxCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "debug_traceTransaction [0xhash]",
-		Aliases: []string{"trace", "trace_tx"},
+		Aliases: []string{"trace", "trace_tx", "evm-trace"},
 		Short:   "debug_traceTransaction",
 		Args:    cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
+			utils.PrintfStdErr("WARN! Deprecation notice: from v3, command alias `trace` and `trace_tx` will be replaced by `evm-trace`, please use `%s q evm-trace/debug_traceTransaction ...` instead of `%s q trace ...`\n", constants.BINARY_NAME, constants.BINARY_NAME)
+
 			_, rpc := mustGetEthClient(cmd, false)
 
 			input := strings.ToLower(args[0])

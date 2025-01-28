@@ -3,6 +3,7 @@ package query
 import (
 	"context"
 	"fmt"
+	"github.com/bcdevtools/devd/v2/constants"
 	"os"
 	"regexp"
 	"strings"
@@ -15,10 +16,12 @@ import (
 func GetQueryTxReceiptCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "eth_getTransactionReceipt [0xhash]",
-		Aliases: []string{"receipt"},
+		Aliases: []string{"receipt", "evm-receipt"},
 		Short:   "eth_getTransactionReceipt",
 		Args:    cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
+			utils.PrintfStdErr("WARN! Deprecation notice: from v3, command alias `receipt` will be replaced by `evm-receipt`, please use `%s q evm-receipt/eth_getTransactionReceipt ...` instead of `%s q receipt ...`\n", constants.BINARY_NAME, constants.BINARY_NAME)
+
 			ethClient, _ := mustGetEthClient(cmd, false)
 
 			input := strings.ToLower(args[0])
