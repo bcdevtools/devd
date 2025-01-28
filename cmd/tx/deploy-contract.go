@@ -112,7 +112,10 @@ func deployEvmContract(bytecode string, cmd *cobra.Command) {
 }
 
 func waitForEthTx(ethClient8545 *ethclient.Client, txHash common.Hash) *ethtypes.Transaction {
-	for try := 1; try <= 6; try++ {
+	const avgBlockTime = 5 * time.Second
+	startTime := time.Now()
+
+	for time.Since(startTime) < avgBlockTime*3+time.Second {
 		tx, _, err := ethClient8545.TransactionByHash(context.Background(), txHash)
 		if err == nil && tx != nil {
 			return tx
