@@ -4,14 +4,14 @@ package cmd
 import (
 	"os"
 
-	"github.com/bcdevtools/devd/v2/cmd/check"
-	"github.com/bcdevtools/devd/v2/cmd/convert"
-	"github.com/bcdevtools/devd/v2/cmd/debug"
-	"github.com/bcdevtools/devd/v2/cmd/hash"
-	"github.com/bcdevtools/devd/v2/cmd/query"
-	"github.com/bcdevtools/devd/v2/cmd/tx"
-	"github.com/bcdevtools/devd/v2/cmd/types"
-	"github.com/bcdevtools/devd/v2/constants"
+	"github.com/bcdevtools/devd/v3/cmd/check"
+	"github.com/bcdevtools/devd/v3/cmd/convert"
+	"github.com/bcdevtools/devd/v3/cmd/debug"
+	"github.com/bcdevtools/devd/v3/cmd/hash"
+	"github.com/bcdevtools/devd/v3/cmd/query"
+	"github.com/bcdevtools/devd/v3/cmd/tx"
+	"github.com/bcdevtools/devd/v3/cmd/types"
+	"github.com/bcdevtools/devd/v3/constants"
 	"github.com/spf13/cobra"
 )
 

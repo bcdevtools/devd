@@ -3,16 +3,16 @@
 ### Install
 
 ```bash
-go install -v github.com/bcdevtools/devd/v2/cmd/devd@latest
+go install -v github.com/bcdevtools/devd/v3/cmd/devd@latest
 ```
 
 ### Query tools
 
-Lazy RPC setting
+Lazy EVM-RPC setting
 ```bash
 export DEVD_EVM_RPC='https://evm.example.com:8545'
 ```
-_By setting this environment variable, you don't need to pass `--rpc` flag everytime for non-localhost EVM Json-RPC_
+_By setting this environment variable, you don't need to pass `--evm-rpc` flag everytime for non-localhost EVM Json-RPC_
 ___
 Lazy TM-RPC setting
 ```bash
@@ -22,17 +22,15 @@ _By setting this environment variable, you don't need to pass `--tm-rpc` flag ev
 ___
 Lazy Rest API setting
 ```bash
-export DEVD_COSMOS_REST='https://ethermint-rest.example.com:1317'
+export DEVD_COSMOS_REST='https://cosmos-rest.example.com:1317'
 ```
 _By setting this environment variable, you don't need to pass `--rest` flag everytime for non-localhost Rest API_
 ___
-Some queries will try to decode some fields in response data into human-readable format
-and inject back into the response data with `_` prefix like EVM tx, receipt, block, trace.
 
 #### Query account balance
 
 ```bash
-devd query balance [account addr] [optional ERC20 addr..] [--erc20] [--rpc http://localhost:8545]
+devd query balance [account addr] [optional ERC20 addr..] [--erc20] [--evm-rpc http://localhost:8545]
 # devd q b 0xAccount
 # devd q b ethm1account
 # devd q b 0xAccount 0xErc20Contract
@@ -40,6 +38,13 @@ devd query balance [account addr] [optional ERC20 addr..] [--erc20] [--rpc http:
 # devd q b 0xAccount --erc20 [--rest http://localhost:1317]
 ```
 _`--erc20` flag, if provided, will attempt to fetch user balance of contracts on `x/erc20` module and virtual frontier bank contracts. This request additional Rest-API endpoint provided, or use default 1317._
+
+#### Query account info
+
+```bash
+devd query account [0xAddress/Bech32] [--rest http://localhost:1317]
+# devd q acc 0xAccount
+```
 
 #### Query block/tx events
 
@@ -54,40 +59,44 @@ _`--filter` flags, if provided, will accept events those contain at least one pr
 #### Query ERC20 token information
 
 ```bash
-devd query erc20 [ERC20 addr] [optional account] [--rpc http://localhost:8545]
+devd query erc20 [ERC20 addr] [optional account] [--evm-rpc http://localhost:8545]
 # devd q erc20 0xErc20Contract
 # devd q erc20 0xErc20Contract 0xAccount
 # devd q erc20 0xErc20Contract ethm1account
 ```
 
-#### Get EVM transaction information
+_This command will try to query `totalSupply()` if possible_
+
+#### Query simple txs info in a block
 
 ```bash
-devd query eth_getTransactionByHash [0xHash] [--rpc http://localhost:8545]
-# devd q tx 0xHash
+devd query txs-in-block [block number] [--tm-rpc http://localhost:26657]
+# devd q txs-in-block 100000
 ```
 
-#### Get EVM transaction receipt
+#### Some EVM-RPC queries
 
 ```bash
-devd query eth_getTransactionReceipt [0xHash] [--rpc http://localhost:8545]
-# devd q receipt 0xHash
-```
+devd query eth_getTransactionByHash [0xHash] [--evm-rpc http://localhost:8545]
+# devd q evm-tx 0xHash
 
-#### Get EVM block by number
+devd query eth_getTransactionReceipt [0xHash] [--evm-rpc http://localhost:8545]
+# devd q evm-receipt 0xHash
 
-```bash
-devd query eth_getBlockByNumber [hex or dec block no] [--full] [--rpc http://localhost:8545]
-# devd q block 0xF
-# devd q block 16 --full
-```
+devd query eth_getBlockByNumber [hex or dec block no] [--full] [--evm-rpc http://localhost:8545]
+# devd q evm-block 0xF
+# devd q evm-block 16 --full
 
-#### Trace EVM transaction
+devd query debug_traceTransaction [0xHash] [--tracer callTracer] [--evm-rpc http://localhost:8545]
+# devd q evm-trace 0xHash
+# devd q evm-trace 0xHash --tracer callTracer
 
-```bash
-devd query debug_traceTransaction [0xHash] [--tracer callTracer] [--rpc http://localhost:8545]
-# devd q trace 0xHash
-# devd q trace 0xHash --tracer callTracer
+devd query eth_call 0xContractAddr 0xCallData [--evm-rpc http://localhost:8545] [--from 0xFromAddr/Bech32] [--height 5m/0xHex/latest] [--gas 500k/0xHex] [--gas-prices 20e9/0xHex] [--value 1e18/0xHex] 
+
+devd query eth_getAccount [0xAddress/Bech32] [--evm-rpc http://localhost:8545]
+# devd q evm-account 0xAddress
+
+devd query eth_chainId [--evm-rpc http://localhost:8545]
 ```
 
 ### Tx tools
@@ -96,20 +105,22 @@ devd query debug_traceTransaction [0xHash] [--tracer callTracer] [--rpc http://l
 
 ```bash
 # Transfer native coin
-devd tx send [to] [amount]
+devd tx send [to] [amount] [--raw-tx]
 # Transfer ERC-20 token
 devd tx send [to] [amount] [--erc20 contract_address]
+# Use `--raw-tx` flag to see raw RLP-encoded EVM tx
 ```
 
-_Support custom integer like 1e18, 2k, 3m, 4b, 5kb,...: devd tx send [to] [1e18/1bb]_
+_support short int (2e18, 5bb,...): `devd tx send [to] [1e18/1bb]`_
 
 #### Deploy EVM contract
 
 ```bash
 # Deploy contract with deployment bytecode
-devd tx deploy-contract [deployment bytecode] [--gas 4m] [--gas-prices 20b]
+devd tx deploy-contract [deployment bytecode] [--gas 4m] [--gas-prices 20b] [--raw-tx]
 # Deploy ERC-20 contract with pre-defined bytecode
 devd tx deploy-contract erc20
+# Use `--raw-tx` flag to see raw RLP-encoded EVM tx
 ```
 
 ### Convert tools
@@ -128,84 +139,75 @@ devd convert address [address] [optional bech32 hrp]
 
 ***Support pipe***
 ```bash
-devd convert abi_string [string or ABI encoded string]
-# devd c abi_string 000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000045553444300000000000000000000000000000000000000000000000000000000
-# devd c abi_string USDC Token
-# echo 'USDC Token' | devd c abi_string
+devd convert abi-string [string or ABI encoded string]
+# devd c abi-string 000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000045553444300000000000000000000000000000000000000000000000000000000
+# devd c abi-string USDC Token
+# echo 'USDC Token' | devd c abi-string
 ```
 
 #### Convert hexadecimal to decimal and vice versa
 
 ***Support pipe***
 ```bash
-devd convert hex_2_dec [hexadecimal]
-# devd c h2d 0x16a
-# devd c h2d 16a
-# echo 16a | devd c h2d
-devd convert dec_2_hex [decimal]
-# devd c d2h 170
-# echo 170 | devd c d2h
-# Support custom integer like 1e18, 2k, 3m, 4b, 5kb,...:
-#   devd c d2h 20bb
+devd convert hexadecimal [hexadecimal or decimal]
+# devd c hex 0x16a
+# echo 0x16a | devd c hex
+# devd c hex 362
+# echo 362 | devd c hex
 ```
 
 #### Convert Solidity event/method signature into hashed signature
 
 ```bash
-devd convert solc_sig [event/method signature]
-# devd c solc_sig 'transfer(address,uint256)'
-# devd c solc_sig 'function transfer(address recipient, uint256 amount) external returns (bool);'
-# devd c solc_sig 'event Transfer(address indexed from, address indexed to, uint256 value);'
+devd convert solc-sig [event/method signature]
+# devd c solc-sig 'transfer(address,uint256)'
+# devd c solc-sig 'function transfer(address recipient, uint256 amount) external returns (bool);'
+# devd c solc-sig 'event Transfer(address indexed from, address indexed to, uint256 value);'
 ```
 
-#### Convert input into upper/lower case
+#### Convert input into lower/upper case
 
 ***Support pipe***
 ```bash
-devd convert to_lower_case [input]
-# devd c lowercase AA
-# echo AA | devd c lowercase
-devd convert to_upper_case [input]
-# devd c uppercase aa
-# echo aa | devd c uppercase
+devd convert case [input]
+# devd c case AA
+# echo AA | devd c case
+# > aa
+devd convert case [input] --upper
+# devd c case aa
+# echo aa | devd c case --upper
+# > AA
 ```
 
 #### Encode/Decode base64
 
 ***Support pipe***
 ```bash
-devd convert encode_base64 [input]
+devd convert base64 [input]
 # devd c base64 123
 # echo 123 | devd c base64
-devd convert decode_base64 [base64]
-# devd c decode_base64 TVRJeg==
-# echo TVRJeg== | devd c decode_base64
+devd convert base64 [base64] --decode
+# devd c base64 TVRJeg== --decode
+# echo TVRJeg== | devd c base64 --decode
 ```
 
 #### Convert raw balance into display balance and vice versa
 
 ```bash
-devd convert display_balance [raw balance] [exponent]
+devd convert display-balance [raw balance] [exponent]
 # devd c dbal 10011100 6
 # > 10.0111
-# Support custom integer like 1e18, 2k, 3m, 4b, 5kb,...:
+# Support short int:
 #  devd c dbal 20bb 18
 #  > 20.0
 ```
 
 ```bash
-devd convert raw_balance [display balance] [exponent] [--decimals-point , or .]
+devd convert raw-balance [display balance] [exponent] [--decimals-point , or .]
 # devd c rbal 10.0111 6
 # > 10011100
 # devd c rbal 10,0111 6 -d ,
 # > 10011100
-```
-
-#### Convert (decode) raw RLP-encoded EVM tx into tx object
-
-```bash
-devd convert decode_raw_tx [raw RLP-encoded EVM tx hex]
-# view inner tx information, including sender address
 ```
 
 ### Hashing tools
@@ -237,11 +239,19 @@ devd check port [port]
 
 ### Debug tools
 
+#### Decode raw RLP-encoded EVM tx into tx object
+
+```bash
+devd debug raw-tx [raw RLP-encoded EVM tx hex]
+# devd debug raw-tx 0x02f8af82271c3b83112a8883aba95082be209480b5a32e4f032b2a058b4f29ec95eefeeb87adcd80b844a9059cbb000000000000000000000000bfcfe6d5ad56aa831313856949e98656d46f9248000000000000000000000000000000000000000000000000002386f26fc10000c001a088907374a796ed70a5a2bdc51b50010b68dcc4d2ed12d94abc607bb0a90271b6a0167d3e031b70ec511b67416d9ad8334caee7013d95ff8275721b23798c5c3602
+```
+_to view inner tx information, including sender address_
+
 #### Compute EVM transaction intrinsic gas
 
 ```bash
-devd debug intrinsic_gas [0xCallData]
-# devd d intrinsic_gas 0xCallData
+devd debug intrinsic-gas [0xCallData]
+# devd d intrinsic-gas 0xCallData
 ```
 _Assumption: no access list, not contract creation, Homestead, EIP-2028 (Istanbul). If contract creation, plus 32,000 into the output._
 
@@ -250,5 +260,13 @@ _Assumption: no access list, not contract creation, Homestead, EIP-2028 (Istanbu
 - Output messages are printed via stdout, while messages with prefixes `INF:` `WARN:` and `ERR:` are printed via stderr. So for integration with other tools, to omit stderr, forward stdout only.
   > Eg: `devd c a cosmos1... 1> /tmp/output.txt`
 - When passing arguments into command via both argument and pipe, the argument will be used.
-  > Eg: `echo 123 | devd c d2h 456` will convert `456` to hexadecimal, not `123`.
-- For commands those marked `support custom integer`, you can pass number with format like `1e18`, `1k` (thousand), `2m` (million), `3b` (billion), `4kb` (trillion), `5mb` (million billion), `6bb`,... Decimal point also supported for `k`, `m`, `b` suffixes like `1.5k`, `2.5m`, `3.5bb`,...
+  > Eg: `echo 123 | devd c hex 456` will convert `456` to hexadecimal, not `123`.
+- For commands those marked `support short int`, you can pass number with format like:
+  - `2e18` = 2 x 10^18
+  - `2k` = 2,000
+  - `2.7m` = 2,700,000
+  - `3.08b` = 3,080,000,000
+  - `4kb` = 4,000,000,000,000
+  - `5.555mb` = 5,555,000,000,000,000
+  - `6bb` = 6,000,000,000,000,000,000 = 6e18
+- Some queries will try to decode some fields in response data into human-readable format and inject back into the response data with `_` prefix like EVM tx, receipt, block, trace.

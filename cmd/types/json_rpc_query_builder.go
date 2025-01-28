@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/bcdevtools/devd/v2/cmd/utils"
+	"github.com/bcdevtools/devd/v3/cmd/utils"
 	"github.com/pkg/errors"
 )
 
@@ -217,7 +217,7 @@ func (j jsonRpcBoolQueryParam) String() string {
 
 const generalEvmQueryTimeout = 3 * time.Second
 
-func DoEvmQuery(host string, qb JsonRpcQueryBuilder, optionalTimeout time.Duration) ([]byte, error) {
+func DoEvmRpcQuery(host string, qb JsonRpcQueryBuilder, optionalTimeout time.Duration) ([]byte, error) {
 	timeout := optionalTimeout
 	if optionalTimeout == 0 {
 		timeout = generalEvmQueryTimeout
@@ -230,7 +230,7 @@ func DoEvmQuery(host string, qb JsonRpcQueryBuilder, optionalTimeout time.Durati
 		Timeout: timeout,
 	}
 
-	fmt.Println("Querying", host, strings.ReplaceAll(strings.ReplaceAll(qb.String(), "\n", " "), " ", ""))
+	utils.PrintlnStdErr("INF: Querying", host, strings.ReplaceAll(strings.ReplaceAll(qb.String(), "\n", " "), " ", ""))
 
 	resp, err := httpClient.Post(host, "application/json", bytes.NewBuffer([]byte(qb.String())))
 	if err != nil {

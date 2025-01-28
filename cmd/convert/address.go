@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/bcdevtools/devd/v2/cmd/utils"
+	"github.com/bcdevtools/devd/v3/cmd/utils"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/bech32"
 	"github.com/ethereum/go-ethereum/common"
@@ -16,7 +16,7 @@ import (
 // GetConvertAddressCmd creates a helper command that convert account bech32 address into hex address or vice versa
 func GetConvertAddressCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "address [account] [bech32 hrp]",
+		Use:     "address [account] [?bech32 hrp]",
 		Aliases: []string{"a"},
 		Short:   "Convert account bech32 address into hex address or vice versa.",
 		Long: `Convert account bech32 address into hex address or vice versa.

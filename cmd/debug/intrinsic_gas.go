@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/bcdevtools/devd/v2/cmd/utils"
+	"github.com/bcdevtools/devd/v3/cmd/utils"
 	"github.com/ethereum/go-ethereum/core"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/params"
@@ -16,7 +16,7 @@ import (
 
 func GetIntrinsicCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "intrinsic_gas [0xdata]",
+		Use:   "intrinsic-gas [0xdata]",
 		Short: `Get intrinsic gas used by the given EVM transaction input data.`,
 		Long: fmt.Sprintf(`Get intrinsic gas used by the given EVM transaction input data.
 This operation assumes:

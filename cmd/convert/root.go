@@ -15,16 +15,12 @@ func Commands() *cobra.Command {
 	cmd.AddCommand(
 		GetConvertAddressCmd(),
 		GetConvertAbiStringCmd(),
-		GetConvertDecimalToHexadecimalCmd(),
-		GetConvertHexadecimalToDecimalCmd(),
+		GetConvertHexadecimalCmd(),
 		GetConvertSolcSignatureCmd(),
-		GetConvertToLowerCaseCmd(),
-		GetConvertToUpperCaseCmd(),
-		GetDecodeBase64CaseCmd(),
-		GetEncodeBase64CaseCmd(),
+		GetConvertCaseCmd(),
+		GetBase64CaseCmd(),
 		GetDisplayBalanceCmd(),
 		GetRawBalanceCmd(),
-		GetDecodeRawEvmTxCommand(),
 	)
 
 	return cmd

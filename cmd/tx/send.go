@@ -1,16 +1,16 @@
 package tx
 
 import (
-	"bytes"
 	"context"
-	"encoding/hex"
 	"fmt"
 	"math/big"
+
+	"github.com/bcdevtools/devd/v3/cmd/flags"
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
 
-	"github.com/bcdevtools/devd/v2/cmd/utils"
+	"github.com/bcdevtools/devd/v3/cmd/utils"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/spf13/cobra"
 )
@@ -20,15 +20,17 @@ const flagErc20 = "erc20"
 func GetSendEvmTxCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "send [to] [amount]",
-		Short: "Send some native coin or ERC-20 token to an address",
-		Args:  cobra.ExactArgs(2),
+		Short: "Send native coin or ERC-20 token to another account",
+		Long: `Send native coin or ERC-20 token to another account.
+Support short int`,
+		Args: cobra.ExactArgs(2),
 		Run: func(cmd *cobra.Command, args []string) {
-			ethClient8545, _ := mustGetEthClient(cmd)
+			ethClient8545, _ := flags.MustGetEthClient(cmd)
 
-			gasPrices, err := readGasPrices(cmd)
+			gasPrices, err := flags.ReadFlagGasPrices(cmd, flags.FlagGasPrices, 20_000_000_000)
 			utils.ExitOnErr(err, "failed to parse gas price")
 
-			gasLimit, err := readGasLimit(cmd)
+			gasLimit, err := flags.ReadFlagGasLimit(cmd, flags.FlagGasLimit, 500_000)
 			utils.ExitOnErr(err, "failed to parse gas limit")
 
 			evmAddrs, err := utils.GetEvmAddressFromAnyFormatAddress(args[0])
@@ -46,7 +48,7 @@ func GetSendEvmTxCommand() *cobra.Command {
 
 			receiverAddr := evmAddrs[0]
 
-			amount, err := utils.ReadCustomInteger(args[1])
+			amount, err := utils.ReadShortInt(args[1])
 			if err != nil {
 				var ok bool
 				amount, ok = new(big.Int).SetString(args[1], 10)
@@ -71,7 +73,7 @@ func GetSendEvmTxCommand() *cobra.Command {
 			display, _, _, err := utils.ConvertNumberIntoDisplayWithExponent(amount, exponent)
 			utils.ExitOnErr(err, "failed to convert amount into display with exponent")
 
-			ecdsaPrivateKey, _, from := mustSecretEvmAccount(cmd)
+			ecdsaPrivateKey, _, from := flags.MustSecretEvmAccount(cmd)
 
 			nonce, err := ethClient8545.NonceAt(context.Background(), *from, nil)
 			utils.ExitOnErr(err, "failed to get nonce of sender")
@@ -95,7 +97,7 @@ func GetSendEvmTxCommand() *cobra.Command {
 				}
 			} else {
 				if gasLimit > 21000 {
-					utils.PrintfStdErr("WARN: setting gas limit by flag --%s will be ignored, ony use 21,000 gas\n", flagGasLimit)
+					utils.PrintfStdErr("WARN: setting gas limit by flag --%s will be ignored, ony use 21,000 gas\n", flags.FlagGasPrices)
 				}
 				txData = ethtypes.LegacyTx{
 					Nonce:    nonce,
@@ -107,37 +109,35 @@ func GetSendEvmTxCommand() *cobra.Command {
 			}
 			tx := ethtypes.NewTx(&txData)
 
-			fmt.Println("Send", display, "from", from.Hex(), "to", receiverAddr.Hex())
-			fmt.Println("EIP155 Chain ID:", chainId.String(), "and nonce", txData.Nonce)
+			utils.PrintlnStdErr("INF: Send", display, "from", from.Hex(), "to", receiverAddr.Hex())
+			utils.PrintlnStdErr("INF: EIP155 Chain ID:", chainId.String(), "and nonce", txData.Nonce)
 
 			signedTx, err := ethtypes.SignTx(tx, ethtypes.LatestSignerForChainID(chainId), ecdsaPrivateKey)
 			utils.ExitOnErr(err, "failed to sign tx")
 
-			var buf bytes.Buffer
-			err = signedTx.EncodeRLP(&buf)
-			utils.ExitOnErr(err, "failed to encode tx")
+			utils.PrintlnStdErr("INF: Tx hash", signedTx.Hash())
 
-			rawTxRLPHex := hex.EncodeToString(buf.Bytes())
-			fmt.Printf("RawTx: 0x%s\n", rawTxRLPHex)
-
-			fmt.Println("Tx hash", signedTx.Hash())
+			if cmd.Flags().Changed(flagRawTx) {
+				printRawEvmTx(signedTx)
+			}
 
 			err = ethClient8545.SendTransaction(context.Background(), signedTx)
 			utils.ExitOnErr(err, "failed to send tx")
 
 			if tx := waitForEthTx(ethClient8545, signedTx.Hash()); tx != nil {
-				fmt.Println("Tx executed successfully")
+				utils.PrintlnStdErr("INF: Tx executed successfully")
 			} else {
-				fmt.Println("Timed out waiting for tx to be mined")
+				utils.PrintlnStdErr("WARN: Timed out waiting for tx to be mined")
 			}
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
-	cmd.Flags().String(flagSecretKey, "", flagSecretKeyDesc)
+	cmd.Flags().String(flags.FlagEvmRpc, "", flags.FlagEvmRpcDesc)
+	cmd.Flags().String(flags.FlagSecretKey, "", flags.FlagSecretKeyDesc)
 	cmd.Flags().String(flagErc20, "", "contract address if you want to send ERC-20 token instead of native coin")
-	cmd.Flags().String(flagGasLimit, "500k", fmt.Sprintf("%s. Ignored during normal EVM transfer, fixed to 21k", flagGasLimitDesc))
-	cmd.Flags().String(flagGasPrices, "20b", flagGasPricesDesc)
+	cmd.Flags().String(flags.FlagGasLimit, "500k", fmt.Sprintf("%s. Ignored during normal EVM transfer, fixed to 21k", flagGasLimitDesc))
+	cmd.Flags().String(flags.FlagGasPrices, "20b", flagGasPricesDesc)
+	cmd.Flags().Bool(flagRawTx, false, flagRawTxDesc)
 
 	return cmd
 }

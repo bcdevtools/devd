@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/bcdevtools/devd/v2/cmd/utils"
+	"github.com/bcdevtools/devd/v3/cmd/utils"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/spf13/cobra"
@@ -14,7 +14,7 @@ import (
 // GetConvertSolcSignatureCmd creates a helper command that convert EVM method/event into keccak256 hash and 4 bytes signature
 func GetConvertSolcSignatureCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "solc_sig [method or event]",
+		Use:   "solc-sig [method or event]",
 		Short: "Convert Solidity method/event signature into hashed signature and 4 bytes signature.",
 		Long: `Convert Solidity method/event signature into hashed signature and 4 bytes signature.
 Output will be 4 lines:
@@ -39,9 +39,13 @@ Output will be 4 lines:
 				solcSig = _4BytesSig
 			}
 
+			utils.PrintlnStdErr("INF: Type")
 			fmt.Println(_type)
+			utils.PrintlnStdErr("INF: Final Interface")
 			fmt.Println(finalInterface)
+			utils.PrintlnStdErr("INF: Hash")
 			fmt.Println(hash.Hex())
+			utils.PrintlnStdErr("INF: Signature")
 			fmt.Println(solcSig)
 		},
 	}
@@ -52,9 +56,10 @@ Output will be 4 lines:
 func getSignatureFromInterface(_interface string) (_4BytesSig string, hash common.Hash, finalInterface string, err error) {
 	_interface = normalizeEvmEventOrMethodInterface(_interface)
 
+	utils.PrintlnStdErr("INF: Interface")
 	fmt.Println(_interface)
 
-	if !regexp.MustCompile(`^\w+\s*\(.+\)$`).MatchString(_interface) {
+	if !regexp.MustCompile(`^\w+\s*\(.*\)$`).MatchString(_interface) {
 		err = fmt.Errorf("invalid EVM method/event interface, require format: `methodName(...)`")
 		return
 	}

@@ -6,24 +6,25 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/bcdevtools/devd/v2/cmd/utils"
+	"github.com/bcdevtools/devd/v3/cmd/utils"
 	"github.com/spf13/cobra"
 )
 
 // GetDisplayBalanceCmd creates a helper command that convert raw balance into display balance
 func GetDisplayBalanceCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "display_balance [raw balance] [decimals]",
+		Use:     "display-balance [raw balance] [decimals]",
 		Aliases: []string{"dbal"},
 		Short:   "Convert raw balance into display balance.",
 		Long: `Convert raw balance into display balance.
-Sample: 10011100 with 6 exponent => 10.0111`,
+Sample: 10011100 with 6 exponent => 10.0111
+Support short int`,
 		Args: cobra.ExactArgs(2),
 		Run: func(cmd *cobra.Command, args []string) {
 			rawBalanceStr := args[0]
 			decimalsStr := args[1]
 
-			balance, err := utils.ReadCustomInteger(rawBalanceStr)
+			balance, err := utils.ReadShortInt(rawBalanceStr)
 			if err != nil {
 				var ok bool
 				balance, ok = new(big.Int).SetString(rawBalanceStr, 10)

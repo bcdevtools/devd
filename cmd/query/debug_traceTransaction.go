@@ -8,20 +8,29 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/bcdevtools/devd/v2/cmd/types"
-	"github.com/bcdevtools/devd/v2/cmd/utils"
+	"github.com/bcdevtools/devd/v3/cmd/flags"
+
+	"github.com/bcdevtools/devd/v3/cmd/types"
+	"github.com/bcdevtools/devd/v3/cmd/utils"
 	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/spf13/cobra"
 )
 
-func GetQueryTraceTxCommand() *cobra.Command {
+const (
+	flagTracer      = "tracer"
+	flagNoTranslate = "no-translate"
+)
+
+func GetQueryEvmRpcDebugTraceTransactionCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "debug_traceTransaction [0xhash]",
-		Aliases: []string{"trace", "trace_tx"},
-		Short:   "debug_traceTransaction",
-		Args:    cobra.ExactArgs(1),
+		Aliases: []string{"evm-trace"},
+		Short:   "Query 'debug_traceTransaction' from EVM RPC",
+		Long: `Query 'debug_traceTransaction' from EVM RPC, with optional tracer name.
+Require 'debug' namespace enabled in EVM RPC node.`,
+		Args: cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			_, rpc := mustGetEthClient(cmd, false)
+			_, evmRpc := flags.MustGetEthClient(cmd)
 
 			input := strings.ToLower(args[0])
 
@@ -44,8 +53,8 @@ func GetQueryTraceTxCommand() *cobra.Command {
 				params = append(params, types.NewJsonRpcRawQueryParam(fmt.Sprintf(`{"tracer":"%s"}`, tracer)))
 			}
 
-			bz, err := types.DoEvmQuery(
-				rpc,
+			bz, err := types.DoEvmRpcQuery(
+				evmRpc,
 				types.NewJsonRpcQueryBuilder(
 					"debug_traceTransaction",
 					params...,
@@ -55,16 +64,14 @@ func GetQueryTraceTxCommand() *cobra.Command {
 			utils.ExitOnErr(err, "failed to trace transaction")
 
 			traceContentAsMap, err := getResultObjectFromEvmRpcResponse(bz)
-			if err == nil {
-				recursivelyTranslateTraceFrames(traceContentAsMap)
+			utils.ExitOnErr(err, "failed to get result object from response")
 
-				bz, err = json.Marshal(traceContentAsMap)
-				utils.ExitOnErr(err, "failed to marshal response trace tx")
+			recursivelyTranslateTraceFrames(traceContentAsMap)
 
-				utils.TryPrintBeautyJson(bz)
-			} else {
-				utils.TryPrintBeautyJson(bz)
-			}
+			bz, err = json.Marshal(traceContentAsMap)
+			utils.ExitOnErr(err, "failed to marshal response trace tx")
+
+			utils.TryPrintBeautyJson(bz)
 
 			if !cmd.Flag(flagNoTranslate).Changed {
 				// try to decode error message if any
@@ -96,7 +103,7 @@ func GetQueryTraceTxCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
+	cmd.Flags().String(flags.FlagEvmRpc, "", flags.FlagEvmRpcDesc)
 	cmd.Flags().String(flagTracer, "callTracer", "EVM tracer")
 	cmd.Flags().Bool(flagNoTranslate, false, "do not translate and print EVM revert error message")
 

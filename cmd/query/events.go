@@ -9,10 +9,16 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/bcdevtools/devd/v2/cmd/utils"
+	"github.com/bcdevtools/devd/v3/cmd/flags"
+
+	"github.com/bcdevtools/devd/v3/cmd/utils"
 	acbitypes "github.com/cometbft/cometbft/abci/types"
 	"github.com/spf13/cobra"
 	"golang.org/x/exp/maps"
+)
+
+const (
+	flagFilter = "filter"
 )
 
 func GetQueryTxEventsCommand() *cobra.Command {
@@ -22,7 +28,7 @@ func GetQueryTxEventsCommand() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			txHashType := utils.DetectTxHashType(args[0])
-			tendermintRpcHttpClient, _ := mustGetTmRpc(cmd)
+			tendermintRpcHttpClient, _ := flags.MustGetTmRpc(cmd)
 
 			var events []acbitypes.Event
 
@@ -122,7 +128,7 @@ func GetQueryTxEventsCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagTmRpc, "", flagTmRpcDesc)
+	cmd.Flags().String(flags.FlagTendermintRpc, "", flags.FlagTmRpcDesc)
 	cmd.Flags().StringSliceP(flagFilter, "f", []string{}, "filter events, output only events which contains the filter string. If multiple filters are provided, events that contain one of the filters will be output.")
 
 	return cmd

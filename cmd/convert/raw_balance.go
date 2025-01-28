@@ -5,7 +5,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/bcdevtools/devd/v2/cmd/utils"
+	"github.com/bcdevtools/devd/v3/cmd/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -17,7 +17,7 @@ const (
 // GetRawBalanceCmd creates a helper command that convert display balance into raw balance
 func GetRawBalanceCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "raw_balance [display balance] [decimals]",
+		Use:     "raw-balance [display balance] [decimals]",
 		Aliases: []string{"rbal"},
 		Short:   "Convert display balance into raw balance.",
 		Long: `Convert display balance into raw balance.

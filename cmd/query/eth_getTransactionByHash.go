@@ -7,19 +7,21 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/bcdevtools/devd/v2/cmd/utils"
+	"github.com/bcdevtools/devd/v3/cmd/flags"
+
+	"github.com/bcdevtools/devd/v3/cmd/utils"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/spf13/cobra"
 )
 
-func GetQueryTxCommand() *cobra.Command {
+func GetQueryEvmRpcEthGetTransactionByHashCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "eth_getTransactionByHash [0xhash]",
-		Aliases: []string{"tx"},
-		Short:   "eth_getTransactionByHash",
+		Aliases: []string{"evm-tx"},
+		Short:   "Query `eth_getTransactionByHash` from EVM RPC",
 		Args:    cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			ethClient, _ := mustGetEthClient(cmd, false)
+			ethClient, _ := flags.MustGetEthClient(cmd)
 
 			input := strings.ToLower(args[0])
 
@@ -41,7 +43,7 @@ func GetQueryTxCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
+	cmd.Flags().String(flags.FlagEvmRpc, "", flags.FlagEvmRpcDesc)
 
 	return cmd
 }

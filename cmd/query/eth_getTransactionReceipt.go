@@ -7,19 +7,23 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/bcdevtools/devd/v2/cmd/utils"
+	"github.com/bcdevtools/devd/v3/cmd/flags"
+
+	"github.com/bcdevtools/devd/v3/cmd/utils"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/spf13/cobra"
 )
 
-func GetQueryTxReceiptCommand() *cobra.Command {
+func GetQueryEvmRpcEthGetTransactionReceiptCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "eth_getTransactionReceipt [0xhash]",
-		Aliases: []string{"receipt"},
-		Short:   "eth_getTransactionReceipt",
-		Args:    cobra.ExactArgs(1),
+		Aliases: []string{"evm-receipt"},
+		Short:   "Query `eth_getTransactionReceipt` from EVM RPC.",
+		Long: `Query "eth_getTransactionReceipt" from EVM RPC.
+Some fields of log like block/tx number/hash, which already available at receipt, will be removed for shorter and better readability.`,
+		Args: cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			ethClient, _ := mustGetEthClient(cmd, false)
+			ethClient, _ := flags.MustGetEthClient(cmd)
 
 			input := strings.ToLower(args[0])
 
@@ -40,7 +44,7 @@ func GetQueryTxReceiptCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String(flagRpc, "", flagEvmRpcDesc)
+	cmd.Flags().String(flags.FlagEvmRpc, "", flags.FlagEvmRpcDesc)
 
 	return cmd
 }

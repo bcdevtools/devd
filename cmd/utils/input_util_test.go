@@ -1,11 +1,12 @@
 package utils
 
 import (
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
-func TestReadCustomInteger(t *testing.T) {
+func TestReadShortInt(t *testing.T) {
 	tests := []struct {
 		input   string
 		wantOut string
@@ -94,7 +95,7 @@ func TestReadCustomInteger(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.wantOut, func(t *testing.T) {
-			gotOut, err := ReadCustomInteger(tt.input)
+			gotOut, err := ReadShortInt(tt.input)
 			if tt.wantErr {
 				require.Error(t, err)
 				return
