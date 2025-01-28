@@ -14,6 +14,7 @@ func Commands() *cobra.Command {
 
 	cmd.AddCommand(
 		GetQueryErc20Command(),
+		GetQueryAccountCommand(),
 		GetQueryBalanceCommand(),
 		GetQueryTxsInBlockCommand(),
 		GetQueryTxEventsCommand(),
