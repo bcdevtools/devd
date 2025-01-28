@@ -24,7 +24,7 @@ const (
 func GetQueryEvmRpcDebugTraceTransactionCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "debug_traceTransaction [0xhash]",
-		Aliases: []string{"trace"},
+		Aliases: []string{"evm-trace"},
 		Short:   "Query 'debug_traceTransaction' from EVM RPC",
 		Long: `Query 'debug_traceTransaction' from EVM RPC, with optional tracer name.
 Require 'debug' namespace enabled in EVM RPC node.`,

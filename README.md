@@ -64,17 +64,18 @@ _This command will try to query `totalSupply()` if possible_
 
 ```bash
 devd query eth_getTransactionByHash [0xHash] [--evm-rpc http://localhost:8545]
+# devd q evm-tx 0xHash
 
 devd query eth_getTransactionReceipt [0xHash] [--evm-rpc http://localhost:8545]
-# devd q receipt 0xHash
+# devd q evm-receipt 0xHash
 
 devd query eth_getBlockByNumber [hex or dec block no] [--full] [--evm-rpc http://localhost:8545]
-# devd q eth_getBlockByNumber 0xF
-# devd q eth_getBlockByNumber 16 --full
+# devd q evm-block 0xF
+# devd q evm-block 16 --full
 
 devd query debug_traceTransaction [0xHash] [--tracer callTracer] [--evm-rpc http://localhost:8545]
-# devd q trace 0xHash
-# devd q trace 0xHash --tracer callTracer
+# devd q evm-trace 0xHash
+# devd q evm-trace 0xHash --tracer callTracer
 
 devd query eth_call 0xContractAddr 0xCallData [--evm-rpc http://localhost:8545] [--from 0xFromAddr/Bech32] [--height 5m/0xHex/latest] [--gas 500k/0xHex] [--gas-prices 20e9/0xHex] [--value 1e18/0xHex] 
 

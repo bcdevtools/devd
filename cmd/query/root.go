@@ -26,6 +26,8 @@ func Commands() *cobra.Command {
 		// fake command for deprecated alias
 		GetDeprecatedAliasBlockAsCommand(),
 		GetDeprecatedAliasTxAsCommand(),
+		GetDeprecatedAliasTraceAsCommand(),
+		GetDeprecatedAliasReceiptAsCommand(),
 	)
 
 	return cmd

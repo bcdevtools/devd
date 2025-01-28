@@ -22,9 +22,10 @@ const (
 
 func GetQueryEvmRpcEthGetBlockByNumberCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "eth_getBlockByNumber [height dec or 0xHex]",
-		Short: "Query `eth_getBlockByNumber` from EVM RPC",
-		Args:  cobra.ExactArgs(1),
+		Use:     "eth_getBlockByNumber [height dec or 0xHex]",
+		Aliases: []string{"evm-block"},
+		Short:   "Query `eth_getBlockByNumber` from EVM RPC",
+		Args:    cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			_, evmRpc := flags.MustGetEthClient(cmd)
 
