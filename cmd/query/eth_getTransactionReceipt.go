@@ -18,8 +18,10 @@ func GetQueryEvmRpcEthGetTransactionReceiptCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "eth_getTransactionReceipt [0xhash]",
 		Aliases: []string{"evm-receipt"},
-		Short:   "Query `eth_getTransactionReceipt` from EVM RPC",
-		Args:    cobra.ExactArgs(1),
+		Short:   "Query `eth_getTransactionReceipt` from EVM RPC.",
+		Long: `Query "eth_getTransactionReceipt" from EVM RPC.
+Some fields of log like block/tx number/hash, which already available at receipt, will be removed for shorter and better readability.`,
+		Args: cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			ethClient, _ := flags.MustGetEthClient(cmd)
 
