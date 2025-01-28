@@ -67,6 +67,13 @@ devd query erc20 [ERC20 addr] [optional account] [--evm-rpc http://localhost:854
 
 _This command will try to query `totalSupply()` if possible_
 
+#### Query simple txs info in a block
+
+```bash
+devd query txs-in-block [block number] [--tm-rpc http://localhost:26657]
+# devd q txs-in-block 100000
+```
+
 #### Some EVM-RPC queries
 
 ```bash
