@@ -15,7 +15,7 @@ import (
 
 func GetQueryErc20Command() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "erc20 [contract address] [?account address]",
+		Use:   "erc20 [contract address] [?0xAccount/Bech32]",
 		Short: "Get ERC-20 token information. Optionally query the balance of an account.",
 		Long: `Get ERC-20 token information. If account address is provided, it will query the balance of the account.
 Support bech32 address format`,

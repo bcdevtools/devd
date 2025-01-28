@@ -22,6 +22,7 @@ func Commands() *cobra.Command {
 		GetQueryEvmRpcEthGetBlockByNumberCommand(),
 		GetQueryEvmRpcEthChainIdCommand(),
 		GetQueryEvmRpcEthCallCommand(),
+		GetQueryEvmRpcEthGetAccountCommand(),
 		GetQueryEvmRpcDebugTraceTransactionCommand(),
 		// fake command for deprecated alias
 		GetDeprecatedAliasBlockAsCommand(),

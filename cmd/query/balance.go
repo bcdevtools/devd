@@ -26,7 +26,7 @@ const (
 
 func GetQueryBalanceCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "balance [account] [?optional ERC-20 addrs..]",
+		Use:     "balance [0xAccount/Bech32] [?optional ERC-20 addrs..]",
 		Aliases: []string{"b"},
 		Short:   "Get native balance of account. Optionally query ERC-20 token balances.",
 		Long: fmt.Sprintf(`Get native balance of account. Optionally query ERC-20 token balances of if 2nd arg is provided or flag --%s is used.

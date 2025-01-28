@@ -106,6 +106,18 @@ func getResultObjectFromEvmRpcResponse(bz []byte) (map[string]interface{}, error
 	if err != nil {
 		return nil, err
 	}
+	errObj, found := _map["error"]
+	if found && errObj != nil {
+		errMap, ok := errObj.(map[string]interface{})
+		if ok {
+			code, foundCode := errMap["code"]
+			msg, foundMsg := errMap["message"]
+			if foundCode && foundMsg {
+				return nil, fmt.Errorf("RPC response error: code=%v, message=%v", code, msg)
+			}
+		}
+		return nil, fmt.Errorf("RPC response error: %v", errObj)
+	}
 	result, found := _map["result"]
 	if !found {
 		return nil, nil
