@@ -183,7 +183,7 @@ devd convert case [input] --upper
 
 ***Support pipe***
 ```bash
-devd convert base64 [input]
+devd convert base64 [input] [--show-buffer] [--from-buffer]
 # devd c base64 123
 # echo 123 | devd c base64
 devd convert base64 [base64] --decode
