@@ -5,6 +5,8 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256r1"
 	"io"
 	"math/big"
 	"net/http"
@@ -131,6 +133,16 @@ func GetQueryAccountCommand() *cobra.Command {
 									"ethermint.crypto.v1.ethsecp256k1.PubKey",
 									(*cryptotypes.PubKey)(nil),
 									&ethsecp256k1.PubKey{},
+								)
+								ir.RegisterInterface(
+									"cosmos.crypto.secp256k1.PubKey",
+									(*cryptotypes.PubKey)(nil),
+									&secp256k1.PubKey{},
+								)
+								ir.RegisterInterface(
+									"cosmos.crypto.secp256r1.PubKey",
+									(*cryptotypes.PubKey)(nil),
+									&secp256r1.PubKey{},
 								)
 								cdc := sdkcodec.NewProtoCodec(ir)
 
