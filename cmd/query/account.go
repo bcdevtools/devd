@@ -1,6 +1,7 @@
 package query
 
 import (
+	"context"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -8,6 +9,17 @@ import (
 	"math/big"
 	"net/http"
 	"os"
+	"strings"
+	"time"
+
+	"github.com/bcdevtools/devd/v3/third_party/ethsecp256k1"
+	sdkcodec "github.com/cosmos/cosmos-sdk/codec"
+	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
+	"github.com/cosmos/cosmos-sdk/x/auth/vesting/exported"
+	vestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
+
+	sdkcodectypes "github.com/cosmos/cosmos-sdk/codec/types"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -97,6 +109,41 @@ func GetQueryAccountCommand() *cobra.Command {
 										}
 									}
 								}
+							} else if strings.HasPrefix(typeString, "/cosmos.vesting.v1beta1.") {
+								tendermintRpcHttpClient, _ := flags.MustGetTmRpc(cmd)
+
+								req := authtypes.QueryAccountRequest{
+									Address: bech32,
+								}
+								bz, err := req.Marshal()
+								utils.ExitOnErr(err, "failed to marshal ABCI query account details")
+
+								resultABCIQuery, err := tendermintRpcHttpClient.ABCIQuery(context.Background(), "/cosmos.auth.v1beta1.Query/Account", bz)
+								utils.ExitOnErr(err, "failed to query account details")
+
+								var queryAccountResponse authtypes.QueryAccountResponse
+								err = queryAccountResponse.Unmarshal(resultABCIQuery.Response.Value)
+								utils.ExitOnErr(err, "failed to unmarshal ABCI query account details")
+
+								ir := sdkcodectypes.NewInterfaceRegistry()
+								vestingtypes.RegisterInterfaces(ir)
+								ir.RegisterInterface(
+									"ethermint.crypto.v1.ethsecp256k1.PubKey",
+									(*cryptotypes.PubKey)(nil),
+									&ethsecp256k1.PubKey{},
+								)
+								cdc := sdkcodec.NewProtoCodec(ir)
+
+								var account exported.VestingAccount
+								err = cdc.UnpackAny(queryAccountResponse.Account, &account)
+								utils.ExitOnErr(err, "failed to unpack account details")
+
+								now := time.Now()
+								accountInfoAsMap["_vesting"] = map[string]interface{}{
+									"vested":  account.GetVestedCoins(now),
+									"vesting": account.GetVestingCoins(now),
+									"locked":  account.LockedCoins(now),
+								}
 							}
 						}
 					}
@@ -109,6 +156,7 @@ func GetQueryAccountCommand() *cobra.Command {
 	}
 
 	cmd.Flags().String(flags.FlagCosmosRest, "", flags.FlagCosmosRestDesc)
+	cmd.Flags().String(flags.FlagTendermintRpc, "", fmt.Sprintf("(conditionally used, not always) %s", flags.FlagTmRpcDesc))
 
 	return cmd
 }
